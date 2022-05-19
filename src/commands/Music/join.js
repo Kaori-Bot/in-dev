@@ -30,7 +30,7 @@ module.exports = {
         guild: message.guild.id,
         voiceChannel: channel.id,
         textChannel: message.channel.id,
-        volume: 80,
+        volume: 100,
         selfDeafen: true,
       }) 
       if(player && player.state !== "CONNECTED") player.connect();

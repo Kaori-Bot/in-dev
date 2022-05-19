@@ -33,7 +33,7 @@ module.exports = {
         textChannel: interaction.channelId,
         voiceChannel: interaction.member.voice.channelId,
         selfDeafen: true,
-        volume: 80
+        volume: 100
       })
       if (player && player.state !== "CONNECTED") player.connect();
 

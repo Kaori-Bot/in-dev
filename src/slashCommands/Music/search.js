@@ -38,7 +38,7 @@ module.exports = {
                 guild: interaction.guildId,
                 voiceChannel: channel.id,
                 textChannel: interaction.channelId,
-                volume: 80,
+                volume: 100,
                 selfDeafen: true,
             })
         if (player && player.state !== "CONNECTED") player.connect();
