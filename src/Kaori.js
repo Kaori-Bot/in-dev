@@ -52,7 +52,7 @@ class KaoriBot extends Client {
 		readdirSync("./src/events/Lavalink/").forEach(file => {
 			const event = require(`./events/Lavalink/${file}`);
 			let eventName = file.split(".")[0];
-			this.manager.on(eventName, (...args) => event.run(this, ...args));
+			this.manager.on(eventName, (...args) => event(this, ...args));
 		});
 		this.logger.log('Events Lavalink: Loaded...', 'info');
 	}
@@ -94,7 +94,7 @@ class KaoriBot extends Client {
 	async registerApplicationCommand(guildId) {
 		if(!this.isReady) throw new Error('Cannot register Application Commands before client is ready!');
 		const _data = this.slashCommands._data;
-		if(!data) throw new Error('SlashCommands: Data not available!');
+		if(!_data) throw new Error('SlashCommands: Data not available!');
 		try {
 			_data.forEach(async data => {
 				if(guildId) {
