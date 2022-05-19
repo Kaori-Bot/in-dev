@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 require("./structures/Player"); 
 
-class MusicBot extends Client {
+class KaoriBot extends Client {
 	 constructor(options={}) {
         super(options);
         
@@ -47,8 +47,7 @@ class MusicBot extends Client {
     this.on("reconnecting", () => console.log("Bot reconnecting..."))
     this.on('warn', error => console.log(error));
     this.on('error', error => console.log(error));
-    const client = this;
-    this.manager = new KaoriManager(client);
+    this.manager = new KaoriManager(this);
 		  
 /**
  * Client Events
@@ -107,4 +106,4 @@ class MusicBot extends Client {
         return this;
     };
 };
-module.exports = MusicBot;
+module.exports = KaoriBot;

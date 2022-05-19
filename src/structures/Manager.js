@@ -3,9 +3,8 @@ const Spotify = require("erela.js-spotify");
 
 class KaoriManager extends Manager {
     constructor(client) {
-        this._client = client;
         super({
-            nodes: this._client.config.nodes,
+            nodes: client.config.nodes,
             plugins: [
                 new (require('erela.js-apple'))(),
                 new (require('erela.js-deezer'))(),
@@ -16,7 +15,7 @@ class KaoriManager extends Manager {
                 }),
             ],
             send(guildId, dataPayload) {
-                const guild = this._client.guilds.cache.get(guildId);
+                const guild = client.guilds.cache.get(guildId);
                 if (guild) guild.shard.send(dataPayload);
             },
         });
