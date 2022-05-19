@@ -6,101 +6,114 @@ const mongoose = require('mongoose');
 require("./structures/Player"); 
 
 class KaoriBot extends Client {
-	 constructor(options={}) {
-        super(options);
-        
-     this.commands = new Collection();
-     this.slashCommands = new Collection();
-     this.config = require("./config.js");
-     this.colors = this.config.colors;
-     this.aliases = new Collection();
-     this.commands = new Collection();
-     this.logger = require("./utils/logger.js");
-     this.emoji = require("./utils/emoji.json");
+	constructor(options={}) {
+		super(options);
+		this.commands = new Collection();
+		this.slashCommands = new Collection();
+		this.config = require("./config.js");
+		this.colors = this.config.colors;
+		this.logger = require("./utils/logger.js");
+		this.emoji = require("./utils/emoji.json");
+	}
+	async loadCommands() {
+		this.slashCommands._data = [];
+		readdirSync("./src/commands/").forEach(dir => {
+			const commandFiles = readdirSync(`./src/commands/${dir}/`).filter(f => f.endsWith('.js'));
+			for (const file of commandFiles) {
+				const command = require(`./commands/${dir}/${file}`);
+				this.commands.set(command.name, command);
+			}
+		});
+		this.logger.log('Commands: Loaded...', 'info');
 
-   /**
-    *  Mongose for data base
-    */
-		 const dbOptions = {
-        useNewUrlParser: true,
-        autoIndex: false,
-        connectTimeoutMS: 10000,
-        family: 4,
-        useUnifiedTopology: true,
-      };
-        mongoose.connect(process.env.MONGO_URI, dbOptions);
-        mongoose.Promise = global.Promise;
-        mongoose.connection.on('connected', () => {
-         this.logger.log('[DB] DATABASE CONNECTED', "ready");
-              });
-        mongoose.connection.on('err', (err) => {
-         console.log(`Mongoose connection error: \n ${err.stack}`, "error");
-              });
-        mongoose.connection.on('disconnected', () => {
-         console.log('Mongoose disconnected');
-              });
-        
-    /**
-     * Error Handler
-     */
-    this.on("disconnect", () => console.log("Bot is disconnecting..."))
-    this.on("reconnecting", () => console.log("Bot reconnecting..."))
-    this.on('warn', error => console.log(error));
-    this.on('error', error => console.log(error));
-    this.manager = new KaoriManager(this);
-		  
-/**
- * Client Events
- */
-   readdirSync("./src/events/Client/").forEach(file => {
-    const event = require(`./events/Client/${file}`);
-    this.on(event.name, (...args) => event.run(this, ...args));
-});
-/**
- * Erela Manager Events
- */ 
-  readdirSync("./src/events/Lavalink/").forEach(file => {
-    const event = require(`./events/Lavalink/${file}`);
-    let eventName = file.split(".")[0];
-    this.manager.on(eventName, event.bind(null, this));
-});
-/**
- * Import all commands
- */
-  readdirSync("./src/commands/").forEach(dir => {
-    const commandFiles = readdirSync(`./src/commands/${dir}/`).filter(f => f.endsWith('.js'));
-    for (const file of commandFiles) {
-        const command = require(`./commands/${dir}/${file}`);
-        this.commands.set(command.name, command);
-    }
-})
-/**
- * SlashCommands 
- */
-  const data = [];
-       
-  readdirSync("./src/slashCommands/").forEach((dir) => {
-        const slashCommandFile = readdirSync(`./src/slashCommands/${dir}/`).filter((files) => files.endsWith(".js"));
-    
-        for (const file of slashCommandFile) {
-            const slashCommand = require(`./slashCommands/${dir}/${file}`);
+		readdirSync("./src/slashCommands/").forEach((dir) => {
+			const slashCommandFile = readdirSync(`./src/slashCommands/${dir}/`).filter((files) => files.endsWith(".js"));
+			for (const file of slashCommandFile) {
+				const slashCommand = require(`./slashCommands/${dir}/${file}`);
+				if (!slashCommand.name) return console.error(`slashCommandNameError: ${slashCommand.split(".")[0]} application command name is required.`);
+				if (!slashCommand.description) return console.error(`slashCommandDescriptionError: ${slashCommand.split(".")[0]} application command description is required.`);
+				this.slashCommands.set(slashCommand.name, slashCommand);
+				this.slashCommands._data.push({
+					name: slashCommand.name,
+					description: slashCommand.description,
+					options: slashCommand.options ? slashCommand.options : []
+				});
+			}
+		});
+		this.logger.log('SlashCommands: Loaded...', 'info');
+	}
+	async loadEvents() {
+		readdirSync("./src/events/Client/").forEach(file => {
+			const event = require(`./events/Client/${file}`);
+			this.on(event.name, (...args) => event.run(this, ...args));
+		});
+		this.logger.log('Events Client: Loaded...', 'info');
 
-            if(!slashCommand.name) return console.error(`slashCommandNameError: ${slashCommand.split(".")[0]} application command name is required.`);
+		readdirSync("./src/events/Lavalink/").forEach(file => {
+			const event = require(`./events/Lavalink/${file}`);
+			let eventName = file.split(".")[0];
+			this.manager.on(eventName, (...args) => event.run(this, ...args));
+		});
+		this.logger.log('Events Lavalink: Loaded...', 'info');
+	}
+	async loadMongo() {
+		const dbOptions = {
+			useNewUrlParser: true,
+			autoIndex: false,
+			connectTimeoutMS: 10000,
+			family: 4,
+			useUnifiedTopology: true,
+		};
+		mongoose.connect(process.env.MONGO_URI, dbOptions).then(() => {
+			mongoose.Promise = global.Promise;
+			mongoose.connection.on('connected', () => {
+				this.logger.log('Mongoose: Database connected!', 'ready');
+			});
+			mongoose.connection.on('err', (err) => {
+				console.error(`Mongoose Connection: \n ${err.stack}`);
+			});
+			mongoose.connection.on('disconnected', () => {
+				this.logger.log('Mongoose: Database disconnected...', 'info');
+			});
+		});
+	}
+	async login(botToken) {
+		if(!botToken) botToken = process.env.TOKEN;
 
-            if(!slashCommand.description) return console.error(`slashCommandDescriptionError: ${slashCommand.split(".")[0]} application command description is required.`);
+		this.manager = new KaoriManager(this);
+		this.on('warn', error => console.warn(error));
+		this.on('error', error => console.error(error));
+		super.login(botToken);
 
-            this.slashCommands.set(slashCommand.name, slashCommand);
-            data.push(slashCommand);
-        }
-     });
-	  this.on("ready", async () => {
-        await this.application.commands.set(data).then(() => this.logger.log(`Client Application (/) Registered.`, "cmd")).catch((e) => console.log(e));
-    });
-	 }
-    async login(botToken) {
-        if(!botToken) botToken = process.env.TOKEN;
-        super.login(botToken);
-        return this;
-    };
+		this.loadCommands();
+		this.loadEvents();
+		this.loadMongo();
+
+		return this;
+	}
+	async registerApplicationCommand(guildId) {
+		if(!this.isReady) throw new Error('Cannot register Application Commands before client is ready!');
+		const _data = this.slashCommands._data;
+		if(!data) throw new Error('SlashCommands: Data not available!');
+		try {
+			_data.forEach(async data => {
+				if(guildId) {
+					await this.application.commands.create(data, guildId);
+				}
+				else{
+					await this.application.commands.create(data);
+				}
+			});
+			if(guildId) {
+				await this.application.commands.set(_data, guildId);
+			}
+			else{
+				await this.application.commands.set(_data);
+			}
+		}
+		catch(error) {
+			console.error(error);
+		}
+	}
 };
 module.exports = KaoriBot;
