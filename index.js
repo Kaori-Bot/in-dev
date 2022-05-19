@@ -8,7 +8,7 @@ const client = new KaoriClient({
     intents: [
         Discord.Intents.FLAGS.GUILDS,
         Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.VOICE_STATES
+        Discord.Intents.FLAGS.GUILD_VOICE_STATES
     ]
 });
 
