@@ -234,4 +234,4 @@ Structure.extend('Player', Player => {
     return LavaPlayer;
 });
 
-module.exports = MusicClient;
+module.exports = KaoriManager;
