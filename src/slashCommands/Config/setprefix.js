@@ -16,8 +16,7 @@ module.exports = {
 
 
   run: async (client, interaction, prefix) => {
-    await interaction.deferReply({
-    });
+    await interaction.deferReply();
     const data = await db.findOne({ Guild: interaction.guildId });
     const pre = interaction.options.getString("prefix");
 

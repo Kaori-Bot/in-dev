@@ -44,9 +44,7 @@ module.exports = async (client, player, track, payload) => {
     time: track.duration,
   });
   collector.on("collect", async (i) => {
-    await i.deferReply({
-      ephemeral: false
-    });
+    await i.deferReply();
     if (i.customId === "vdown") {
       if (!player) {
         return collector.stop();

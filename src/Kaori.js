@@ -109,6 +109,7 @@ class KaoriBot extends Client {
 			else{
 				await this.application.commands.set(_data);
 			}
+			this.logger.log('SlashCommands: Registered!', 'ready');
 		}
 		catch(error) {
 			console.error(error);
