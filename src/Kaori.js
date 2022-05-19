@@ -62,7 +62,6 @@ class KaoriBot extends Client {
   readdirSync("./src/events/Lavalink/").forEach(file => {
     const event = require(`./events/Lavalink/${file}`);
     let eventName = file.split(".")[0];
-    this.logger.log(`Loading Events Lavalink ${eventName}`, "event");
     this.manager.on(eventName, event.bind(null, this));
 });
 /**
@@ -72,7 +71,6 @@ class KaoriBot extends Client {
     const commandFiles = readdirSync(`./src/commands/${dir}/`).filter(f => f.endsWith('.js'));
     for (const file of commandFiles) {
         const command = require(`./commands/${dir}/${file}`);
-        this.logger.log(`Loading ${command.category} commands ${command.name}`, "cmd");
         this.commands.set(command.name, command);
     }
 })
@@ -92,7 +90,6 @@ class KaoriBot extends Client {
             if(!slashCommand.description) return console.error(`slashCommandDescriptionError: ${slashCommand.split(".")[0]} application command description is required.`);
 
             this.slashCommands.set(slashCommand.name, slashCommand);
-            this.logger.log(`Client SlashCommands Command (/) Loaded: ${slashCommand.name}`, "cmd");
             data.push(slashCommand);
         }
      });
