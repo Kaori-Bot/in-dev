@@ -64,7 +64,7 @@ class KaoriBot extends Client {
 			family: 4,
 			useUnifiedTopology: true,
 		};
-		mongoose.connect(process.env.MONGO_URI, dbOptions).then(() => {
+		mongoose.connect(process.env.MONGO_URI, dbOptions)
 			mongoose.Promise = global.Promise;
 			mongoose.connection.on('connected', () => {
 				this.logger.log('Mongoose: Database connected!', 'ready');
@@ -75,7 +75,6 @@ class KaoriBot extends Client {
 			mongoose.connection.on('disconnected', () => {
 				this.logger.log('Mongoose: Database disconnected...', 'info');
 			});
-		});
 	}
 	async login(botToken) {
 		if(!botToken) botToken = process.env.TOKEN;
