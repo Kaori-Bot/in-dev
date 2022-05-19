@@ -6,6 +6,10 @@
     "scripts": {
         "start": "node index.js"
     },
+    "engines": {
+        "node": ">=16.9.0",
+        "npm": "8.10.0"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Kaori-Bot/Kaori.git"
