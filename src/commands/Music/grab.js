@@ -34,7 +34,7 @@ module.exports = {
         let dm = new MessageEmbed()
         .setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL()})
         .setDescription(`:mailbox_with_mail: \`Check Your Dms!\``)
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setFooter({text: `Requested By ${message.author.tag}`})
         .setTimestamp()
         message.reply({embeds: [dm], components: [row]})
@@ -44,7 +44,7 @@ module.exports = {
         let embed = new MessageEmbed()
             .setDescription(`**Song Details** \n\n > **__Song Name__**: [${song.title}](${song.uri}) \n > **__Song Duration__**: \`[${convertTime(song.duration)}]\` \n > **__Song Played By__**: [<@${song.requester.id}>] \n > **__Song Saved By__**: [<@${message.author.id}>]`)
             .setThumbnail(song.displayThumbnail())
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .addField("\u200b", `\`${convertTime(current)} / ${convertTime(total)}\``)
          return message.author.send({embeds: [embed], components: [row2]})
             

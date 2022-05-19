@@ -28,7 +28,7 @@ module.exports = {
 
         let thing = new MessageEmbed()
             .setDescription(`${emojishuffle} Shuffled the queue`)
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .setTimestamp()
         return message.reply({embeds: [thing]}).catch(error => client.logger.log(error, "error"));
 	

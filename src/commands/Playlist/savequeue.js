@@ -25,10 +25,10 @@ module.exports = {
         }
         const data = await db.find({ UserId: message.author.id, PlaylistName: Name })
         if (!data) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Playlist not found. Please enter the correct playlist name`)] })
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist not found. Please enter the correct playlist name`)] })
         }
         if (data.length == 0) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Playlist not found. Please enter the correct playlist name`)] });
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist not found. Please enter the correct playlist name`)] });
         }
         const song = player.queue.current;
         const tracks = player.queue;
@@ -64,7 +64,7 @@ module.exports = {
             });
         const embed = new MessageEmbed()
             .setDescription(`**Added** \`${playlist.length - oldSong.length}\`song in \`${Name}\``)
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
         return message.channel.send({ embeds: [embed] })
 
     }

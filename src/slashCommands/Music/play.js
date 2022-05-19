@@ -24,9 +24,9 @@ module.exports = {
     await interaction.deferReply({
       ephemeral: false
     });
-    if (!interaction.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
+    if (!interaction.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
     const { channel } = interaction.member.voice;
-    if (!interaction.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
+    if (!interaction.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
 
     const emojiaddsong = client.emoji.addsong;
     const emojiplaylist = client.emoji.playlist;
@@ -47,7 +47,7 @@ module.exports = {
       res = await player.search(search);
       if (res.loadType === "LOAD_FAILED") {
         if (!player.queue.current) player.destroy();
-        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setTimestamp().setDescription(`:x: | **There was an error while searching**`)] });
+        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setTimestamp().setDescription(`:x: | **There was an error while searching**`)] });
       }
     } catch (err) {
       console.log(err)
@@ -55,13 +55,13 @@ module.exports = {
     switch (res.loadType) {
       case "NO_MATCHES":
         if (!player.queue.current) player.destroy();
-        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setTimestamp().setDescription("❌ | **No results were found.**")] });
+        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setTimestamp().setDescription("❌ | **No results were found.**")] });
       case "TRACK_LOADED":
         player.queue.add(res.tracks[0], interaction.user);
         if (!player.playing && !player.paused && !player.queue.length)
           player.play();
         const trackload = new MessageEmbed()
-          .setColor(client.embedColor)
+          .setColor(client.colors.toString())
           .setTimestamp()
           .setDescription(`${emojiplaylist} **Added song to queue** [${res.tracks[0].title}](${res.tracks[0].uri}) - \`[${convertTime(res.tracks[0].duration)}]\``);
         return await interaction.editReply({ embeds: [trackload] });
@@ -70,7 +70,7 @@ module.exports = {
         await player.play();
 
         const playlistloadds = new MessageEmbed()
-          .setColor(client.embedColor)
+          .setColor(client.colors.toString())
           .setTimestamp()
           .setDescription(`${emojiplaylist} **Playlist added to queue** [${res.playlist.name}](${search}) - \`[${convertTime(res.playlist.duration)}]\``);
         return await interaction.editReply({ embeds: [playlistloadds] });
@@ -80,7 +80,7 @@ module.exports = {
 
         if (!player.playing && !player.paused && !player.queue.length) {
           const searchresult = new MessageEmbed()
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .setTimestamp()
             .setThumbnail(track.displayThumbnail("3"))
             .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]`);
@@ -90,7 +90,7 @@ module.exports = {
 
         } else {
           const thing = new MessageEmbed()
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .setTimestamp()
             .setThumbnail(track.displayThumbnail("3"))
             .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);

@@ -25,7 +25,7 @@ client.guilds.cache.forEach((guild) => {
 
 })
         const embed = new MessageEmbed()
-            .setColor(interaction.client.embedColor)
+            .setColor(interaction.client.colors.toString())
             .setThumbnail(interaction.client.user.displayAvatarURL())
             .setDescription(`${about} **Status**
 **= STATISTICS =**

@@ -30,7 +30,7 @@ module.exports = {
       res = await player.search(search, interaction.user);
       player.queue.add(res.tracks[1]);
       let thing = new MessageEmbed()
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setTimestamp()
         .setDescription(`${emojireplay} Autoplay is now **enabled**`);
       return await interaction.editReply({ embeds: [thing] });
@@ -38,7 +38,7 @@ module.exports = {
       player.set("autoplay", false);
       player.queue.clear();
       let thing = new MessageEmbed()
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setTimestamp()
         .setDescription(`${emojireplay} Autoplay is now **disabled**`);
 

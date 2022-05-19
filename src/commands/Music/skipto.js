@@ -29,7 +29,7 @@ module.exports = {
 		if (!position || position < 0 || position > player.queue.size) { 
 			let thing = new MessageEmbed()
                 .setColor("RED")
-				.setDescription(`Usage: ${message.client.prefix}skipto <Number of song in queue>`)
+				.setDescription(`Usage: ${message.client.config.prefix}skipto <Number of song in queue>`)
             return message.reply({embeds: [thing]});
 		}
 
@@ -40,7 +40,7 @@ module.exports = {
 
 		let thing = new MessageEmbed()
 			.setDescription(`${emojijump} Forward **${position}** Songs`)
-			.setColor(client.embedColor)
+			.setColor(client.colors.toString())
 			.setTimestamp()
 			
 		return message.reply({embeds: [thing]});

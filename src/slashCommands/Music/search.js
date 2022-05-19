@@ -28,9 +28,9 @@ module.exports = {
         });
 
         const query = interaction.options.getString("input");
-        if (!interaction.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
+        if (!interaction.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
         const { channel } = interaction.member.voice;
-        if (!interaction.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
+        if (!interaction.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
 
         let player = interaction.client.manager.get(interaction.guildId);
         if (!player)
@@ -58,7 +58,7 @@ module.exports = {
                 player.queue.add(s.tracks[0]);
                 const embed = new MessageEmbed()
                     .setDescription(`${emojiplaylist} **Added to queue** - [${s.tracks[0].title}](${s.tracks[0].uri}) \`${convertTime(s.tracks[0].duration, true)}\` • ${s.tracks[0].requester}`)
-                    .setColor(client.embedColor)
+                    .setColor(client.colors.toString())
 
                 interaction.editReply({ embeds: [embed] });
                 if (!player.playing) player.play()
@@ -70,12 +70,12 @@ module.exports = {
                     .join("\n");
                 const searched = new MessageEmbed()
                     .setTitle("Select the track that you want")
-                    .setColor(client.embedColor)
+                    .setColor(client.colors.toString())
                     .setDescription(results);
 
                 await interaction.editReply({ embeds: [searched], components: [row] });
                 const search = new MessageEmbed()
-                    .setColor(client.embedColor);
+                    .setColor(client.colors.toString());
 
                 const collector = interaction.channel.createMessageComponentCollector({
                     filter: (f) => f.userId === interaction.authorId ? true : false && f.deferUpdate(),

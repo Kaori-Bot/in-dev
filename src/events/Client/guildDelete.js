@@ -1,11 +1,12 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
+const channelId = '816627182930493460';
 
 module.exports = {
   name: "guildDelete",
 run: async (client, guild) => {
   
-  const channel = client.channels.cache.get(client.config.logs);
+  const channel = client.channels.cache.get(channelId);
   let own = await guild.fetchOwner()
   
   const embed = new MessageEmbed()
@@ -17,7 +18,7 @@ run: async (client, guild) => {
     .addField('Member Count', `\`${guild.memberCount}\` Members`)
     .addField('Creation Date', `\`${moment.utc(guild.createdAt).format('DD/MMM/YYYY')}\``)
     .addField(`${client.user.username}'s Server Count`, `\`${client.guilds.cache.size}\` Severs`)
-    .setColor(client.embedColor)
+    .setColor(client.colors.toString())
     .setTimestamp()
     channel.send({embeds: [embed]});
   }

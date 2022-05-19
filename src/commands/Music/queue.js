@@ -19,13 +19,13 @@ module.exports = {
   
             const player = client.manager.get(message.guild.id);
        const queue = player.queue;  
-   if(!player) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.embedColor).setTimestamp().setDescription(`Nothing is playing right now.`)]});
+   if(!player) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setTimestamp().setDescription(`Nothing is playing right now.`)]});
             
-            if(!player.queue) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.embedColor).setTimestamp().setDescription(`Nothing is playing right now.`)]});
+            if(!player.queue) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setTimestamp().setDescription(`Nothing is playing right now.`)]});
            
             if(player.queue.length === "0" || !player.queue.length) {
                 const embed = new MessageEmbed()
-                .setColor(client.embedColor)
+                .setColor(client.colors.toString())
                 .setDescription(`Now playing [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]`)
 
                 await message.channel.send({
@@ -40,7 +40,7 @@ module.exports = {
 
                 if(player.queue.size < 11) {
                     const embed = new MessageEmbed()
-                    .setColor(client.embedColor)
+                    .setColor(client.colors.toString())
                     .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\`  • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                     .setTimestamp()
                     .setFooter({ text: `Page ${page + 1}/${pages.length}`, iconURL: message.author.displayAvatarURL({ dynamic: true })})
@@ -52,7 +52,7 @@ module.exports = {
                     })
                 } else {
                     const embed2 = new MessageEmbed()
-                    .setColor(client.embedColor)
+                    .setColor(client.colors.toString())
                     .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                     .setTimestamp()
                     .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})
@@ -106,7 +106,7 @@ module.exports = {
                             page = page + 1 < pages.length ? ++page : 0;
 
                             const embed3 = new MessageEmbed()
-                            .setColor(client.embedColor)
+                            .setColor(client.colors.toString())
                             .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                             .setTimestamp()
                             .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})
@@ -122,7 +122,7 @@ module.exports = {
                             page = page > 0 ? --page : pages.length - 1;
 
                             const embed4 = new MessageEmbed()
-                            .setColor(client.embedColor)
+                            .setColor(client.colors.toString())
                             .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                             .setTimestamp()
                             .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})

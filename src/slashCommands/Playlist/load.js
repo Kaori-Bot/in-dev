@@ -39,12 +39,12 @@ module.exports = {
         if (player && player.state !== "CONNECTED") player.connect();
 
         if (!data) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Playlist not found. Please enter the correct playlist name\n\nDo ${prefix}list To see your Playlist`)] })
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist not found. Please enter the correct playlist name\n\nDo ${prefix}list To see your Playlist`)] })
         }
         if (!player) return;
 
         let count = 0;
-        const m = await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Adding ${length} track(s) from your playlist **${Name}** to the queue.`)] })
+        const m = await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Adding ${length} track(s) from your playlist **${Name}** to the queue.`)] })
         for (const track of data.Playlist) {
             let s = await player.search(track.uri ? track.uri : track.title, interaction.member);
             if (s.loadType === "TRACK_LOADED") {
@@ -60,8 +60,8 @@ module.exports = {
             };
         };
         if (player && !player.queue.current) player.destroy();
-        if (count <= 0 && m) return await m.edit({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Couldn't add any tracks from your playlist **${name}** to the queue.`)] })
-        if (m) return await m.edit({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Added ${count} track(s) from your playlist **${name}** to the queue.`)] })
+        if (count <= 0 && m) return await m.edit({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Couldn't add any tracks from your playlist **${name}** to the queue.`)] })
+        if (m) return await m.edit({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Added ${count} track(s) from your playlist **${name}** to the queue.`)] })
     }
 
 };

@@ -16,13 +16,13 @@ module.exports = {
     
     let player = message.client.manager.get(message.guildId);
         if(player && player.voiceChannel && player.state === "CONNECTED") {
-            return await message.channel.send({embeds: [new MessageEmbed().setColor(client.embedColor).setDescription( `I'm already connected to <#${player.voiceChannel}> voice channel!`)]})
+            return await message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription( `I'm already connected to <#${player.voiceChannel}> voice channel!`)]})
         } else {
-    if (!message.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
+    if (!message.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
     
     const { channel } = message.member.voice;
    
-    if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
+    if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
    
     const emojiJoin = message.client.emoji.join;
 
@@ -36,7 +36,7 @@ module.exports = {
       if(player && player.state !== "CONNECTED") player.connect();
 
       let thing = new MessageEmbed()
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setDescription(`${emojiJoin} **Join the voice channel**\nJoined <#${channel.id}> and bound to <#${message.channel.id}>`)
       return message.reply({ embeds: [thing] });
 

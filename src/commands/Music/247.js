@@ -18,14 +18,14 @@ module.exports = {
     if (player.twentyFourSeven) {
       player.twentyFourSeven = false;
       const embed = new MessageEmbed()
-       .setColor(client.embedColor)
+       .setColor(client.colors.toString())
        .setDescription(`24/7 mode is now off.`)
       return message.reply({embeds: [embed]});
     }
     else {
       player.twentyFourSeven = true;
       const embed = new MessageEmbed()
-       .setColor(client.embedColor)
+       .setColor(client.colors.toString())
        .setDescription(`24/7 mode is now on.`)
       
       return message.reply({embeds: [embed]});

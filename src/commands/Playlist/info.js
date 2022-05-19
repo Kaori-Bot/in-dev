@@ -20,14 +20,14 @@ module.exports = {
         const Name = args[0].replace(/_/g, ' ');
         const data = await db.findOne({ UserId: message.author.id, PlaylistName: Name });
         if (!data) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         let tracks = data.Playlist.map((x, i) => `\`${+i}\` - ${x.title && x.uri ? `[${x.title}](${x.uri})` : `${x.title}`}${x.duration ? ` - \`${convertTime(Number(x.duration))}\`` : ""}`);
         const pages = lodash.chunk(tracks, 10).map((x) => x.join("\n"));
         let page = 0;
         const embed = new MessageEmbed()
             .setTitle(`${message.author.username}'s Playlists`)
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .setDescription(`**Playlist Name** ${pname} **Total Tracks** \`${plist}\`\n\n${pages[page]}`)
         if (pages.length <= 1) {
             return await message.reply({ embeds: [embed] })

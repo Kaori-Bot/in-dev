@@ -37,10 +37,10 @@ module.exports = {
             return interaction.editReply({ embeds: [thing] });
         }
         if (!data) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         if (data.length == 0) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         const track = player.queue.current;
         let oldSong = data.Playlist;
@@ -67,7 +67,7 @@ module.exports = {
                 }
             });
         const embed = new MessageEmbed()
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
             .setDescription(`Added [${track.title.substr(0, 256)}](${track.uri}) in \`${Name}\``)
         return interaction.editReply({ embeds: [embed] })
 

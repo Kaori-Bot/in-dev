@@ -24,13 +24,13 @@ module.exports = {
       player.twentyFourSeven = false;
       const embed = new MessageEmbed()
         .setDescription("24/7 mode is **disabled**")
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
       return interaction.editReply({ embeds: [embed] });
     } else {
       player.twentyFourSeven = true;
       const embed = new MessageEmbed()
         .setDescription("24/7 mode is **Enable**")
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
       return interaction.editReply({ embeds: [embed] });
 
     }

@@ -8,7 +8,7 @@ module.exports = {
 
         if (message.author.bot) return;
         if (!message.guild) return;
-        let prefix = client.prefix;
+        let prefix = client.config.prefix;
         const channel = message?.channel;
         const ress = await db.findOne({ Guild: message.guildId })
         if (ress && ress.Prefix) prefix = ress.Prefix;
@@ -16,7 +16,7 @@ module.exports = {
         const mention = new RegExp(`^<@!?${client.user.id}>( |)$`);
         if (message.content.match(mention)) {
             const embed = new MessageEmbed()
-                .setColor(client.embedColor)
+                .setColor(client.colors.toString())
                 .setDescription(`**› My prefix in this server is \`${prefix}\`**\n**› You can see my all commands type \`${prefix}\`help**`);
             message.channel.send({ embeds: [embed] })
         };
@@ -60,7 +60,7 @@ module.exports = {
         if (!channel.permissionsFor(message.guild.me)?.has(Permissions.FLAGS.EMBED_LINKS) && client.user.id !== userId) {
             return channel.send({ content: `Error: I need \`EMBED_LINKS\` permission to work.` });
         }
-        if (command.owner && message.author.id !== `${client.owner}`) {
+        if (command.owner && message.author.id !== `${client.config.developerId}`) {
             embed.setDescription("Only <@491577179495333903> can use this command!");
             return message.channel.send({ embeds: [embed] });
         }

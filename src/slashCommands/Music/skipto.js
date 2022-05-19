@@ -53,7 +53,7 @@ module.exports = {
 
     let thing = new MessageEmbed()
       .setDescription(`${emojijump} Forward **${position}** Songs`)
-      .setColor(client.embedColor)
+      .setColor(client.colors.toString())
       .setTimestamp()
 
     return await interaction.editReply({ embeds: [thing] });

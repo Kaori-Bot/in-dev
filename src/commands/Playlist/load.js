@@ -15,7 +15,7 @@ module.exports = {
     sameVoiceChannel: true,
     execute: async (message, args, client, prefix) => {
 
-        var color = client.embedColor;
+        var color = client.colors.toString();
         const Name = args[0].replace(/_/g, ' ');
         const player = message.client.manager.create({
             guild: message.guildId,

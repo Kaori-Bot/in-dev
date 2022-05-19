@@ -14,7 +14,7 @@ module.exports = async (client, player, track, payload) => {
   const thing = new MessageEmbed()
     .setDescription(`${emojiplay} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``)
     .setThumbnail(`https://img.youtube.com/vi/${track.identifier}/mqdefault.jpg`)
-    .setColor(client.embedColor)
+    .setColor(client.colors.toString())
     .setTimestamp()
   const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔉").setStyle("SECONDARY");
 
@@ -32,7 +32,7 @@ module.exports = async (client, player, track, payload) => {
   player.setNowplayingMessage(NowPlaying);
 
   const embed = new MessageEmbed()
-    .setColor(client.embedColor)
+    .setColor(client.colors.toString())
     .setTimestamp();
   const collector = NowPlaying.createMessageComponentCollector({
     filter: (b) => {

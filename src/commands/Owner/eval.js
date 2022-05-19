@@ -31,10 +31,10 @@ module.exports = {
             if (output.length > 1024) {
                
                 const { body } = await post("https://hastebin.com/documents").send(output);
-                embed.addField("Output", `https://hastebin.com/${body.key}.js`).setColor(client.embedColor);
+                embed.addField("Output", `https://hastebin.com/${body.key}.js`).setColor(client.colors.toString());
               
             } else {
-                embed.addField("Output", "```js\n" + output + "```").setColor(client.embedColor);
+                embed.addField("Output", "```js\n" + output + "```").setColor(client.colors.toString());
             }
 
             message.channel.send({embeds: [embed]});

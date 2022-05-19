@@ -50,27 +50,27 @@ module.exports = {
       if (player.trackRepeat) {
         player.setTrackRepeat(false);
         return await interaction.editReply({
-          embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`${emojiloop} Loop track is now disable`)]
+          embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojiloop} Loop track is now disable`)]
         })
       } else {
         player.setTrackRepeat(true);
         return await interaction.editReply({
-          embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`${emojiloop} Loop track is now enable`)]
+          embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojiloop} Loop track is now enable`)]
         })
       }
     } else if (input === "queue") {
       if (!player.queue.size) return await interaction.editReply({
-        embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`No more songs left in the queue to loop`)]
+        embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`No more songs left in the queue to loop`)]
       })
       if (player.queueRepeat) {
         player.setQueueRepeat(false);
         return await interaction.editReply({
-          embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`${emojiloop} Loop queue is now disable`)]
+          embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojiloop} Loop queue is now disable`)]
         })
       } else {
         player.setQueueRepeat(true);
         return await interaction.editReply({
-          embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`${emojiloop} Loop queue is now enable`)]
+          embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojiloop} Loop queue is now enable`)]
         })
       };
     }

@@ -37,10 +37,10 @@ module.exports = {
         }
 
         if (!data) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Playlist not found. Please enter the correct playlist name`)] })
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist not found. Please enter the correct playlist name`)] })
         }
         if (data.length == 0) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.embedColor).setDescription(`Playlist not found. Please enter the correct playlist name`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist not found. Please enter the correct playlist name`)] });
         }
 
         const song = player.queue.current;
@@ -77,7 +77,7 @@ module.exports = {
             });
         const embed = new MessageEmbed()
             .setDescription(`**Added** \`${playlist.length - oldSong.length}\`song in \`${Name}\``)
-            .setColor(client.embedColor)
+            .setColor(client.colors.toString())
         return interaction.editReply({ embeds: [embed] })
 
     }

@@ -24,19 +24,19 @@ module.exports = {
     if (!pre[0]) {
       const embed = new MessageEmbed()
         .setDescription("Please give the prefix that you want to set")
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
       return await interaction.editReply({ embeds: [embed] });
     }
     if (pre[1]) {
       const embed = new MessageEmbed()
         .setDescription("You can not set prefix a double argument")
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
       return await interaction.editReply({ embeds: [embed] });
     }
     if (pre[0].length > 3) {
       const embed = new MessageEmbed()
         .setDescription("You can not send prefix more than 3 characters")
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
       return await interaction.editReply({ embeds: [embed] });
     }
     if (data) {
@@ -45,7 +45,7 @@ module.exports = {
       await data.save()
       const update = new MessageEmbed()
         .setDescription(`Your prefix has been updated to **${pre}**`)
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setTimestamp()
       return await interaction.editReply({ embeds: [update] });
     } else {
@@ -57,7 +57,7 @@ module.exports = {
       await newData.save()
       const embed = new MessageEmbed()
         .setDescription(`Custom prefix in this server is now set to **${pre}**`)
-        .setColor(client.embedColor)
+        .setColor(client.colors.toString())
         .setTimestamp()
       return await interaction.editReply({ embeds: [embed] });
     }
