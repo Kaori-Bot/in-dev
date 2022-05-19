@@ -8,10 +8,10 @@ class KaoriManager extends Manager {
             plugins: [
                 new (require('erela.js-apple'))(),
                 new (require('erela.js-deezer'))(),
-                new (require('erela.js-spotify'))(),
+                new (require('erela.js-facebook'))(),
                 new Spotify({
                     clientID: process.env.SPOTIFY_CLIENT_ID,
-                    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+                    clientSecret: process.env.SPOTIFY_CLIENT_SECRET
                 }),
             ],
             send(guildId, dataPayload) {
