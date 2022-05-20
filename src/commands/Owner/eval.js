@@ -20,13 +20,13 @@ module.exports = {
             if (typeof evaled !== "string") evaled = await require("util").inspect(evaled, { depth: 0 });
 
             let output = clean(evaled);
-            embed.setDescription(`\`\`\`${output}\`\`\``)
+            embed.setDescription(`\`\`\`js\n${output}\`\`\``)
 
             message.channel.send({embeds: [embed]});
 
         } catch (error) {
             let err = clean(error);
-            embed.setDescription(`\`\`\`\n${err}\`\`\``)
+            embed.setDescription(`\`\`\`js\n${err}\`\`\``)
             message.channel.send({embeds: [embed]});
         }
     }
@@ -39,4 +39,4 @@ function clean(string) {
     } else {
         return string;
     }
-							}
+}
