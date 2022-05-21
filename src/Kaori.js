@@ -67,7 +67,7 @@ class KaoriBot extends Client {
 		mongoose.connect(process.env.MONGO_URI, dbOptions)
 			mongoose.Promise = global.Promise;
 			mongoose.connection.on('connected', () => {
-				this.logger.log('Mongoose: Database connected!', 'ready');
+				this.logger.log('Mongoose: Database connected.', 'ready');
 			});
 			mongoose.connection.on('err', (err) => {
 				console.error(`Mongoose Connection: \n ${err.stack}`);
@@ -109,7 +109,7 @@ class KaoriBot extends Client {
 			}else{
 				await this.application.commands.set(_data);
 			}
-			this.logger.log('SlashCommands: Registered!', 'ready');
+			this.logger.log('SlashCommands: Registered.', 'ready');
 		}
 		catch(error) {
 			console.error(error);
