@@ -37,9 +37,6 @@ Structure.extend('Player', Player => {
 			this.vaporwave = false;
 			this.bassboost = false;
 			this.distortion = false;
-			if(this.queue && this.queue.current) {
-				this.queue.current.title = this.subString(this.queue.current.title, 70);
-			}
 		}
 		set8D(value) {
 			if(typeof value !== "boolean") throw new RangeError(`[ set8D Function Error ]: Please provide a valid value (true/false).`);
@@ -253,7 +250,7 @@ Structure.extend('Player', Player => {
 			}
 			return nowPlayingMessage;
 		}
-		subString(text, length) {
+		subTitle(text, length) {
 			if(!text || !length) throw new RangeError('Target: invalid!');
 			if(typeof text !== 'string') throw new TypeError('Target: text is not string!');
 			if(typeof length !== 'number') throw new TypeError('Target: length is not number!');

@@ -6,8 +6,8 @@ class KaoriBot extends Client {
 		super(options);
 		this.commands = new Collection();
 		this.slashCommands = new Collection();
-		this.config = require("./config.js");
-		this.colors = this.config.colors;
+		this.config = require("../config/bot.js");
+		this.colors = require("../config/colors.js");
 		this.emoji = require("./utils/emoji.json");
 		this.logger = require("./utils/logger.js");
 	}

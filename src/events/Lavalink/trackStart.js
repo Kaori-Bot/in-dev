@@ -2,6 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { convertTime } = require('../../utils/convert.js');
 
 async function trackStart(client, player, track, payload){
+
     const emojiplay = client.emoji.play;
     const volumeEmoji = client.emoji.volumehigh;
     const emojistop = client.emoji.stop;
@@ -10,7 +11,7 @@ async function trackStart(client, player, track, payload){
     const emojiskip = client.emoji.skip;
 
     const thing = new MessageEmbed()
-        .setDescription(`Started Playing [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``)
+        .setDescription(`Started Playing **[${player.subTitle(track.title,70)}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
         .setThumbnail(track.displayThumbnail(3))
         .setColor(client.colors.toString());
     const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔉").setStyle("SECONDARY");
