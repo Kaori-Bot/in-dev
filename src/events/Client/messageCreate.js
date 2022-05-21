@@ -2,28 +2,21 @@ const { MessageEmbed, Permissions } = require("discord.js");
 const db = require("../../schema/prefix.js");
 const db2 = require("../../schema/dj");
 
-module.exports = {
-    name: "messageCreate",
-    run: async (client, message) => {
+async function messageCreate(client, message) {
 
         if (message.author.bot) return;
         if (!message.guild) return;
-        let prefix = client.config.prefix;
+        let prefix = client.config.prefix.toLowerCase();
         const channel = message?.channel;
         const ress = await db.findOne({ Guild: message.guildId })
         if (ress && ress.Prefix) prefix = ress.Prefix;
 
+        const content = message.content.toLowerCase();
         const mention = new RegExp(`^<@!?${client.user.id}>( |)$`);
-        if (message.content.match(mention)) {
-            const embed = new MessageEmbed()
-                .setColor(client.colors.toString())
-                .setDescription(`**› My prefix in this server is \`${prefix}\`**\n**› You can see my all commands type \`${prefix}\`help**`);
-            message.channel.send({ embeds: [embed] })
-        };
         const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
-        if (!prefixRegex.test(message.content)) return;
-        const [matchedPrefix] = message.content.match(prefixRegex);
+        if (!prefixRegex.test(content)) return;
+        const [matchedPrefix] = content.match(prefixRegex);
         const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
         const commandName = args.shift().toLowerCase();
 
@@ -60,9 +53,8 @@ module.exports = {
         if (!channel.permissionsFor(message.guild.me)?.has(Permissions.FLAGS.EMBED_LINKS) && client.user.id !== userId) {
             return channel.send({ content: `Error: I need \`EMBED_LINKS\` permission to work.` });
         }
-        if (command.owner && message.author.id !== `${client.config.developerId}`) {
-            embed.setDescription("Only <@491577179495333903> can use this command!");
-            return message.channel.send({ embeds: [embed] });
+        if (command.isDeveloperOnly && message.author.id !== `${client.config.developerId}`) {
+            return message.react('❌');
         }
 
         const player = message.client.manager.get(message.guild.id);
@@ -109,5 +101,6 @@ module.exports = {
             embed.setDescription("There was an error executing that command.\nI have contacted the owner of the bot to fix it immediately.");
             return message.channel.send({ embeds: [embed] });
         }
-    }
 };
+
+exports.load = messageCreate;

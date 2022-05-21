@@ -1,5 +1,5 @@
-module.exports = async (client, node, reason) => {
+function nodeDisconnect(client, node, reason){
+    console.warn(`Lavalink: Node '${node.options.identifier}' disconnected:`, reason);
+};
 
-	client.logger.log(`Node "${node.options.identifier}" disconnect because ${reason}.`, "warn");
-
-}
+exports.load = nodeDisconnect;

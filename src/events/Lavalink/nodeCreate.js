@@ -1,5 +1,5 @@
-module.exports = async (client, node) => {
+function nodeCreate(client, node){
+    client.logger.log(`Lavalink: Node '${node.options.identifier}' created.`, "log");
+};
 
-	client.logger.log(`Node "${node.options.identifier}" created.`, "log");
-
-}
+exports.load = nodeCreate;

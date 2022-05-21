@@ -5,10 +5,10 @@ const os = require('os')
 const si = require('systeminformation');
 
 module.exports = {
-    name: "status",
+    name: "stats",
     category: "Information",
-    aliases: [ "stats" ],
-    description: "Show status bot",
+    aliases: [ "status" ],
+    description: "Show statistics or status bot",
     args: false,
     usage: "",
     permission: [],

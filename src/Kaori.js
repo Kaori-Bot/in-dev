@@ -45,14 +45,15 @@ class KaoriBot extends Client {
 	async loadEvents() {
 		readdirSync("./src/events/Client/").forEach(file => {
 			const event = require(`./events/Client/${file}`);
-			this.on(event.name, (...args) => event.run(this, ...args));
+			event.name = file.split('.')[0];
+			this.on(event.name, (...args) => event.load(this, ...args));
 		});
 		this.logger.log('Events Client: Loaded...', 'info');
 
 		readdirSync("./src/events/Lavalink/").forEach(file => {
 			const event = require(`./events/Lavalink/${file}`);
-			let eventName = file.split(".")[0];
-			this.manager.on(eventName, (...args) => event(this, ...args));
+			event.name = file.split(".")[0];
+			this.manager.on(event.name, (...args) => event.load(this, ...args));
 		});
 		this.logger.log('Events Lavalink: Loaded...', 'info');
 	}
@@ -70,7 +71,7 @@ class KaoriBot extends Client {
 				this.logger.log('Mongoose: Database connected.', 'ready');
 			});
 			mongoose.connection.on('err', (err) => {
-				console.error(`Mongoose Connection: \n ${err.stack}`);
+				console.error(`Mongoose Connection:`, err.stack);
 			});
 			mongoose.connection.on('disconnected', () => {
 				this.logger.log('Mongoose: Database disconnected...', 'info');

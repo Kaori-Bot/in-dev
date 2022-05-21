@@ -1,5 +1,5 @@
-module.exports = async (client, node) => {
+function nodeConnect(client, node){
+    client.logger.log(`Lavalink: Node '${node.options.identifier}' connected.`, "ready");
+};
 
-	client.logger.log(`Lavalink: Node '${node.options.identifier}' connected.`, "ready");
-
-}
+exports.load = nodeConnect;

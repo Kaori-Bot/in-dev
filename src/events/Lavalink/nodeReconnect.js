@@ -1,5 +1,5 @@
-module.exports = async (client, node) => {
+function nodeReconnect(client, node){
+    client.logger.log(`Lavalink: Node '${node.options.identifier}' reconnected.`, "log");
+};
 
-	client.logger.log(`Node "${node.options.identifier}" reconnected.`, "log");
-
-}
+exports.load = nodeReconnect;

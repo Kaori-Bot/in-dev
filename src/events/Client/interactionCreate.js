@@ -2,14 +2,11 @@ const { MessageEmbed, Client, Permissions } = require("discord.js")
 const pre = require("../../schema/prefix.js");
 const db2 = require("../../schema/dj");
 
-module.exports = {
-    name: "interactionCreate",
-    /**
- * 
+/**
  * @param {Client} client 
  * @param {CommandInteraction} interaction 
  */
-    run: async (client, interaction) => {
+async function interactionCreate(client, interaction) {
 
         let prefix = client.config.prefix;
         const ress = await pre.findOne({ Guild: interaction.guildId })
@@ -81,5 +78,6 @@ module.exports = {
                 console.error(error);
             };
         } else return;
-    }
 };
+
+exports.load = interactionCreate;

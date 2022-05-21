@@ -3,10 +3,7 @@ const moment = require('moment');
 
 const channelId = '816627182930493460';
 
-module.exports = {
-  name: "guildCreate",
-run: async (client, guild) => {
-  
+async function guildCreate(client, guild) {
   const channel = client.channels.cache.get(channelId);
   let own = await guild.fetchOwner()
   
@@ -21,7 +18,7 @@ run: async (client, guild) => {
     .setColor(client.colors.toString())
     .addField(`${client.user.username}'s Server Count`, `\`${client.guilds.cache.size}\` Severs`)
     .setTimestamp()
-    channel.send({embeds: [embed]})
-  }
-	
+    channel.send({embeds: [embed]});
 };
+
+exports.load = guildCreate;

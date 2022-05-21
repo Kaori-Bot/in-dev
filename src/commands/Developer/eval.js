@@ -7,7 +7,7 @@ module.exports = {
     args: false,
     usage: "<string>",
     permission: [],
-    owner: true,
+    isDeveloperOnly: true,
  execute: async (message, args, client, prefix) => {
         const embed = new Discord.MessageEmbed()
             .setColor(client.colors.green)

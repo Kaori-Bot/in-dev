@@ -2,9 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const channelId = '816627182930493460';
 
-module.exports = {
-  name: "guildDelete",
-run: async (client, guild) => {
+async function guildDelete(client, guild) {
   
   const channel = client.channels.cache.get(channelId);
   let own = await guild.fetchOwner()
@@ -21,5 +19,6 @@ run: async (client, guild) => {
     .setColor(client.colors.toString())
     .setTimestamp()
     channel.send({embeds: [embed]});
-  }
-}
+};
+
+exports.load = guildDelete;

@@ -1,8 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { convertTime } = require('../../utils/convert.js');
 
-
-module.exports = async (client, player, track, payload) => {
+async function trackStart(client, player, track, payload){
       
   const emojiplay = client.emoji.play;
   const volumeEmoji = client.emoji.volumehigh;
@@ -88,3 +87,5 @@ module.exports = async (client, player, track, payload) => {
     }
   });
 };
+
+exports.load = trackStart;

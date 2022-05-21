@@ -1,14 +1,10 @@
 const { VoiceState, MessageEmbed } = require("discord.js");
 /*
- *
- * @param {MusicBot} client
  * @param {VoiceState} oldState
  * @param {VoiceState} newState
  * @returns {Promise<void>}
  */
-module.exports = {
-  name: "voiceStateUpdate",
-  run: async (client, oldState, newState) => {
+async function voiceStateUpdate(client, oldState, newState) {
   // get guild and player
   let guildId = newState.guild.id;
   const player = client.manager.get(guildId);
@@ -79,5 +75,6 @@ module.exports = {
       }
       break;
   }
- }
 };
+
+exports.load = voiceStateUpdate;

@@ -1,5 +1,5 @@
-module.exports = async (client, node, error) => {
+function nodeError(client, node, error){
+    client.logger.log(`Lavalink: Node '${node.options.identifier}' encountered an error: ${error.message}`, "error");
+};
 
-	client.logger.log(`Node "${node.options.identifier}" encountered an error: ${error.message}.`, "error");
-
-}
+exports.load = nodeError;
