@@ -1,5 +1,4 @@
 const { MessageEmbed, Permissions } = require("discord.js");
-const db = require("../../schema/prefix.js");
 const db2 = require("../../schema/dj");
 
 async function messageCreate(client, message) {
@@ -8,8 +7,6 @@ async function messageCreate(client, message) {
         if (!message.guild) return;
         let prefix = client.config.prefix.toLowerCase();
         const channel = message?.channel;
-        const ress = await db.findOne({ Guild: message.guildId })
-        if (ress && ress.Prefix) prefix = ress.Prefix;
 
         const content = message.content.toLowerCase();
         const mention = new RegExp(`^<@!?${client.user.id}>( |)$`);

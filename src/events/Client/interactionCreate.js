@@ -1,5 +1,4 @@
-const { MessageEmbed, Client, Permissions } = require("discord.js")
-const pre = require("../../schema/prefix.js");
+const { MessageEmbed, Client, Permissions } = require("discord.js");
 const db2 = require("../../schema/dj");
 
 /**
@@ -7,10 +6,7 @@ const db2 = require("../../schema/dj");
  * @param {CommandInteraction} interaction 
  */
 async function interactionCreate(client, interaction) {
-
         let prefix = client.config.prefix;
-        const ress = await pre.findOne({ Guild: interaction.guildId })
-        if (ress && ress.Prefix) prefix = ress.Prefix;
 
         if (interaction.isCommand() || interaction.isContextMenu()) {
 
