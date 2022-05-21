@@ -1,6 +1,4 @@
-const { prefix } = require("../../config.js");
-
-async function ready(client) {
+function ready(client) {
     client.registerApplicationCommand('794187901000744991');
     client.manager.init(client.user.id);
 
