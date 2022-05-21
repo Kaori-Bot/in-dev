@@ -35,7 +35,7 @@ Structure.extend('Player', Player => {
 			this.bassboost = false;
 			this.distortion = false;
 			if(this.queue && this.queue.current) {
-				this.queue.current.title = this.subString(this.queue.title, 70);
+				this.queue.current.title = this.subString(this.queue.current.title, 70);
 			}
 		}
 		set8D(value) {
