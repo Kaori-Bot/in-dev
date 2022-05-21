@@ -7,8 +7,11 @@ function queueEnd(client, player){
 		.setColor(client.colors.toString())
 		.setDescription(`${emojiwarn} **Music queue ended**`)
 		.setFooter({text: client.user.username, iconURL: client.user.displayAvatarURL()});
-	channel.send({embeds: [thing] });
-	player.destroy();
+	channel.send({embeds: [thing] }).then(message => {
+		const npMessage = player.getMessage('nowPlaying');
+		if(npMessage) npMessage.delete();
+		player.destroy();
+	});
 };
 
 exports.load = queueEnd;

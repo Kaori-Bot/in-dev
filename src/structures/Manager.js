@@ -23,7 +23,7 @@ class KaoriManager extends Manager {
 };
 
 Structure.extend('Player', Player => {
-	class LavaPlayer extends Player {
+	class KaoriPlayer extends Player {
 		constructor(...args) {
 			super(...args);
 			this.speed = 1;
@@ -220,34 +220,46 @@ Structure.extend('Player', Player => {
 			});
 			return this;
 		}
+		getCollection() {
+			const hasGuild = this.get(this.guild);
+			if(!hasGuild) super.set(this.guild, new (require('discord.js')).Collection());
+			return this.get(this.guild);
+		}
+		getMessage(type) {
+			if(!type) throw new Error();
+			const collection = this.getCollection();
+			return collection.get(type);
+		}
+		setMessage(type, message) {
+			if(!type || !message) throw new Error();
+			const collection = this.getCollection();
+			collection.set(type, message);
+			return collection;
+		}
 		setNowplayingMessage(message) {
-			this.nowPlayingMessage = this.get(message.guild.id+'_nowPlayingMessage');
-			if(this.nowPlayingMessage) {
-				this.nowPlayingMessage.delete();
-				this.set(message.guild.id+'_nowPlayingMessage', null);
+			const nowPlayingMessage = this.getMessage('nowPlaying');
+			if(nowPlayingMessage) {
+				nowPlayingMessage.delete();
+				this.setMessage('nowPlaying', nowPlayingMessage);
 			}
 			else{
-				this.set(message.guild.id+'_nowPlayingMessage', message);
+				this.getCollection().set('nowPlaying', message);
 			}
-			return this.nowPlayingMessage;
+			return nowPlayingMessage;
 		}
 	}
-	return LavaPlayer;
+	return KaoriPlayer;
 });
 
 Structure.extend('Queue', Queue => {
-	class LavaQueue extends Queue {
+	class KaoriQueue extends Queue {
 		constructor(...args) {
 			super(...args);
 
-			const queueCurrent = () => {
-				if(this.current && this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
-				return this.current;
-			};
-			this.current = queueCurrent();
+			if(this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
 		}
 	}
-	return LavaQueue;
+	return KaoriQueue;
 });
 
 module.exports = KaoriManager;
