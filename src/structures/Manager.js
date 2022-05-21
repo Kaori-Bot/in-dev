@@ -256,7 +256,7 @@ Structure.extend('Queue', Queue => {
 		constructor(...args) {
 			super(...args);
 
-			if(this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
+			if(this.current && this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
 		}
 	}
 	return KaoriQueue;
