@@ -36,7 +36,7 @@ module.exports = class Logger {
 	static log (content, type) {
 		switch (type) {
 			case "info": {
-				return console.info(`${chalk.bgGreenBright(type.toUpperCase())} ${content}`)
+				return console.info(`${chalk.bgGreen(type.toUpperCase())} ${content}`)
 			}
 			case "warn": {
 				return console.warn(`${chalk.bgYellow(type.toUpperCase())} ${content}`);
@@ -48,7 +48,7 @@ module.exports = class Logger {
 				return console.debug(`${chalk.bgGray(type.toUpperCase())} ${content}`);
 			}
 			case "ready": {
-				return console.log(`${chalk.bgGreen(type.toUpperCase())} ${content}`);
+				return console.log(`${chalk.bgGreenBright(type.toUpperCase())} ${content}`);
 			} 
 			default:
 				return console.info(`${chalk.bgBlue(type.toUpperCase())} ${content}`);

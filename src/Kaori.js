@@ -90,23 +90,23 @@ class KaoriBot extends Client {
 
 		return this;
 	}
-	async registerApplicationCommand(guildId) {
+	async registerApplicationCommand(guildId, force=false) {
 		if(!this.isReady) throw new Error('Cannot register Application Commands before client is ready!');
 		const _data = this.slashCommands._data;
 		if(!_data) throw new Error('SlashCommands: Data not available!');
 		try {
-			_data.forEach(async data => {
-				if(guildId) {
-					await this.application.commands.create(data, guildId);
-				}
-				else{
-					await this.application.commands.create(data);
-				}
-			});
+			if(force) {
+				_data.forEach(async data => {
+					if(guildId) {
+						await this.application.commands.create(data, guildId);
+					}else{
+						await this.application.commands.create(data);
+					}
+				});
+			};
 			if(guildId) {
 				await this.application.commands.set(_data, guildId);
-			}
-			else{
+			}else{
 				await this.application.commands.set(_data);
 			}
 			this.logger.log('SlashCommands: Registered!', 'ready');
