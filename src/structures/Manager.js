@@ -1,4 +1,4 @@
-const { Manager, Structure } = require("@kaoribot/erela.js");
+const { Manager, Structure } = require("erela.js");
 const AppleMusic = require('erela.js-apple');
 const DeezerMusic = require('erela.js-deezer');
 const Facebook = require('erela.js-facebook');
