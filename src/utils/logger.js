@@ -36,7 +36,7 @@ module.exports = class Logger {
 	static log (content, type) {
 		switch (type) {
 			case "info": {
-				return console.info(`${chalk.bgGreenBright(type.toUpperCase)} ${content}`)
+				return console.info(`${chalk.bgGreenBright(type.toUpperCase())} ${content}`)
 			}
 			case "warn": {
 				return console.warn(`${chalk.bgYellow(type.toUpperCase())} ${content}`);
