@@ -57,7 +57,7 @@ async function voiceStateUpdate(client, oldState, newState) {
 
         let msg2 = await client.channels.cache
           .get(player.textChannel)
-          .send({embeds: [player.nowPlayingMessage.embeds[0]]});
+          .send({embeds: [player.getMessage('nowPlaying').embeds[0]] });
         player.setNowplayingMessage(msg2);
 
         player.pause(false);

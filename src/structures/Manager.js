@@ -1,4 +1,4 @@
-const { Manager, Structure } = require("erela.js");
+const { Manager, Structure } = require("@kaoribot/erela.js");
 const Spotify = require("erela.js-spotify");
 
 class KaoriManager extends Manager {
@@ -34,6 +34,9 @@ Structure.extend('Player', Player => {
 			this.vaporwave = false;
 			this.bassboost = false;
 			this.distortion = false;
+			if(this.queue && this.queue.current) {
+				this.queue.current.title = this.subString(this.queue.title, 70);
+			}
 		}
 		set8D(value) {
 			if(typeof value !== "boolean") throw new RangeError(`[ set8D Function Error ]: Please provide a valid value (true/false).`);
@@ -247,19 +250,14 @@ Structure.extend('Player', Player => {
 			}
 			return nowPlayingMessage;
 		}
-	}
-	return KaoriPlayer;
-});
-
-Structure.extend('Queue', Queue => {
-	class KaoriQueue extends Queue {
-		constructor(...args) {
-			super(...args);
-
-			if(this.current && this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
+		subString(text, length) {
+			if(!text || !length) throw new RangeError('Target: invalid!');
+			if(typeof text !== 'string') throw new TypeError('Target: text is not string!');
+			if(typeof length !== 'number') throw new TypeError('Target: length is not number!');
+			return text.length > length ? text.substr(0, length-3) + '...' : text;
 		}
 	}
-	return KaoriQueue;
+	return KaoriPlayer;
 });
 
 module.exports = KaoriManager;
