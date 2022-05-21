@@ -1,9 +1,5 @@
 const { Client, Collection } = require("discord.js");
 const KaoriManager = require('./structures/Manager');
-const { readdirSync } = require("fs");
-const mongoose = require('mongoose');
-
-require("./structures/Player"); 
 
 class KaoriBot extends Client {
 	constructor(options={}) {
@@ -12,10 +8,11 @@ class KaoriBot extends Client {
 		this.slashCommands = new Collection();
 		this.config = require("./config.js");
 		this.colors = this.config.colors;
-		this.logger = require("./utils/logger.js");
 		this.emoji = require("./utils/emoji.json");
+		this.logger = require("./utils/logger.js");
 	}
 	async loadCommands() {
+		const { readdirSync } = require('fs');
 		this.slashCommands._data = [];
 		readdirSync("./src/commands/").forEach(dir => {
 			const commandFiles = readdirSync(`./src/commands/${dir}/`).filter(f => f.endsWith('.js'));
@@ -43,6 +40,7 @@ class KaoriBot extends Client {
 		this.logger.log('SlashCommands: Loaded...', 'info');
 	}
 	async loadEvents() {
+		const { readdirSync } = require('fs');
 		readdirSync("./src/events/Client/").forEach(file => {
 			const event = require(`./events/Client/${file}`);
 			event.name = file.split('.')[0];
@@ -58,6 +56,7 @@ class KaoriBot extends Client {
 		this.logger.log('Events Lavalink: Loaded...', 'info');
 	}
 	async loadMongo() {
+		const mongoose = require('mongoose');
 		const dbOptions = {
 			useNewUrlParser: true,
 			autoIndex: false,
