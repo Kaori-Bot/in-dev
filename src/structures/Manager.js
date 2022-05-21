@@ -241,9 +241,7 @@ Structure.extend('Queue', Queue => {
 			super(...args);
 
 			const queueCurrent = () => {
-				if(this.current) {
-					this.current.title.length > 70 ? this.current.title.substr(0, 70) + '...' : this.current.title;
-				}
+				if(this.current && this.current.title.length > 70) this.current.title = this.current.title.substr(0, 67) + '...';
 				return this.current;
 			};
 			this.current = queueCurrent();

@@ -11,7 +11,7 @@ async function trackStart(client, player, track, payload){
 
     const thing = new MessageEmbed()
         .setDescription(`Started Playing [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``)
-        .setThumbnail(track.displayThumbnail('hqdefault'))
+        .setThumbnail(track.displayThumbnail(3))
         .setColor(client.colors.toString());
     const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔉").setStyle("SECONDARY");
 
