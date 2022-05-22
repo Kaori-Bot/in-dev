@@ -1,6 +1,6 @@
 const { Structure } = require('erela.js');
 
-modupe.exports = Structure.extend('Player', Player => {
+module.exports = Structure.extend('Player', Player => {
 	class KaoriPlayer extends Player {
 		constructor(...args) {
 			super(...args);
