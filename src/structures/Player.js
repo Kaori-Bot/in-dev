@@ -198,19 +198,19 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
-		getCollection() {
+		get _collection() {
 			const hasGuild = this.get(this.guild);
 			if(!hasGuild) super.set(this.guild, new (require('discord.js')).Collection());
 			return this.get(this.guild);
 		}
 		getMessage(type) {
 			if(!type) throw new Error('type');
-			const collection = this.getCollection();
+			const collection = this._collection;
 			return collection.get(type);
 		}
 		setMessage(type, message) {
 			if(!type) throw new Error('type');
-			const collection = this.getCollection();
+			const collection = this._collection;
 			collection.set(type, message);
 			return collection;
 		}
@@ -221,9 +221,9 @@ module.exports = Structure.extend('Player', Player => {
 				this.setMessage('nowPlaying',null);
 			}
 			else{
-				this.getCollection().set('nowPlaying', message);
+				this._collection.set('nowPlaying', message);
 			}
-			return nowPlayingMessage;
+			return this.getMessage('nowPlaying');
 		}
 		subTitle(text, length) {
 			if(!text || !length) throw new RangeError('Target: invalid!');
