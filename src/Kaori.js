@@ -80,6 +80,7 @@ class KaoriBot extends Client {
 		this.loadCommands();
 		this.loadEvents();
 		this.loadMongo();
+		this.manager.loadEvents();
 
 		return this;
 	}
