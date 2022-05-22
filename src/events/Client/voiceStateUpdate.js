@@ -1,16 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 
 async function voiceStateUpdate(client, oldState, newState) {
-  // get guild and player
-  let guildId = newState.guild.id;
-  const player = client.manager.get(guildId);
-
-  // check if the bot is active (playing, paused or empty does not matter (return otherwise)
+  const player = client.manager.get(newState.guild.id);
   if (!player || player.state !== "CONNECTED") return;
 
-  // prepreoces the data
   const stateChange = {};
-  // get the state change
   if (oldState.channel === null && newState.channel !== null)
     stateChange.type = "JOIN";
   if (oldState.channel !== null && newState.channel === null)
@@ -43,20 +37,22 @@ async function voiceStateUpdate(client, oldState, newState) {
   switch (stateChange.type) {
     case "JOIN":
       if (stateChange.members.size === 1 && player.paused) {
-        let emb = new MessageEmbed()
-          .setAuthor({name:`Resuming paused queue`})
-          .setColor(client.colors.default)
+        const embed = new MessageEmbed()
+          .setTitle(`Resuming...`)
+          .setColor(client.colors.green)
           .setDescription(
-            `Resuming playback because all of you left me with music to play all alone`
+            `Music has been resuming, because someone back join to my voice channel.`
           );
-        await client.channels.cache.get(player.textChannel).send({embeds: [emb]});
+        const pausedMsg = player.getMessage('voiceStatePaused');
+        if(pausedMsg) pausedMsg.delete();
+        client.channels.cache.get(player.textChannel).send({embeds: [embed]}).then(message=>setTimeout(()=>message.delete(), 10000));
 
-        const npm = player.getMessage('nowPlaying');
-        let msg2 = await client.channels.cache
+        const npm = player.playingMessage;
+        const msg2 = await client.channels.cache
           .get(player.textChannel)
           .send({ embeds: npm.embeds, components: npm.components });
-        player.setPlayingMessage(msg2);
 
+        player.setPlayingMessage(msg2);
         player.pause(false);
       }
       break;
@@ -64,11 +60,11 @@ async function voiceStateUpdate(client, oldState, newState) {
       if (stateChange.members.size === 0 && !player.paused && player.playing) {
         player.pause(true);
 
-        let emb = new MessageEmbed()
-          .setAuthor({name: `Paused!`})
-          .setColor(client.colors.default)
-          .setDescription(`The player has been paused because everybody left`);
-        await client.channels.cache.get(player.textChannel).send({embeds: [emb]});
+        const embed = new MessageEmbed()
+          .setTitle(`Paused!`)
+          .setColor(client.colors.red)
+          .setDescription(`Music has been paused, because everybody left my voice channel.`);
+        client.channels.cache.get(player.textChannel).send({embeds: [embed]}).then(message => player.setMessage('voiceStatePaused', message));
       }
       break;
   }
