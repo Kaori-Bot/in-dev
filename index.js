@@ -15,7 +15,7 @@ const client = new KaoriClient({
 const { AutoPoster } = require('topgg-autoposter');
 const poster = AutoPoster(process.env.TOPGG_TOKEN, client);
 poster.on('posted', (stats) => {
-    client.logger.log(`Post stats on top.gg/bot/${client.user.id} | ${stats.serverCount} servers`, 'info');
+    client.logger.log(`Posting stats on https://top.gg/bot/${client.user.id} | ${stats.serverCount} servers`, 'ready');
 });
 
 process.on('uncaughtException', error => console.error(error))
