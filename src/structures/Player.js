@@ -221,7 +221,7 @@ module.exports = Structure.extend('Player', Player => {
 				this.setMessage('nowPlaying',null);
 			}
 			else{
-				this._collection.set('nowPlaying', message);
+				this.setMessage('nowPlaying', message);
 			}
 			return this.getMessage('nowPlaying');
 		}
