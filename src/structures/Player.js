@@ -198,32 +198,29 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
-		get _collection() {
+		get collection() {
 			const hasGuild = this.get(this.guild);
 			if(!hasGuild) super.set(this.guild, new (require('discord.js')).Collection());
 			return this.get(this.guild);
 		}
 		getMessage(type) {
 			if(!type) throw new Error('type');
-			const collection = this._collection;
-			return collection.get(type);
+			return this.get(`${type}_message`);
 		}
 		setMessage(type, message) {
 			if(!type) throw new Error('type');
-			const collection = this._collection;
-			collection.set(type, message);
-			return collection;
+			return this.set(`${type}_message`, message);
 		}
 		setNowplayingMessage(message) {
 			const nowPlayingMessage = this.getMessage('nowPlaying');
 			if(nowPlayingMessage) {
 				nowPlayingMessage.delete();
-				this.setMessage('nowPlaying',null);
+				this.setMessage('nowPlaying', null);
 			}
 			else{
 				this.setMessage('nowPlaying', message);
 			}
-			return this.getMessage('nowPlaying');
+			return nowPlayingMessage;
 		}
 		subTitle(text, length) {
 			if(!text || !length) throw new RangeError('Target: invalid!');
