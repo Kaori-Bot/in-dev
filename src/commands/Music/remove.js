@@ -38,7 +38,7 @@ module.exports = {
 		const emojieject = client.emoji.remove;
 
 		let thing = new MessageEmbed()
-			.setColor(client.colors.toString())
+			.setColor(client.colors.default)
 			.setTimestamp()
 			.setDescription(`${emojieject} Removed\n[${song.title}](${song.uri})`)
 		  return message.reply({embeds: [thing]});

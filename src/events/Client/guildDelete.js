@@ -16,7 +16,7 @@ async function guildDelete(client, guild) {
     .addField('Member Count', `\`${guild.memberCount}\` Members`)
     .addField('Creation Date', `\`${moment.utc(guild.createdAt).format('DD/MMM/YYYY')}\``)
     .addField(`${client.user.username}'s Server Count`, `\`${client.guilds.cache.size}\` Severs`)
-    .setColor(client.colors.toString())
+    .setColor(client.colors.default)
     .setTimestamp()
     channel.send({embeds: [embed]});
 };

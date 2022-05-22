@@ -20,7 +20,7 @@ module.exports = {
         const data = await db.find({ UserId: interaction.member.user.id });
 
         if (!data.length) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You Do Not Have Any Playlist`)] })
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You Do Not Have Any Playlist`)] })
         }
 
         let list = data.map((x, i) => `\`${++i}\` - ${x.PlaylistName} \`${x.Playlist.length}\` - <t:${x.CreatedOn}>`);
@@ -31,7 +31,7 @@ module.exports = {
             .setAuthor({ name: `${interaction.user.username}'s Playlists}`, iconURI: interaction.user.displayAvatarURL() })
             .setDescription(pages[page])
             .setFooter({ text: `Playlist (${List} / 10)` })
-            .setColor(client.colors.toString());
+            .setColor(client.colors.default);
         return await interaction.editReply({ embeds: [embeds] });
 
     

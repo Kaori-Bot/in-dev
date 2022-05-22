@@ -32,7 +32,7 @@ execute: async (message, args, client, prefix) => {
         let embed = new MessageEmbed()
             .setDescription(`${emojimusic} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\`- [${song.requester}] \n\n\`${progressbar(player)}\``)
             .setThumbnail(song.displayThumbnail("3"))
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
             .addField("\u200b", `\`${convertTime(current)} / ${convertTime(total)}\``)
             return message.channel.send({embeds: [embed]})
 

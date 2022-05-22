@@ -75,13 +75,13 @@ module.exports = {
         if (!player.queue.current) {
             const thing = new MessageEmbed()
                 .setDescription('there is nothing playing')
-                .setColor(client.colors.toString())
+                .setColor(client.colors.default)
             return interaction.editReply({ embeds: [thing] });
         }
         const emojiequalizer = client.emoji.filter;
 
         let thing = new MessageEmbed()
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
             .setTimestamp()
         switch (filter) {
 

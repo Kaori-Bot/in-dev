@@ -33,7 +33,7 @@ module.exports = {
 
     let thing = new MessageEmbed()
       .setDescription(`${emojishuffle} Shuffled the queue`)
-      .setColor(client.colors.toString())
+      .setColor(client.colors.default)
       .setTimestamp()
     return interaction.editReply({ embeds: [thing] });
 

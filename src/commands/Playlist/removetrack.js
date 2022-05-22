@@ -14,7 +14,7 @@ module.exports = {
     inVoiceChannel: true,
     sameVoiceChannel: true,
     execute: async (message, args, client, prefix) => {
-        var color = client.colors.toString();
+        var color = client.colors.default;
 
         const Name = args[0].replace(/_/g, ' ');
         const data = await db.findOne({ UserId: message.author.id, PlaylistName: Name });

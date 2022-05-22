@@ -29,17 +29,17 @@ module.exports = {
         const data = await db.find({ UserId: interaction.member.user.id, PlaylistName: Name });
 
         if (Name.length > 10) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Playlist Name Cant Be Greater Than 10 Charecters`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`Playlist Name Cant Be Greater Than 10 Charecters`)] });
 
         };
         if (data.length > 0) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`This playlist already Exists! delete it using: \`${prefix}\`delete \`${Name}\``)] })
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`This playlist already Exists! delete it using: \`${prefix}\`delete \`${Name}\``)] })
         };
         let userData = db.find({
             UserId: interaction.user.id
         });
         if (userData.length >= 10) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You Can Only Create 10 Playlist`)] })
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You Can Only Create 10 Playlist`)] })
         }
         const newData = new db({
             UserName: interaction.user.tag,
@@ -50,7 +50,7 @@ module.exports = {
         await newData.save();
         const embed = new MessageEmbed()
             .setDescription(`Successfully created a playlist for you **${Name}**`)
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
         return interaction.editReply({ embeds: [embed] })
 
     }

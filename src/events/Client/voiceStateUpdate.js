@@ -49,7 +49,7 @@ async function voiceStateUpdate(client, oldState, newState) {
       if (stateChange.members.size === 1 && player.paused) {
         let emb = new MessageEmbed()
           .setAuthor({name:`Resuming paused queue`})
-          .setColor(client.colors.toString())
+          .setColor(client.colors.default)
           .setDescription(
             `Resuming playback because all of you left me with music to play all alone`
           );
@@ -57,7 +57,7 @@ async function voiceStateUpdate(client, oldState, newState) {
 
         let msg2 = await client.channels.cache
           .get(player.textChannel)
-          .send({embeds: [player.getMessage('nowPlaying').embeds[0]] });
+          .send(player.getMessage('nowPlaying'));
         player.setNowplayingMessage(msg2);
 
         player.pause(false);
@@ -69,7 +69,7 @@ async function voiceStateUpdate(client, oldState, newState) {
 
         let emb = new MessageEmbed()
           .setAuthor({name: `Paused!`})
-          .setColor(client.colors.toString())
+          .setColor(client.colors.default)
           .setDescription(`The player has been paused because everybody left`);
         await client.channels.cache.get(player.textChannel).send({embeds: [emb]});
       }

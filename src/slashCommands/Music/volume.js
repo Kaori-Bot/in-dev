@@ -35,26 +35,26 @@ module.exports = {
 
     const player = client.manager.get(interaction.guildId);
     if (!player) return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`There is no music playing.`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`There is no music playing.`)]
     }).catch(() => { });
     if (!player.queue.current) return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`There is no music playing.`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`There is no music playing.`)]
     }).catch(() => { });
     const volume = Number(vol);
     if (!volume || volume < 0 || volume > 100) return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Usage: ${client.config.prefix}volume <Number of volume between 0 - 100>`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`Usage: ${client.config.prefix}volume <Number of volume between 0 - 100>`)]
     }).catch(() => { });
 
     player.setVolume(volume);
     if (volume > player.volume) return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
     }).catch(() => { });
     else if (volume < player.volume) return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
     }).catch(() => { });
     else
       await interaction.editReply({
-        embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
+        embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`${emojivolume} Volume set to: **${volume}%**`)]
       }).catch(() => { });
   }
 }

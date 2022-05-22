@@ -16,8 +16,8 @@ module.exports = {
    execute: async (message, args, client) => { 
 
     const { channel } = message.member.voice;
-    if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
-    if (!message.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
+    if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
+    if (!message.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
 
     let player = message.client.manager.get(message.guildId);
     if(!player)
@@ -32,7 +32,7 @@ module.exports = {
 
     const query = args.join(" ");
   
-    const msg = await message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`? Searching ${query} song please wait`)]})
+    const msg = await message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`? Searching ${query} song please wait`)]})
     
     const but = new MessageButton().setCustomId("s_one").setLabel("1").setStyle("SUCCESS");
     const but2 = new MessageButton().setCustomId("s_two").setLabel("2").setStyle("SUCCESS");
@@ -49,7 +49,7 @@ module.exports = {
             player.queue.add(s.tracks[0]);
             const embed = new MessageEmbed()
              .setDescription(`${emojiplaylist} **Added to queue** - [${s.tracks[0].title}](${s.tracks[0].uri}) \`${convertTime(s.tracks[0].duration, true)}\` • ${s.tracks[0].requester}`)
-             .setColor(client.colors.toString())
+             .setColor(client.colors.default)
 
             msg.edit({ embeds: [embed] });
             if (!player.playing) player.play()
@@ -61,12 +61,12 @@ module.exports = {
                     .join("\n");
                     const searched = new MessageEmbed()
                         .setTitle("Select the track that you want")
-                        .setColor(client.colors.toString())
+                        .setColor(client.colors.default)
                         .setDescription(results);
 
                     await msg.edit({embeds: [searched], components: [row] });
                     const search = new MessageEmbed()
-                    .setColor(client.colors.toString());
+                    .setColor(client.colors.default);
 
             const collector = msg.createMessageComponentCollector({
                 filter: (f) => f.user.id === message.author.id ? true : false && f.deferUpdate(),

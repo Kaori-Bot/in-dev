@@ -40,14 +40,14 @@ module.exports = {
                 player.seek(time);
                 let thing = new MessageEmbed()
                     .setDescription(`${emojiforward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
-                    .setColor(client.colors.toString())
+                    .setColor(client.colors.default)
                     .setTimestamp()
                 return message.reply({embeds: [thing]});
             } else {
                 player.seek(time);
                 let thing = new MessageEmbed()
                     .setDescription(`${emojirewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
-                    .setColor(client.colors.toString())
+                    .setColor(client.colors.default)
                     .setTimestamp()
           return message.reply({embeds: [thing]});
             }

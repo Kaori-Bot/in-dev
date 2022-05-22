@@ -44,7 +44,7 @@ module.exports = {
     const song = player.queue.current;
 
     let thing = new MessageEmbed()
-      .setColor(client.colors.toString())
+      .setColor(client.colors.default)
       .setTimestamp()
       .setDescription(`${emojipause} **Paused**\n[${song.title}](${song.uri})`)
     return interaction.editReply({ embeds: [thing] });

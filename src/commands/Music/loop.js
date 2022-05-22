@@ -29,7 +29,7 @@ module.exports = {
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "enabled" : "disabled";
             let thing = new MessageEmbed()
-                .setColor(client.colors.toString())
+                .setColor(client.colors.default)
                 .setTimestamp()
                 .setDescription(`${emojiloop} Loop queue is now **${queueRepeat}**`)
             return message.reply({ embeds: [thing] });
@@ -38,7 +38,7 @@ module.exports = {
         player.setTrackRepeat(!player.trackRepeat);
         const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
         let thing = new MessageEmbed()
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
             .setTimestamp()
             .setDescription(`${emojiloop} Loop track is now **${trackRepeat}**`)
         return message.reply({ embeds: [thing] });

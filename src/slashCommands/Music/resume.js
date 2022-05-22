@@ -44,7 +44,7 @@ module.exports = {
 
     let thing = new MessageEmbed()
       .setDescription(`${emojiresume} **Resumed**\n[${song.title}](${song.uri})`)
-      .setColor(client.colors.toString())
+      .setColor(client.colors.default)
       .setTimestamp()
     return interaction.editReply({ embeds: [thing] });
 

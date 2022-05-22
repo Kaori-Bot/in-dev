@@ -35,18 +35,18 @@ module.exports = {
         const data = await db.findOne({ UserId: interaction.member.user.id, PlaylistName: Name });
 
         if (!data) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         if (data.length == 0) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         const Options = interaction.options.getString("number");
         if (!Options || isNaN(Options)) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You didn't entered track number (the Track you want to remove (ID OF IT))\nSee all your Tracks: ${prefix}info ${Name}`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You didn't entered track number (the Track you want to remove (ID OF IT))\nSee all your Tracks: ${prefix}info ${Name}`)] });
         }
         let tracks = data.Playlist;
         if (Number(Options) >= tracks.length || Number(Options) < 0) {
-            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`Your provided track number is out of Range (\`0\` - ${tracks.length - 1})\nSee all your Tracks: \`${prefix}info\` showdetails ${Name}`)] });
+            return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`Your provided track number is out of Range (\`0\` - ${tracks.length - 1})\nSee all your Tracks: \`${prefix}info\` showdetails ${Name}`)] });
 
         }
         await db.updateOne({
@@ -59,7 +59,7 @@ module.exports = {
                 }
             });
             const embed = new MessageEmbed()
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
             .setDescription(`Removed **${tracks[Options].title}** from \`${Name}\``);
             return interaction.editReply({embeds: [embed]});
     }

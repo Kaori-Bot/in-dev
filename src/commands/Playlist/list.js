@@ -18,7 +18,7 @@ module.exports = {
 
         let data = await db.find({ UserId: message.author.id });
         if (!data.length) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You Do Not Have Any Playlist`)] })
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You Do Not Have Any Playlist`)] })
         }
         if (!args[0]) {
             let list = data.map((x, i) => `\`${++i}\` - ${x.PlaylistName} \`${x.Playlist.length}\` - <t:${x.CreatedOn}>`);
@@ -30,7 +30,7 @@ module.exports = {
                 .setAuthor({ name: `${message.author.username}'s Playlists`, iconURI: message.author.displayAvatarURL() })
                 .setDescription(pages[page])
                 .setFooter({ text: `Playlist (${List} / 10)` })
-                .setColor(client.colors.toString());
+                .setColor(client.colors.default);
             return await message.channel.send({ embeds: [embeds] });
 
         }

@@ -23,7 +23,7 @@ client.guilds.cache.forEach((guild) => {
 
 })
         const embed = new MessageEmbed()
-            .setColor(interaction.client.colors.toString())
+            .setColor(interaction.client.colors.default)
             .setThumbnail(interaction.client.user.displayAvatarURL())
             .setDescription(`${about} **Status**
 **= STATISTICS =**

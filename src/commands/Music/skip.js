@@ -31,7 +31,7 @@ execute: async (message, args, client, prefix) => {
 
 		let thing = new MessageEmbed()
 			.setDescription(`${emojiskip} **Skipped**\n[${song.title}](${song.uri})`)
-			.setColor(client.colors.toString())
+			.setColor(client.colors.default)
 			.setTimestamp()
 		return message.reply({embeds: [thing]}).then(msg => { setTimeout(() => {msg.delete()}, 3000);
        })

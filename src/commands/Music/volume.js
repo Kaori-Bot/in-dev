@@ -28,7 +28,7 @@ execute: async (message, args, client, prefix) => {
 
 		if (!args.length) {
 			let thing = new MessageEmbed()
-			.setColor(client.colors.toString())
+			.setColor(client.colors.default)
 			.setTimestamp()
 			.setDescription(`${volumeEmoji} The current volume is: **${player.volume}%**`)
 			return message.reply({embeds: [thing]});
@@ -48,20 +48,20 @@ execute: async (message, args, client, prefix) => {
 		if (volume > player.volume) {
 			var emojivolume = client.emoji.volumehigh;
 			let thing = new MessageEmbed()
-				.setColor(client.colors.toString())
+				.setColor(client.colors.default)
 				.setTimestamp()
 				.setDescription(`${emojivolume} Volume set to: **${volume}%**`)
 		  return message.reply({embeds: [thing]});
 		} else if (volume < player.volume) {
 			var emojivolume = message.client.emoji.volumelow;
 			let thing = new MessageEmbed()
-				.setColor(client.colors.toString())
+				.setColor(client.colors.default)
 				.setTimestamp()
 				.setDescription(`${emojivolume} Volume set to: **${volume}%**`)
 		  return message.reply({embeds: [thing]});
 		} else {
 			let thing = new MessageEmbed()
-				.setColor(client.colors.toString())
+				.setColor(client.colors.default)
 				.setTimestamp()
 				.setDescription(`${volumeEmoji} Volume set to: **${volume}%**`)
 			return message.reply({embeds: [thing]});

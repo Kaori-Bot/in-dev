@@ -25,10 +25,10 @@ module.exports = {
             return message.reply({ embeds: [thing] });
         }
         if (!data) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         if (data.length == 0) {
-            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });
+            return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
         const track = player.queue.current;
         let oldSong = data.Playlist;
@@ -55,7 +55,7 @@ module.exports = {
                 }
             });
         const embed = new MessageEmbed()
-            .setColor(client.colors.toString())
+            .setColor(client.colors.default)
             .setDescription(`Added [${track.title.substr(0, 256)}](${track.uri}) in \`${Name}\``)
         return message.channel.send({ embeds: [embed] })
 

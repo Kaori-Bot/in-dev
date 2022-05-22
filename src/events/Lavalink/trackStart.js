@@ -10,10 +10,15 @@ async function trackStart(client, player, track, payload){
     const emojiresume = client.emoji.resume;
     const emojiskip = client.emoji.skip;
 
+    track.title = track.title > 70 ? track.title.substr(0, 67) + '...' : track.title;
+    track.startAt = new Date();
+    track.startTimestamp = Date.now();
+    player.set(`${player.guild}_currentSong`, track);
+
     const thing = new MessageEmbed()
-        .setDescription(`Started Playing **[${player.subTitle(track.title,70)}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
+        .setDescription(`Started playing **[${track.title}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
         .setThumbnail(track.displayThumbnail(3))
-        .setColor(client.colors.toString());
+        .setColor(client.colors.default);
     const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔉").setStyle("SECONDARY");
 
     const But2 = new MessageButton().setCustomId("stop").setEmoji("⏹️").setStyle("DANGER");
@@ -30,7 +35,7 @@ async function trackStart(client, player, track, payload){
     player.setNowplayingMessage(NowPlaying);
 
     const embed = new MessageEmbed()
-        .setColor(client.colors.toString())
+        .setColor(client.colors.default)
         .setTimestamp();
     const collector = NowPlaying.createMessageComponentCollector({
         filter: (b) => {
