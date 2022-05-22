@@ -32,7 +32,7 @@ async function trackStart(client, player, track, payload){
     const row = new MessageActionRow().addComponents(But1, But2, But3, But4, But5);
 
     let NowPlaying = await client.channels.cache.get(player.textChannel).send({ embeds: [thing], components: [row] });
-    player.setNowplayingMessage(NowPlaying);
+    player.setPlayingMessage(NowPlaying);
 
     const embed = new MessageEmbed()
         .setColor(client.colors.default)

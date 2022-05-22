@@ -1,9 +1,5 @@
-const { VoiceState, MessageEmbed } = require("discord.js");
-/*
- * @param {VoiceState} oldState
- * @param {VoiceState} newState
- * @returns {Promise<void>}
- */
+const { MessageEmbed } = require("discord.js");
+
 async function voiceStateUpdate(client, oldState, newState) {
   // get guild and player
   let guildId = newState.guild.id;
@@ -59,7 +55,7 @@ async function voiceStateUpdate(client, oldState, newState) {
         let msg2 = await client.channels.cache
           .get(player.textChannel)
           .send({ content: npm.content || null, embeds: npm.embeds, components: npm.components });
-        player.setNowplayingMessage(msg2);
+        player.setPlayingMessage(msg2);
 
         player.pause(false);
       }

@@ -211,16 +211,15 @@ module.exports = Structure.extend('Player', Player => {
 			if(!type) throw new Error('type');
 			return this.set(`${type}_message`, message);
 		}
-		setNowplayingMessage(message) {
-			const nowPlayingMessage = this.getMessage('nowPlaying');
-			if(nowPlayingMessage) {
-				nowPlayingMessage.delete();
+		setPlayingMessage(newMessage) {
+			if(this.playingMessage) {
+				this.playingMessage.delete();
 				this.setMessage('nowPlaying', null);
 			}
 			else{
 				this.setMessage('nowPlaying', message);
 			}
-			return nowPlayingMessage;
+			return (this.playingMessage = newMessage);
 		}
 		subTitle(text, length) {
 			if(!text || !length) throw new RangeError('Target: invalid!');
