@@ -90,14 +90,6 @@ class KaoriBot extends Client {
 
 		return this;
 	}
-	async postDBL() {
-		const { AutoPoster } = require('topgg-autoposter');
-		const dbl_poster = AutoPoster(process.env.DBL_TOKEN, this);
-
-		dbl_poster.on('posted', (stats) => {
-			this.logger.log(`Post stats on top.gg/bot/${this.user.id} | ${stats.serverCount} servers`, 'info');
-		});
-	}
 	async registerApplicationCommand(guildId, force=false) {
 		if(!this.isReady) throw new Error('Cannot register Application Commands before client is ready!');
 		const _data = this.slashCommands._data;
