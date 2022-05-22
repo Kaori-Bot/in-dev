@@ -219,8 +219,8 @@ module.exports = Structure.extend('Player', Player => {
 			this.setMessage('nowPlaying', this.playingMessage);
 			return this.playingMessage;
 		}
-		subTitle(text, length) {
-			if(!text || !length) throw new RangeError('Target: invalid!');
+		subTitle(text, length=67) {
+			if(!text) throw new RangeError('Target: invalid!');
 			if(typeof text !== 'string') throw new TypeError('Target: text is not string!');
 			if(typeof length !== 'number') throw new TypeError('Target: length is not number!');
 			return text.length > length ? text.substr(0, length-3) + '...' : text;
