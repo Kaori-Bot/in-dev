@@ -19,9 +19,7 @@ if(process.env.TOPGG_TOKEN){
         client.logger.log(`Post stats on top.gg/bot/${client.user.id} | ${stats.serverCount} servers`, 'info');
     });
 }
-else {
-    client.logger.log('Top.gg: Missing TOPGG_TOKEN!', 'error');
-}
+else client.logger.log(new RangeError('Topgg-Autoposter: Missing TOPGG_TOKEN!'), 'error');
 
 process.on('uncaughtException', error => console.error(error))
 process.on('unhandledRejection', error => console.error(error));
