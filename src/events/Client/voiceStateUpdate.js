@@ -55,9 +55,10 @@ async function voiceStateUpdate(client, oldState, newState) {
           );
         await client.channels.cache.get(player.textChannel).send({embeds: [emb]});
 
+        const npm = player.getMessage('nowPlaying');
         let msg2 = await client.channels.cache
           .get(player.textChannel)
-          .send(player.getMessage('nowPlaying'));
+          .send({ content: npm.content || null, embeds: npm.embeds, components: npm.components });
         player.setNowplayingMessage(msg2);
 
         player.pause(false);
