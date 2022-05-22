@@ -1,4 +1,5 @@
 function ready(client) {
+    client.postDBL();
     client.registerApplicationCommand('794187901000744991');
     client.manager.init(client.user.id);
 
