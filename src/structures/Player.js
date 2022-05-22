@@ -204,12 +204,12 @@ module.exports = Structure.extend('Player', Player => {
 			return this.get(this.guild);
 		}
 		getMessage(type) {
-			if(!type) throw new Error();
+			if(!type) throw new Error('type');
 			const collection = this.getCollection();
 			return collection.get(type);
 		}
 		setMessage(type, message) {
-			if(!type || !message) throw new Error();
+			if(!type) throw new Error('type');
 			const collection = this.getCollection();
 			collection.set(type, message);
 			return collection;
@@ -218,7 +218,7 @@ module.exports = Structure.extend('Player', Player => {
 			const nowPlayingMessage = this.getMessage('nowPlaying');
 			if(nowPlayingMessage) {
 				nowPlayingMessage.delete();
-				this.setMessage('nowPlaying', undefined);
+				this.setMessage('nowPlaying',null);
 			}
 			else{
 				this.getCollection().set('nowPlaying', message);
