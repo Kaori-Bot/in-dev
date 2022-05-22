@@ -56,13 +56,13 @@ async function trackStart(client, player, track, payload){
                 ]
             }).then(i => setTimeout(() => i.delete(), deleteTimeout));
         }
-        else if (i.customId === "stop") {
+        else if (interaction.customId === "stop") {
             await player.stop();
             await player.queue.clear();
             interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`${emoji.stop} Stopped the music`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
             return collector.stop();
         }
-        else if (i.customId === "pause") {
+        else if (interaction.customId === "pause") {
             player.pause(!player.paused);
             const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
             if (player.paused) {
@@ -74,14 +74,14 @@ async function trackStart(client, player, track, payload){
             startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow(buttons)] });
             await interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
         }
-        else if (i.customId === "skip") {
+        else if (interaction.customId === "skip") {
             await player.stop();
             interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`${emoji.skip} Skipped current song...`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
             if (track.length === 1) {
                 return collector.stop();
             }
         }
-        else if (i.customId === "loop") {
+        else if (interaction.customId === "loop") {
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
             await interaction.editReply({
