@@ -2,8 +2,7 @@
 const { MessageEmbed, version, CommandInteraction, Client } = require("discord.js");
 const moment = require("moment");
 require("moment-duration-format");
-const os = require('os')
-const si = require('systeminformation');
+const os = require('os');
 
 module.exports = {
     name: "stats",
@@ -15,7 +14,6 @@ module.exports = {
         });
         
        const duration1 = moment.duration(interaction.client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
-        const cpu = await si.cpu();
         const about = interaction.client.emoji.about;
         let ccount = client.channels.cache.size;
         let scount = client.guilds.cache.size;
@@ -38,7 +36,7 @@ client.guilds.cache.forEach((guild) => {
 **• Platfrom** : ${os.type}
 **• Uptime** : ${duration1}
 **• CPU** :
-> **• Cores** : ${cpu.cores}
+> **• Cores** : ${os.cpus().length}
 > **• Model** : ${os.cpus()[0].model} 
 > **• Speed** : ${os.cpus()[0].speed} MHz
 **• MEMORY** :

@@ -1,8 +1,6 @@
-const { MessageEmbed, CommandInteraction, Client } = require("discord.js")
-
 module.exports = {
     name: "ping",
-    description: "return websocket ping",
+    description: "Check the bot latency",
 
     /**
      * 
@@ -11,17 +9,13 @@ module.exports = {
      */
 
     run: async (client, interaction) => {
-        await interaction.deferReply({
-            ephemeral: false
-        });
-        await interaction.editReply({ content: "Pining..." }).then(async () => {
-            const ping = Date.now() - interaction.createdAt;
-            const api_ping = client.ws.ping;
+        await interaction.deferReply();
+        await interaction.editReply({ content: "Pinging..." }).then(async () => {
+            const ping = Date.now() - interaction.createdTimestamp;
 
             await interaction.editReply({
-                content: "`🏓`",
-                embeds: [new MessageEmbed().setAuthor({name: `Pong`, iconURL: client.user.displayAvatarURL({ dynamic: true })}).setColor(client.colors.toString()).setFooter({text: `Requested by ${interaction.member.user.username}`, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true })}).addFields([{ name: "Bot Latency", value: `\`\`\`ini\n[ ${ping}ms ]\n\`\`\``, inline: true }, { name: "API Latency", value: `\`\`\`ini\n[ ${api_ping}ms ]\n\`\`\``, inline: true }]).setTimestamp()]
+                content: `Pong! Latency: **${ping}** ms`
             });
         })
     }
-			}
+}
