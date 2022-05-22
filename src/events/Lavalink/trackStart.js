@@ -19,7 +19,7 @@ async function trackStart(client, player, track, payload){
         .setDescription(`Started playing **[${track.title}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
         .setThumbnail(track.displayThumbnail(3))
         .setColor(client.colors.default);
-    const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔉").setStyle("SECONDARY");
+    const But1 = new MessageButton().setCustomId("vdown").setEmoji("🔈").setStyle("SECONDARY");
 
     const But2 = new MessageButton().setCustomId("stop").setEmoji("⏹️").setStyle("DANGER");
 
@@ -88,6 +88,23 @@ async function trackStart(client, player, track, payload){
             await player.setVolume(amount);
             i.editReply({ embeds: [embed.setAuthor({ name: i.member.user.tag, iconURL: i.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`${volumeEmoji} The current volume is: **${amount}**`)] }).then(msg => { setTimeout(() => { msg.delete() }, 10000) });
             return;
+        }
+    });
+    collector.on('end', () => {
+        if(NowPlaying) {
+            But1.setDisabled(true);
+            But2.setDisabled(true);
+            But3.setDisabled(true);
+            But4.setDisabled(true);
+            But5.setDisabled(true);
+            NowPlaying.edit({
+                embeds: [
+                    thing.setColor('GREY')
+                ],
+                components:[
+                    new MessageActionRow().addComponents(But1,But2,But3,But4,But5)
+                ]
+            }).catch(_ => void 0);
         }
     });
 };

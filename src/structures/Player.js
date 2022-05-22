@@ -214,12 +214,10 @@ module.exports = Structure.extend('Player', Player => {
 		setPlayingMessage(newMessage) {
 			if(this.playingMessage) {
 				this.playingMessage.delete();
-				this.setMessage('nowPlaying', null);
-			}
-			else{
-				this.setMessage('nowPlaying', newMessage);
-			}
-			return (this.playingMessage = newMessage);
+			};
+			this.playingMessage = newMessage;
+			this.setMessage('nowPlaying', this.playingMessage);
+			return this.playingMessage;
 		}
 		subTitle(text, length) {
 			if(!text || !length) throw new RangeError('Target: invalid!');
