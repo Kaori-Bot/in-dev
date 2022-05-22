@@ -2,7 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const { convertTime } = require('../../utils/convert.js');
 
 async function trackStart(client, player, track, payload){
-
+    const emoji = client.emoji;
     track.title = track.title > 70 ? track.title.substr(0, 67) + '...' : track.title;
     track.startAt = new Date();
     track.startTimestamp = Date.now();
@@ -15,8 +15,8 @@ async function trackStart(client, player, track, payload){
 
     let buttons = [
         new MessageButton().setCustomId("previous").setEmoji(emoji.back).setStyle("SECONDARY"),
-        new MessageButton().setCustomId("pause").setEmoji(emoji.pause).setStyle("DANGER"),
-        new MessageButton().setCustomId("stop").setEmoji(emoji.stop).setStyle("SECONDARY"),
+        new MessageButton().setCustomId("pause").setEmoji(emoji.pause).setStyle("SECONDARY"),
+        new MessageButton().setCustomId("stop").setEmoji(emoji.stop).setStyle("DANGER"),
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("next").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
@@ -26,9 +26,7 @@ async function trackStart(client, player, track, payload){
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [row] });
     player.setPlayingMessage(startMessage);
 
-    const embed = new MessageEmbed()
-        .setColor(client.colors.default)
-        .setTimestamp();
+    const embed = new MessageEmbed().setColor(client.colors.default)
     const collector = startMessage.createMessageComponentCollector({
         filter: (interaction) => {
             if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channelId === interaction.member.voice.channelId) return true;
@@ -43,7 +41,7 @@ async function trackStart(client, player, track, payload){
         const deleteTimeout = 10000;
         await interaction.deferReply();
         if (!player) return collector.stop();
-        collector.resetTimer({ time: player.position });
+        collector.resetTimer({ time: (track.duration - (player.position || 0)) });
         if (interaction.customId === "previous") {
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
@@ -71,7 +69,7 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[1] = buttons[1].setStyle('SECONDARY');
             };
-            startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow(buttons)] });
+            startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
             await interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
         }
         else if (interaction.customId === "skip") {
@@ -86,8 +84,8 @@ async function trackStart(client, player, track, payload){
             const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
             await interaction.editReply({
                 embeds: [
-                    embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`${emoji.loop} **${queueRepeat}** loop/repeat`)
+                    embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`${emoji.loop} **${queueRepeat}** queue loop`)
                 ]
             }).then(i => setTimeout(() => i.delete(), deleteTimeout));
         }
