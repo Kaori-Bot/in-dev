@@ -25,6 +25,7 @@ class KaoriManager extends Manager {
 		this._client = client;
 	}
 	loadEvents() {
+		const {readdirSync} = require('fs');
 		readdirSync("./src/events/Lavalink/").forEach(file => {
 			const event = require(`../events/Lavalink/${file}`);
 			event.name = file.split(".")[0];
