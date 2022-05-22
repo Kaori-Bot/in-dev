@@ -22,6 +22,15 @@ class KaoriManager extends Manager {
 				if (guild) guild.shard.send(dataPayload);
 			},
 		});
+		this._client = client;
+	}
+	loadEvents() {
+		readdirSync("./src/events/Lavalink/").forEach(file => {
+			const event = require(`../events/Lavalink/${file}`);
+			event.name = file.split(".")[0];
+			this.on(event.name, (...args) => event.load(this, ...args));
+		});
+		this._client.logger.log('Events Lavalink: Loaded...', 'info');
 	}
 };
 

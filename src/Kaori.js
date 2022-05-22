@@ -47,13 +47,6 @@ class KaoriBot extends Client {
 			this.on(event.name, (...args) => event.load(this, ...args));
 		});
 		this.logger.log('Events Client: Loaded...', 'info');
-
-		readdirSync("./src/events/Lavalink/").forEach(file => {
-			const event = require(`./events/Lavalink/${file}`);
-			event.name = file.split(".")[0];
-			this.manager.on(event.name, (...args) => event.load(this, ...args));
-		});
-		this.logger.log('Events Lavalink: Loaded...', 'info');
 	}
 	async loadMongo() {
 		const mongoose = require('mongoose');
