@@ -203,18 +203,18 @@ module.exports = Structure.extend('Player', Player => {
 			if(!hasGuild) super.set(this.guild, new (require('discord.js')).Collection());
 			return this.get(this.guild);
 		}
-		async getMessage(type) {
+		getMessage(type) {
 			if(!type) throw new Error('type');
 			const collection = this.getCollection();
 			return collection.get(type);
 		}
-		async setMessage(type, message) {
+		setMessage(type, message) {
 			if(!type) throw new Error('type');
 			const collection = this.getCollection();
 			collection.set(type, message);
 			return collection;
 		}
-		async setNowplayingMessage(message) {
+		setNowplayingMessage(message) {
 			const nowPlayingMessage = this.getMessage('nowPlaying');
 			if(nowPlayingMessage) {
 				nowPlayingMessage.delete();
