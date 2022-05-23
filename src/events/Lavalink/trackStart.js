@@ -139,7 +139,6 @@ async function trackStart(client, player, track, payload){
         }
         player.set('currentPlaying_action-logs', actionLogs);
         if (interaction.customId === 'select_menu') {
-            await interaction.reply({ content: 'Received **Select Menu**...', ephemeral: true });
             const data = player.get('currentPlaying_action-logs') || [];
             const value = interaction.values[0];
             switch(value) {
@@ -156,7 +155,7 @@ async function trackStart(client, player, track, payload){
                     await interaction.showModal(modal);
                 }
                 case 'action-logs': {
-                    await interaction.reply({ embeds:[collectEmbed.setTite('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true })
+                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true })
                 }
             }
         }
