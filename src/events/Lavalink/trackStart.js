@@ -3,10 +3,10 @@ const { convertTime } = require('../../utils/convert.js');
 
 async function trackStart(client, player, track, payload){
     const emoji = client.emoji;
-    track.title = track.title > 70 ? track.title.substr(0, 67) + '...' : track.title;
+    track.title = track.title > 70 ? player.subTitle(track.title) : track.title;
     track.startAt = new Date();
     track.startTimestamp = Date.now();
-    player.set(`${player.guild}_currentSong`, track);
+    player.set(`currentSong`, track);
 
     const startEmbed = new MessageEmbed()
         .setDescription(`Started playing **[${track.title}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
@@ -20,13 +20,13 @@ async function trackStart(client, player, track, payload){
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
-    if(!player.queue.previous) buttons[0] = buttons[0].setDisabled(true);
-    const row = new MessageActionRow().addComponents(buttons);
+    if (player.queueRepeat) buttons[3] = buttons[3].setStyle('SUCCESS');
+    const actionRow = new MessageActionRow().addComponents(buttons);
 
-    const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [row] });
+    const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [actionRow] });
     player.setPlayingMessage(startMessage);
 
-    const embed = new MessageEmbed().setColor(client.colors.default)
+    const collectEmbed = new MessageEmbed().setColor(client.colors.default)
     const collector = startMessage.createMessageComponentCollector({
         filter: (interaction) => {
             if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channelId === interaction.member.voice.channelId) return true;
@@ -42,22 +42,24 @@ async function trackStart(client, player, track, payload){
         await interaction.deferReply();
         if (!player) return collector.stop();
         collector.resetTimer({ time: (track.duration - (player.position || 0)) });
+        collectEmbed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic:true }) });
         if (interaction.customId === "previous") {
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
+            if (!prevSong) {
+                return interaction.editReply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Previous song not found!** Please add more song queue first.`)], ephemeral: true });
+            }
             player.play(prevSong);
             if (currentSong) player.queue.unshift(currentSong);
             await interaction.editReply({
-                embeds: [
-                    embed.setAuthor({name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic:true })})
-                    .setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)
+                embeds: [collectEmbed.setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)
                 ]
             }).then(i => setTimeout(() => i.delete(), deleteTimeout));
         }
         else if (interaction.customId === "stop") {
             await player.stop();
             await player.queue.clear();
-            interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`${emoji.stop} Stopped the music`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
+            interaction.editReply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
             return collector.stop();
         }
         else if (interaction.customId === "pause") {
@@ -70,11 +72,11 @@ async function trackStart(client, player, track, payload){
                 buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
             };
             startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
-            await interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
+            await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
         }
         else if (interaction.customId === "skip") {
             await player.stop();
-            await interaction.editReply({ embeds: [embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) }).setDescription(`${emoji.skip} Skipped current song...`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
+            await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
             if (track.length === 1) {
                 return collector.stop();
             }
@@ -82,25 +84,29 @@ async function trackStart(client, player, track, payload){
         else if (interaction.customId === "loop") {
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
+            if (player.queueRepeat) {
+                buttons[3] = buttons[3].setStyle('SUCCESS');
+            }
+            else {
+                buttons[3] = buttons[3].setStyle('SECONDARY');
+            }
+            startMessage.edit({ embed:[startEmbed], components:[new MessageActionRow().addComponents(buttons)] });
             await interaction.editReply({
-                embeds: [
-                    embed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`${emoji.loop} **${queueRepeat}** loop`)
-                ]
+                embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)]
             }).then(i => setTimeout(() => i.delete(), deleteTimeout));
         }
     });
     collector.on('end', () => {
         if(startMessage) {
-            const newButton = [];
+            const newButtons = [];
             buttons.forEach(button => {
                 button.setDisabled(true);
-                newButton.push(button);
+                newButtons.push(button);
             });
             startMessage.edit({
                 embeds: [startEmbed],
                 components:[
-                    new MessageActionRow().addComponents(newButton)
+                    new MessageActionRow().addComponents(newButtons)
                 ]
             }).catch(_ => void 0);
         }
