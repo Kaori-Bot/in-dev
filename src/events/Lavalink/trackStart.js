@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } = require("discord.js");
 const { convertTime } = require('../../utils/convert.js');
 const delay = require('node:timers/promises').setTimeout;
 
@@ -21,10 +21,28 @@ async function trackStart(client, player, track, payload){
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
+    const selectMenu = new MessageSelectMenu()
+        .setCustomId('select_menu')
+        .setPlaceholder('Select Menu for this ')
+        .addOptions([
+            {
+                label: 'Add song queue',
+                description: 'Click here to added more song queue',
+                value: 'add-song'
+            },
+            {
+                label: 'Action logs',
+                description: 'Click here to see action from button',
+                value: 'action-logs'
+            }
+        ]);
     if (player.queueRepeat) buttons[3] = buttons[3].setStyle('SUCCESS');
-    const actionRow = new MessageActionRow().addComponents(buttons);
+    const actionRow = [
+        new MessageActionRow().addComponents(buttons),
+        new MessageActionRow().addComponents(selectMenu)
+    ];
 
-    const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [actionRow] });
+    const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [...actionRow] });
     player.setPlayingMessage(startMessage);
 
     const collectEmbed = new MessageEmbed().setColor(client.colors.default)
@@ -110,6 +128,9 @@ async function trackStart(client, player, track, payload){
             });
             await delay(deleteTimeout);
             await interaction.deleteReply();
+        }
+        if (interaction.customId === 'select_menu') {
+            await interaction.reply({ content: 'Received **Select Menu**...', ephemeral: true });
         }
     });
     collector.on('end', () => {
