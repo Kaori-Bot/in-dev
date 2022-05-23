@@ -47,7 +47,7 @@ async function trackStart(client, player, track, payload){
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
             if (!prevSong) {
-                return await interaction.editReply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Previous song not found!** Please add more song queue first.`)], ephemeral: true });
+                return await interaction.reply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Previous song not found!** Please add more song queue first.`)], ephemeral: true });
             }
             player.play(prevSong);
             if (currentSong) player.queue.unshift(currentSong);
@@ -71,7 +71,7 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[1] = buttons[1].setStyle('SECONDARY');
             };
-            startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
+            startMessage.edit({ embed:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
             await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
         }
         else if (interaction.customId === "skip") {
