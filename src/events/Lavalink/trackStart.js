@@ -52,8 +52,8 @@ async function trackStart(client, player, track, payload){
             player.play(prevSong);
             if (currentSong) player.queue.unshift(currentSong);
             await interaction.reply({
-                embeds: [collectEmbed.setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)
-                ]
+                embeds: [collectEmbed.setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)],
+                fetchReply: true
             });
             await delay(deleteTimeout);
             await interaction.deleteReply();
@@ -61,7 +61,7 @@ async function trackStart(client, player, track, payload){
         else if (interaction.customId === "stop") {
             await player.stop();
             await player.queue.clear();
-            await interaction.reply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)] });
+            await interaction.reply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)], fetchReply: true });
 
             collector.stop();
             await delay(deleteTimeout);
@@ -77,18 +77,18 @@ async function trackStart(client, player, track, payload){
                 buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
             };
             startMessage.edit({ embed:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
-            await interaction.reply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)] });
+            await interaction.reply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)], fetchReply: true });
             await delay(deleteTimeout);
             await interaction.deleteReply();
         }
         else if (interaction.customId === "skip") {
             await player.stop();
             if (player.queue.size > 1) {
-                await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)] });
+                await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)], fetchReply: true });
             }
             else {
                 collector.stop();
-                await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song... (_But song queue is not available. Force stop the current song_)`)]});
+                await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song... (_But song queue is not available. Force stop the current song_)`)], fetchReply: true });
             }
 
             await delay(deleteTimeout);
@@ -105,7 +105,8 @@ async function trackStart(client, player, track, payload){
             }
             startMessage.edit({ embed:[startEmbed], components:[new MessageActionRow().addComponents(buttons)] });
             await interaction.reply({
-                embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)]
+                embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)],
+                fetchReply: true,
             });
             await delay(deleteTimeout);
             await interaction.deleteReply();
