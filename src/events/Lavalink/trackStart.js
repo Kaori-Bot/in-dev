@@ -15,7 +15,7 @@ async function trackStart(client, player, track, payload){
 
     let buttons = [
         new MessageButton().setCustomId("previous").setEmoji(emoji.back).setStyle("SECONDARY"),
-        new MessageButton().setCustomId("pause").setEmoji(emoji.pause).setStyle("SECONDARY"),
+        new MessageButton().setCustomId("pause").setEmoji(emoji.resume).setStyle("SECONDARY"),
         new MessageButton().setCustomId("stop").setEmoji(emoji.stop).setStyle("DANGER"),
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("skip").setEmoji(emoji.skip).setStyle("SECONDARY")
@@ -39,7 +39,7 @@ async function trackStart(client, player, track, payload){
     });
     collector.on("collect", async (interaction) => {
         const deleteTimeout = 10000;
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: false });
         if (!player) return collector.stop();
         collector.resetTimer({ time: (track.duration - (player.position || 0)) });
         collectEmbed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic:true }) });
@@ -47,7 +47,7 @@ async function trackStart(client, player, track, payload){
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
             if (!prevSong) {
-                return interaction.editReply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Previous song not found!** Please add more song queue first.`)], ephemeral: true });
+                return await interaction.editReply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Previous song not found!** Please add more song queue first.`)], ephemeral: true });
             }
             player.play(prevSong);
             if (currentSong) player.queue.unshift(currentSong);
@@ -66,10 +66,10 @@ async function trackStart(client, player, track, payload){
             player.pause(!player.paused);
             const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
             if (player.paused) {
-                buttons[1] = buttons[1].setStyle('PRIMARY').setEmoji(emoji.resume)
+                buttons[1] = buttons[1].setStyle('PRIMARY');
             }
             else {
-                buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
+                buttons[1] = buttons[1].setStyle('SECONDARY');
             };
             startMessage.edit({ embeds:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
             await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)] }).then(msg => setTimeout(() => msg.delete(), deleteTimeout));
