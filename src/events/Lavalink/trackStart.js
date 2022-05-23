@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent } = require("discord.js");
 const { convertTime } = require('../../utils/convert.js');
 const delay = require('node:timers/promises').setTimeout;
 
@@ -23,16 +23,18 @@ async function trackStart(client, player, track, payload){
     ];
     const selectMenu = new MessageSelectMenu()
         .setCustomId('select_menu')
-        .setPlaceholder('Select Menu for this ')
+        .setPlaceholder('Click here to making selection')
         .addOptions([
             {
-                label: 'Add song queue',
-                description: 'Click here to added more song queue',
-                value: 'add-song'
+                emoji: '➕',
+                label: 'Add queue',
+                description: 'Added more song queue',
+                value: 'add-queue'
             },
             {
+                emoji: '📝',
                 label: 'Action logs',
-                description: 'Click here to see action from button',
+                description: 'See action logs from button',
                 value: 'action-logs'
             }
         ]);
@@ -57,11 +59,13 @@ async function trackStart(client, player, track, payload){
         time: track.duration,
     });
     collector.on("collect", async (interaction) => {
+        const actionLogs = player.get('currentPlaying_action-logs') || [];
         const deleteTimeout = 10000;
         if (!player) return collector.stop();
         collector.resetTimer({ time: (track.duration - (player.position || 0)) });
         collectEmbed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic:true }), });
         if (interaction.customId === "previous") {
+            actionLogs.push(`${interaction.user} clicked button ${emoji.back}`);
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
             if (!prevSong || prevSong.identifier === currentSong.identifier) {
@@ -77,6 +81,7 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "stop") {
+            actionLogs.push(`${interaction.user} clicked button ${emoji.stop}`);
             await player.stop();
             await player.queue.clear();
             await interaction.reply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)], fetchReply: true });
@@ -86,6 +91,7 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "pause") {
+            actionLogs.push(`${interaction.user} clicked button ${player.pause ? emoji.pause : emoji.resume}`);
             player.pause(!player.paused);
             const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
             if (player.paused) {
@@ -100,6 +106,7 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "skip") {
+            actionLogs.push(`${interaction.user} clicked button ${emoji.skip}`);
             await player.stop();
             if (player.queue.size > 1) {
                 await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)], fetchReply: true });
@@ -113,6 +120,7 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "loop") {
+            actionLogs.push(`${interaction.user} clicked button ${emoji.loop}`);
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
             if (player.queueRepeat) {
@@ -129,8 +137,28 @@ async function trackStart(client, player, track, payload){
             await delay(deleteTimeout);
             await interaction.deleteReply();
         }
+        player.set('currentPlaying_action-logs', actionLogs);
         if (interaction.customId === 'select_menu') {
             await interaction.reply({ content: 'Received **Select Menu**...', ephemeral: true });
+            const data = player.get('currentPlaying_action-logs') || [];
+            const value = interaction.values[0];
+            switch(value) {
+                case 'add-queue': {
+                    const modal = new Modal()
+                    .setCustomId('add-song-queue')
+                    .setTitle('Add song queue')
+                    .addComponents([
+                        new TextInputComponent()
+                        .setCustomId('songQuery')
+                        .setLabel('Input the song query (title or url)')
+                        .setStyle('SHORT')
+                    ])
+                    await interaction.showModal(modal);
+                }
+                case 'action-logs': {
+                    await interaction.reply({ embeds:[collectEmbed.setTite('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true })
+                }
+            }
         }
     });
     collector.on('end', () => {
@@ -140,10 +168,12 @@ async function trackStart(client, player, track, payload){
                 button.setDisabled(true);
                 newButtons.push(button);
             });
+            selectMenu.setDisabled(true);
             startMessage.edit({
                 embed: [startEmbed],
                 components:[
-                    new MessageActionRow().addComponents(newButtons)
+                    new MessageActionRow().addComponents(newButtons),
+                    new MessageActionRow().addComponents(selectMenu)
                 ]
             }).catch(_ => void 0);
         }

@@ -8,6 +8,11 @@ const db2 = require("../../schema/dj");
 async function interactionCreate(client, interaction) {
         let prefix = client.config.prefix;
 
+        if (interaction.isModalSubmit()) {
+            if (interaction.customId === 'add-song-queue') {
+                await interaction.reply({content: `Received Modal from ${interaction.customId} with text input: \`${interaction.fields.getTextInputValue('songQuery')}\``, ephemeral: true });
+            }
+        }
         if (interaction.isCommand() || interaction.isContextMenu()) {
 
             const SlashCommands = client.slashCommands.get(interaction.commandName);
