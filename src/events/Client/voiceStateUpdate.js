@@ -47,13 +47,13 @@ async function voiceStateUpdate(client, oldState, newState) {
         if(pausedMsg) pausedMsg.delete();
         client.channels.cache.get(player.textChannel).send({embeds: [embed]}).then(message=>setTimeout(()=>message.delete(), 10000));
 
-        const npm = player.playingMessage;
+        /*const npm = player.playingMessage;
         const msg2 = await client.channels.cache
           .get(player.textChannel)
           .send({ embeds: npm.embeds, components: npm.components });
 
         player.setPlayingMessage(msg2);
-        player.pause(false);
+        player.pause(false);*/
       }
       break;
     case "LEAVE":

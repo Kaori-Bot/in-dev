@@ -155,17 +155,23 @@ async function trackStart(client, player, track, payload){
                         .addComponents([
                             new TextInputComponent()
                             .setCustomId('songQuery')
-                            .setLabel('Input the song query below')
+                            .setLabel('🔍 Input the song query')
                             .setStyle('SHORT')
                             .setPlaceholder('song query? (title or url)')
-                            .setMaxLength(99)
+                            .setMaxLength(999)
                             .setRequired(true)
                         ])
                     ]);
                     await interaction.showModal(modal);
                 }
                 case 'action-logs': {
-                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available')], ephemeral: true });
+                    collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available');
+                    if (interaction.deferred) {
+                        return await interaction.editReply({ embeds: [collectEmbed] });
+                    }
+                    else {
+                        return await interaction.reply({ embeds: [collectEmbed] });
+                    }
                 }
             }
         }
@@ -177,7 +183,7 @@ async function trackStart(client, player, track, payload){
                 button.setDisabled(true);
                 newButtons.push(button);
             });
-            selectMenu.setDisabled(true);
+            selectMenu[0].setDisabled(true);
             actionRow[0].setComponents(newButtons);
             actionRow[1].setComponents(selectMenu);
             startMessage.edit({
