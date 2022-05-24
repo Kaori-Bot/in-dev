@@ -24,7 +24,7 @@ async function trackStart(client, player, track, payload){
     const selectMenu = [
         new MessageSelectMenu()
         .setCustomId('select_menu')
-        .setPlaceholder('Click here to making selection')
+        .setPlaceholder('Menu selection')
         .addOptions([
             {
                 emoji: '➕',
@@ -149,13 +149,13 @@ async function trackStart(client, player, track, payload){
                 case 'add-queue': {
                     const modal = new Modal()
                     .setCustomId('add-song-queue')
-                    .setTitle('Add song queue')
+                    .setTitle('➕ Add song queue')
                     .addComponents([
                         new MessageActionRow()
                         .addComponents([
                             new TextInputComponent()
                             .setCustomId('songQuery')
-                            .setLabel('🔍 Input the song query')
+                            .setLabel('🔎 Input the song query')
                             .setStyle('SHORT')
                             .setPlaceholder('song query? (title or url)')
                             .setMaxLength(999)
@@ -166,9 +166,9 @@ async function trackStart(client, player, track, payload){
                     break;
                 }
                 case 'action-logs': {
-                    collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available');
+                    const actionLogEmbed = collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available');
                     if (interaction.deferred) {
-                        return await interaction.editReply({ embeds: [collectEmbed], ephemeral: true });
+                        return await interaction.editReply({ embeds: [actionLogEmbed], ephemeral: true });
                     }
                     else {
                         return await interaction.reply({ embeds: [collectEmbed], ephemeral:true });
@@ -178,6 +178,7 @@ async function trackStart(client, player, track, payload){
         }
     });
     collector.on('end', () => {
+        player.set('currentPlaying_action-logs', []);
         if(startMessage) {
             const newButtons = [];
             buttons.forEach(button => {

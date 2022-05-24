@@ -44,8 +44,10 @@ async function voiceStateUpdate(client, oldState, newState) {
             `Music has been resuming, because someone back join to my voice channel.`
           );
         const pausedMsg = player.getMessage('voiceStatePaused');
-        if(pausedMsg) pausedMsg.delete();
-        client.channels.cache.get(player.textChannel).send({embeds: [embed]}).then(message=>setTimeout(()=>message.delete(), 10000));
+        if(pausedMsg) {
+            pausedMsg.edit({ embeds: [embed] });
+            setTimeout(() => pausedMsg.delete(), 10000);
+        }
 
         /*const npm = player.playingMessage;
         const msg2 = await client.channels.cache
@@ -64,7 +66,7 @@ async function voiceStateUpdate(client, oldState, newState) {
           .setTitle(`Paused!`)
           .setColor(client.colors.red)
           .setDescription(`Music has been paused, because everybody left my voice channel.`);
-        client.channels.cache.get(player.textChannel).send({embeds: [embed]}).then(message => player.setMessage('voiceStatePaused', message));
+        if (player.playingMessage) player.playingMessage.reply({ embeds: [embed] }).then(message => player.setMessage('voiceStatePaused', message));
       }
       break;
   }
