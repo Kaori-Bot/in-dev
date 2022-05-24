@@ -11,7 +11,7 @@ async function trackStart(client, player, track, payload){
 
     const startEmbed = new MessageEmbed()
         .setDescription(`Started playing **[${track.title}](${track.uri})**`)
-        .setImage(track.displayThumbnail('maxresdefault'))
+        .setThumbnail(track.displayThumbnail('hqdefault'))
         .setColor(client.colors.default);
 
     let buttons = [
