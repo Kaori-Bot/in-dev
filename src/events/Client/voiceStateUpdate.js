@@ -52,8 +52,8 @@ async function voiceStateUpdate(client, oldState, newState) {
           .get(player.textChannel)
           .send({ embeds: npm.embeds, components: npm.components });
 
-        player.setPlayingMessage(msg2);
-        player.pause(false);*/
+        player.setPlayingMessage(msg2);*/
+        player.pause(false);
       }
       break;
     case "LEAVE":

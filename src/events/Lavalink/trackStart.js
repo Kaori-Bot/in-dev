@@ -163,14 +163,15 @@ async function trackStart(client, player, track, payload){
                         ])
                     ]);
                     await interaction.showModal(modal);
+                    break;
                 }
                 case 'action-logs': {
                     collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available');
                     if (interaction.deferred) {
-                        return await interaction.editReply({ embeds: [collectEmbed] });
+                        return await interaction.editReply({ embeds: [collectEmbed], ephemeral: true });
                     }
                     else {
-                        return await interaction.reply({ embeds: [collectEmbed] });
+                        return await interaction.reply({ embeds: [collectEmbed], ephemeral:true });
                     }
                 }
             }
