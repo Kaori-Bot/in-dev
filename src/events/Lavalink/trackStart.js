@@ -21,33 +21,35 @@ async function trackStart(client, player, track, payload){
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
-    const selectMenu = new MessageSelectMenu()
+    const selectMenu = [
+        new MessageSelectMenu()
         .setCustomId('select_menu')
         .setPlaceholder('Click here to making selection')
         .addOptions([
             {
                 emoji: '➕',
-                label: 'Add queue',
-                description: 'Added more song queue',
+                label: 'Add song queue',
+                description: 'Added more song to queue',
                 value: 'add-queue'
             },
             {
                 emoji: '📝',
                 label: 'Action logs',
-                description: 'See action logs from button',
+                description: 'See action logs received from clicked button',
                 value: 'action-logs'
             }
-        ]);
+        ])
+    ];
     if (player.queueRepeat) buttons[3] = buttons[3].setStyle('SUCCESS');
     const actionRow = [
         new MessageActionRow().addComponents(buttons),
-        new MessageActionRow().addComponents([selectMenu])
+        new MessageActionRow().addComponents(selectMenu)
     ];
 
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [...actionRow] });
     player.setPlayingMessage(startMessage);
 
-    const collectEmbed = new MessageEmbed().setColor(client.colors.default)
+    const collectEmbed = new MessageEmbed().setColor(client.colors.default).setTitle('');
     const collector = startMessage.createMessageComponentCollector({
         filter: (interaction) => {
             if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channelId === interaction.member.voice.channelId) return true;
@@ -91,7 +93,7 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "pause") {
-            actionLogs.push(`${interaction.user} clicked button ${player.pause ? emoji.pause : emoji.resume}`);
+            actionLogs.push(`${interaction.user} clicked button ${player.paused ? emoji.pause : emoji.resume}`);
             player.pause(!player.paused);
             const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
             if (player.paused) {
@@ -100,7 +102,8 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
             };
-            startMessage.edit({ embed:[startEmbed], components: [new MessageActionRow().addComponents(buttons), new MessageActionRow().addComponents([selectMenu])] });
+            actionRow[0].setComponents(buttons);
+            startMessage.edit({ embed:[startEmbed], components: [...actionRow] });
             await interaction.reply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)], fetchReply: true });
             await delay(deleteTimeout);
             await interaction.deleteReply();
@@ -129,7 +132,8 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[3] = buttons[3].setStyle('SECONDARY');
             }
-            startMessage.edit({ embed:[startEmbed], components:[new MessageActionRow().addComponents(buttons),new MessageActionRow().addComponents([selectMenu])] });
+            actionRow[0].setComponents(buttons);
+            startMessage.edit({ embed:[startEmbed], components:[...actionRow] });
             await interaction.reply({
                 embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)],
                 fetchReply: true,
@@ -151,15 +155,17 @@ async function trackStart(client, player, track, payload){
                         .addComponents([
                             new TextInputComponent()
                             .setCustomId('songQuery')
-                            .setLabel('Input the song query (title or url)')
+                            .setLabel('Input the song query below')
                             .setStyle('SHORT')
+                            .setPlaceholder('song query? (title or url)')
+                            .setMaxLength(99)
+                            .setRequired(true)
                         ])
                     ]);
                     await interaction.showModal(modal);
                 }
                 case 'action-logs': {
-                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true });
-                    collectEmbed.setTitle('');
+                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available')], ephemeral: true });
                 }
             }
         }
@@ -172,12 +178,11 @@ async function trackStart(client, player, track, payload){
                 newButtons.push(button);
             });
             selectMenu.setDisabled(true);
+            actionRow[0].setComponents(newButtons);
+            actionRow[1].setComponents(selectMenu);
             startMessage.edit({
                 embed: [startEmbed],
-                components:[
-                    new MessageActionRow().addComponents(newButtons),
-                    new MessageActionRow().addComponents(selectMenu)
-                ]
+                components: [...actionRow]
             }).catch(_ => void 0);
         }
     });
