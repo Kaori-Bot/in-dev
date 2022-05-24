@@ -41,7 +41,7 @@ async function trackStart(client, player, track, payload){
     if (player.queueRepeat) buttons[3] = buttons[3].setStyle('SUCCESS');
     const actionRow = [
         new MessageActionRow().addComponents(buttons),
-        new MessageActionRow().addComponents(selectMenu)
+        new MessageActionRow().addComponents([selectMenu])
     ];
 
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [...actionRow] });
@@ -100,7 +100,7 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
             };
-            startMessage.edit({ embed:[startEmbed], components: [new MessageActionRow().addComponents(buttons)] });
+            startMessage.edit({ embed:[startEmbed], components: [new MessageActionRow().addComponents(buttons), new MessageActionRow().addComponents([selectMenu])] });
             await interaction.reply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)], fetchReply: true });
             await delay(deleteTimeout);
             await interaction.deleteReply();
@@ -129,7 +129,7 @@ async function trackStart(client, player, track, payload){
             else {
                 buttons[3] = buttons[3].setStyle('SECONDARY');
             }
-            startMessage.edit({ embed:[startEmbed], components:[new MessageActionRow().addComponents(buttons)] });
+            startMessage.edit({ embed:[startEmbed], components:[new MessageActionRow().addComponents(buttons),new MessageActionRow().addComponents([selectMenu])] });
             await interaction.reply({
                 embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)],
                 fetchReply: true,
@@ -147,15 +147,19 @@ async function trackStart(client, player, track, payload){
                     .setCustomId('add-song-queue')
                     .setTitle('Add song queue')
                     .addComponents([
-                        new TextInputComponent()
-                        .setCustomId('songQuery')
-                        .setLabel('Input the song query (title or url)')
-                        .setStyle('SHORT')
-                    ])
+                        new MessageActionRow()
+                        .addComponents([
+                            new TextInputComponent()
+                            .setCustomId('songQuery')
+                            .setLabel('Input the song query (title or url)')
+                            .setStyle('SHORT')
+                        ])
+                    ]);
                     await interaction.showModal(modal);
                 }
                 case 'action-logs': {
-                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true })
+                    await interaction.reply({ embeds:[collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>d).join('\n') : 'Not available')], ephemeral: true });
+                    collectEmbed.setTitle('');
                 }
             }
         }
