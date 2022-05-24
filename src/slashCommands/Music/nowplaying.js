@@ -35,7 +35,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
             .setDescription(`${emojimusic} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\`- [${song.requester}] \n\n\`${progressbar(player)}\``)
-            .setThumbnail(song.displayThumbnail("3"))
+            .setThumbnail(song.displayThumbnail('hqdefault'))
             .setColor(client.colors.default)
             .addField("\u200b", `\`${convertTime(current)} / ${convertTime(total)}\``)
          return interaction.editReply({embeds: [embed]})

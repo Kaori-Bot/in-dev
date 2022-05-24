@@ -82,7 +82,7 @@ module.exports = {
           const searchresult = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
-            .setThumbnail(track.displayThumbnail("3"))
+            .setThumbnail(track.displayThumbnail('hqdefault'))
             .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]`);
 
           player.play();
@@ -92,7 +92,7 @@ module.exports = {
           const thing = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
-            .setThumbnail(track.displayThumbnail("3"))
+            .setThumbnail(track.displayThumbnail('hqdefault'))
             .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
 
           return await interaction.editReply({ embeds: [thing] });

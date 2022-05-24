@@ -10,8 +10,8 @@ async function trackStart(client, player, track, payload){
     player.set(`currentSong`, track);
 
     const startEmbed = new MessageEmbed()
-        .setDescription(`Started playing **[${track.title}](${track.uri})** - \`[${convertTime(track.duration)}]\``)
-        .setThumbnail(track.displayThumbnail(3))
+        .setDescription(`Started playing **[${track.title}](${track.uri})**`)
+        .setImage(track.displayThumbnail('maxresdefault'))
         .setColor(client.colors.default);
 
     let buttons = [
@@ -171,7 +171,7 @@ async function trackStart(client, player, track, payload){
                         return await interaction.editReply({ embeds: [actionLogEmbed], ephemeral: true });
                     }
                     else {
-                        return await interaction.reply({ embeds: [collectEmbed], ephemeral:true });
+                        return await interaction.reply({ embeds: [actionLogEmbed], ephemeral:true });
                     }
                 }
             }
