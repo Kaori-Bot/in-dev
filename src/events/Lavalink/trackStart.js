@@ -1,10 +1,10 @@
 const { MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu, Modal, TextInputComponent } = require("discord.js");
-const { convertTime } = require('../../utils/convert.js');
+const parseDuration = require('../../utils/parseDuration.js');
 const delay = require('node:timers/promises').setTimeout;
 
 async function trackStart(client, player, track, payload){
     const emoji = client.emoji;
-    track.title = track.title > 70 ? player.subTitle(track.title) : track.title;
+    track.title = player.subTitle(track.title);
     track.startAt = new Date();
     track.startTimestamp = Date.now();
     player.set(`currentSong`, track);

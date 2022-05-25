@@ -1,5 +1,5 @@
 const { MessageEmbed, CommandInteraction, Client, Permissions, MessageButton, MessageActionRow } = require("discord.js")
-const { convertTime } = require('../../utils/convert.js');
+const parseDuration = require('../../utils/parseDuration.js');
 
 module.exports = {
   name: "grab",
@@ -34,10 +34,10 @@ module.exports = {
     const urlbutt = new MessageButton().setLabel("Search").setStyle("LINK").setURL(song.uri)
     const row2 = new MessageActionRow().addComponents(urlbutt)
     let embed = new MessageEmbed()
-        .setDescription(`**Song Details** \n\n > **__Song Name__**: [${song.title}](${song.uri}) \n > **__Song Duration__**: \`[${convertTime(song.duration)}]\` \n > **__Song Played By__**: [<@${song.requester.id}>] \n > **__Song Saved By__**: [<@${interaction.user.id}>]`)
+        .setDescription(`**Song Details** \n\n > **__Song Name__**: [${song.title}](${song.uri}) \n > **__Song Duration__**: \`[${parseDuration(song.duration)}]\` \n > **__Song Played By__**: [<@${song.requester.id}>] \n > **__Song Saved By__**: [<@${interaction.user.id}>]`)
         .setThumbnail(song.displayThumbnail())
         .setColor(client.colors.default)
-        .addField("\u200b", `\`${convertTime(current)} / ${convertTime(total)}\``)
+        .addField("\u200b", `\`${parseDuration(current)} / ${parseDuration(total)}\``)
      return user.send({embeds: [embed], components: [row2]})
 
    }

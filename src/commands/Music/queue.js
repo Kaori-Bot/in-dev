@@ -1,7 +1,7 @@
 
 const { Client, Message, MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const load = require('lodash');
-const { convertTime } = require('../../utils/convert.js');
+const parseDuration = require('../../utils/parseDuration.js');
 
 module.exports = {
     name: "queue",
@@ -26,13 +26,13 @@ module.exports = {
             if(player.queue.length === "0" || !player.queue.length) {
                 const embed = new MessageEmbed()
                 .setColor(client.colors.default)
-                .setDescription(`Now playing [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]`)
+                .setDescription(`Now playing [${player.queue.current.title}](${player.queue.current.uri}) • \`[${parseDuration(queue.current.duration)}]\` • [${player.queue.current.requester}]`)
 
                 await message.channel.send({
                     embeds: [embed]
                 }).catch(() => {});
             } else {
-                const queuedSongs = player.queue.map((t, i) => `\`${++i}\` • ${t.title} • \`[${convertTime(t.duration)}]\` • [${t.requester}]`);
+                const queuedSongs = player.queue.map((t, i) => `\`${++i}\` • ${t.title} • \`[${parseDuration(t.duration)}]\` • [${t.requester}]`);
 
                 const mapping = load.chunk(queuedSongs, 10);
                 const pages = mapping.map((s) => s.join("\n"));
@@ -41,7 +41,7 @@ module.exports = {
                 if(player.queue.size < 11) {
                     const embed = new MessageEmbed()
                     .setColor(client.colors.default)
-                    .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\`  • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
+                    .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${parseDuration(queue.current.duration)}]\`  • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                     .setTimestamp()
                     .setFooter({ text: `Page ${page + 1}/${pages.length}`, iconURL: message.author.displayAvatarURL({ dynamic: true })})
                     .setThumbnail(player.queue.current.thumbnail)
@@ -53,7 +53,7 @@ module.exports = {
                 } else {
                     const embed2 = new MessageEmbed()
                     .setColor(client.colors.default)
-                    .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
+                    .setDescription(`**Now playing**\n > [${player.queue.current.title}](${player.queue.current.uri}) • \`[${parseDuration(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                     .setTimestamp()
                     .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})
                     .setThumbnail(player.queue.current.thumbnail)
@@ -107,7 +107,7 @@ module.exports = {
 
                             const embed3 = new MessageEmbed()
                             .setColor(client.colors.default)
-                            .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
+                            .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${parseDuration(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                             .setTimestamp()
                             .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})
                             .setThumbnail(player.queue.current.thumbnail)
@@ -123,7 +123,7 @@ module.exports = {
 
                             const embed4 = new MessageEmbed()
                             .setColor(client.colors.default)
-                            .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${convertTime(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
+                            .setDescription(`**Now playing**\n[${player.queue.current.title}](${player.queue.current.uri}) • \`[${parseDuration(queue.current.duration)}]\` • [${player.queue.current.requester}]\n\n**Queued Songs**\n${pages[page]}`)
                             .setTimestamp()
                             .setFooter({ text: `Requested By ${message.author.tag}`, iconURL:  message.author.displayAvatarURL({ dynamic: true })})
                            .setThumbnail(player.queue.current.thumbnail)

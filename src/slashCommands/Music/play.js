@@ -1,5 +1,5 @@
 const { CommandInteraction, Client, MessageEmbed, Permissions } = require("discord.js");
-const { convertTime } = require('../../utils/convert.js');
+const parseDuration = require('../../utils/parseDuration.js');
 module.exports = {
   name: "play",
   description: "To play some song.",
@@ -63,7 +63,7 @@ module.exports = {
         const trackload = new MessageEmbed()
           .setColor(client.colors.default)
           .setTimestamp()
-          .setDescription(`${emojiplaylist} **Added song to queue** [${res.tracks[0].title}](${res.tracks[0].uri}) - \`[${convertTime(res.tracks[0].duration)}]\``);
+          .setDescription(`${emojiplaylist} **Added song to queue** [${res.tracks[0].title}](${res.tracks[0].uri}) - \`[${parseDuration(res.tracks[0].duration)}]\``);
         return await interaction.editReply({ embeds: [trackload] });
       case "PLAYLIST_LOADED":
         player.queue.add(res.tracks);
@@ -72,7 +72,7 @@ module.exports = {
         const playlistloadds = new MessageEmbed()
           .setColor(client.colors.default)
           .setTimestamp()
-          .setDescription(`${emojiplaylist} **Playlist added to queue** [${res.playlist.name}](${search}) - \`[${convertTime(res.playlist.duration)}]\``);
+          .setDescription(`${emojiplaylist} **Playlist added to queue** [${res.playlist.name}](${search}) - \`[${parseDuration(res.playlist.duration)}]\``);
         return await interaction.editReply({ embeds: [playlistloadds] });
       case "SEARCH_RESULT":
         const track = res.tracks[0];
@@ -83,7 +83,7 @@ module.exports = {
             .setColor(client.colors.default)
             .setTimestamp()
             .setThumbnail(track.displayThumbnail('hqdefault'))
-            .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]`);
+            .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]`);
 
           player.play();
           return await interaction.editReply({ embeds: [searchresult] });
@@ -93,7 +93,7 @@ module.exports = {
             .setColor(client.colors.default)
             .setTimestamp()
             .setThumbnail(track.displayThumbnail('hqdefault'))
-            .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
+            .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\``);
 
           return await interaction.editReply({ embeds: [thing] });
 

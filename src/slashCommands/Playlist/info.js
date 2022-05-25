@@ -1,6 +1,6 @@
 const { MessageEmbed, CommandInteraction, Client, MessageActionRow, MessageButton } = require("discord.js");
 const db = require("../../schema/playlist");
-const { convertTime } = require("../../utils/convert.js");
+const parseDuration = require("../../utils/parseDuration.js");
 const lodash = require("lodash");
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
         if (!data) {
             return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });
         }
-        let tracks = data.Playlist.map((x, i) => `\`${+i}\` - ${x.title && x.uri ? `[${x.title}](${x.uri})` : `${x.title}`}${x.duration ? ` - \`${convertTime(Number(x.duration))}\`` : ""}`);
+        let tracks = data.Playlist.map((x, i) => `\`${+i}\` - ${x.title && x.uri ? `[${x.title}](${x.uri})` : `${x.title}`}${x.duration ? ` - \`${parseDuration(Number(x.duration))}\`` : ""}`);
         const pages = lodash.chunk(tracks, 10).map((x) => x.join("\n"));
         let page = 0;
 

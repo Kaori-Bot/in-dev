@@ -1,5 +1,5 @@
 const { MessageEmbed, Permissions } = require("discord.js");
-const { convertTime } = require('../../utils/convert.js');
+const parseDuration = require('../../utils/parseDuration.js');
 
 module.exports = {
   name: "play",
@@ -61,7 +61,7 @@ module.exports = {
             .setColor(client.colors.default)
             .setTimestamp()
             .setThumbnail(track.displayThumbnail("hqdefault"))
-            .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``)
+            .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\``)
           return message.channel.send({ embeds: [thing] });
         }
       case 'PLAYLIST_LOADED':
@@ -70,7 +70,7 @@ module.exports = {
         const thing = new MessageEmbed()
           .setColor(client.colors.default)
           .setTimestamp()
-          .setDescription(`${emojiplaylist} **Added playlist to queue**\n${res.tracks.length} Songs [${res.playlist.name}](${search}) - \`[${convertTime(res.playlist.duration)}]\``)
+          .setDescription(`${emojiplaylist} **Added playlist to queue**\n${res.tracks.length} Songs [${res.playlist.name}](${search}) - \`[${parseDuration(res.playlist.duration)}]\``)
         return message.channel.send({ embeds: [thing] });
       case 'SEARCH_RESULT':
         var track = res.tracks[0];
@@ -82,7 +82,7 @@ module.exports = {
             .setColor(client.colors.default)
             .setTimestamp()
             .setThumbnail(track.displayThumbnail("hqdefault"))
-            .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`)
+            .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\`[<@${track.requester.id}>]`)
           return message.channel.send({ embeds: [thing] });
         }
     }

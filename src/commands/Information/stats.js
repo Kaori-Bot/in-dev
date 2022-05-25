@@ -1,6 +1,5 @@
 const { MessageEmbed, version } = require("discord.js");
-const moment = require("moment");
-require("moment-duration-format");
+const formatDuration = require('../../utils/formatDuration');
 const os = require('os');
 
 module.exports = {
@@ -13,19 +12,41 @@ module.exports = {
     permission: [],
     owner: false,
     execute: async (message, args, client, prefix) => {
-       const duration1 = moment.duration(message.client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
+        const duration = formatDuration(client.uptime);
         const about = message.client.emoji.about;
         let ccount = client.channels.cache.size;
         let scount = client.guilds.cache.size;
-        let mcount = 0; 
+        let usersCount = 0; 
 client.guilds.cache.forEach((guild) => {
-    mcount += guild.memberCount 
+    usersCount += guild.memberCount 
 
 })
         const embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setThumbnail(message.client.user.displayAvatarURL())
-            .setDescription(`${about} **Status**
+            .setTitle(`${client.user.username} Bot Statistics`)
+            .addFields([
+            	{ name: 'Guilds', value: client.guilds.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
+            	{ name: 'Channels', value: client.channels.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
+            	{ name: 'Users', value: usersCount.toLocaleString().replaceAll(',', '.'), inline: true },
+            	{ name: 'Library', value: `• Discord.js: v${version}\n• Node: ${process.version}` },
+            	{ name: 'Uptime', value: duration.toString() }
+            ]);
+            const vpsEmbed = new MessageEmbed()
+            	.setTitle('Virtual Private Server')
+            	.setColor(client.colors.default)
+            	.addFields([
+            		{ name: 'Host', value: `${os.type()} ${os.release()} (${os.arch()})` },
+            		{ name: 'CPU', value: `${os.cpus()[0].model}` },
+            		{ name: 'RAM', value: `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB` },
+            		{ name: 'Memory Usage', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` },
+            		{ name: 'CPU Load', value: `${(os.loadavg()[0]).toFixed(2)}%` },
+            		{ name: 'CPU Cores', value: `${os.cpus().length}` },
+            		{ name: 'Uptime', value: (formatDuration(os.uptime())).toString() }
+                        	])
+            	.setFooter(`Node Version: ${process.version}`)
+            	.setTimestamp();
+            /*.setDescription(`${about} **Status**
 **= STATISTICS =**
 **• Servers** : ${scount}
 **• Channels** : ${ccount}
@@ -44,7 +65,7 @@ client.guilds.cache.forEach((guild) => {
 > **• Free Memory** : ${(os.freemem() / 1024 / 1024).toFixed(2)} Mbps
 > **• Heap Total** : ${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} Mbps
 > **• Heap Usage** : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} Mbps
-`);
-         message.reply({embeds: [embed]});
+`);*/
+         message.reply({embeds: [embed, vpsEmbed]});
     }
 }

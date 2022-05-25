@@ -1,5 +1,5 @@
 const { CommandInteraction, Client, MessageEmbed } = require("discord.js");
-const { convertTime } = require('../../utils/convert.js')
+const parseDuration = require('../../utils/parseDuration.js')
 const ms = require('ms');
 
 module.exports = {
@@ -52,14 +52,14 @@ module.exports = {
             if (time > position) {
                 player.seek(time);
                 let thing = new MessageEmbed()
-                    .setDescription(`${emojiforward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
+                    .setDescription(`${emojiforward} **Forward**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
                 return await interaction.editReply({ embeds: [thing] });
             } else {
                 player.seek(time);
                 let thing = new MessageEmbed()
-                    .setDescription(`${emojirewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
+                    .setDescription(`${emojirewind} **Rewind**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
                 return await interaction.editReply({ embeds: [thing] });
@@ -67,7 +67,7 @@ module.exports = {
         } else {
             let thing = new MessageEmbed()
                 .setColor("RED")
-                .setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration)}\``);
+                .setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${parseDuration(duration)}\``);
             return await interaction.editReply({ embeds: [thing] });
         }
 
