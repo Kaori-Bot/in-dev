@@ -29,7 +29,7 @@ client.guilds.cache.forEach((guild) => {
             	{ name: 'Guilds', value: client.guilds.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
             	{ name: 'Channels', value: client.channels.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
             	{ name: 'Users', value: usersCount.toLocaleString().replaceAll(',', '.'), inline: true },
-            	{ name: 'Library', value: `• Discord.js: v${version}\n• Node: ${process.version}` },
+            	{ name: 'Library', value: `discord.js v${version}` },
             	{ name: 'Uptime', value: duration.toString() }
             ]);
             const vpsEmbed = new MessageEmbed()
@@ -44,8 +44,7 @@ client.guilds.cache.forEach((guild) => {
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
             		{ name: 'Uptime', value: (formatDuration(os.uptime())).toString() }
                         	])
-            	.setFooter(`Node Version: ${process.version}`)
-            	.setTimestamp();
+            	.setFooter({ text: `Node Version: ${process.version}` });
             /*.setDescription(`${about} **Status**
 **= STATISTICS =**
 **• Servers** : ${scount}

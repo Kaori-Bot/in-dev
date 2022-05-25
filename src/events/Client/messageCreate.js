@@ -3,8 +3,7 @@ const db2 = require("../../schema/dj");
 
 async function messageCreate(client, message) {
 
-        if (message.author.bot) return;
-        if (!message.guild) return;
+        if (message.author.bot || !message.guild) return;
         let prefix = client.config.prefix.toLowerCase();
         const channel = message?.channel;
 

@@ -44,9 +44,8 @@ client.guilds.cache.forEach((guild) => {
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
             		{ name: 'Uptime', value: (formatDuration(os.uptime())).toString() }
             	])
-            	.setFooter(`Node Version: ${process.version}`)
-            	.setTimestamp();/*
-            .setDescription(`${about} **Status**
+            	.setFooter({ text: `Node Version: ${process.version}` });
+            /*.setDescription(`${about} **Status**
 **= STATISTICS =**
 **• Servers** : ${scount}
 **• Channels** : ${ccount}
