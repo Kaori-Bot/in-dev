@@ -39,7 +39,7 @@ client.guilds.cache.forEach((guild) => {
             		{ name: 'Memory Usage', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` },
             		{ name: 'CPU Load', value: `${(os.loadavg()[0]).toFixed(2)}%` },
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
-            		{ name: 'Uptime', value: (formatUptime(os.uptime())).toString() }
+            		{ name: 'Uptime', value: (formatUptime(os.uptime(),true)).toString() }
             	])
             	.setFooter({ text: `Node Version: ${process.version}` });
         interaction.followUp({embeds: [embed, vpsEmbed]});

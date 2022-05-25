@@ -39,7 +39,7 @@ module.exports = {
             		{ name: 'Memory Usage', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` },
             		{ name: 'CPU Load', value: `${(os.loadavg()[0]).toFixed(2)}%` },
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
-            		{ name: 'Uptime', value: (formatUptime(os.uptime())).toString() }
+            		{ name: 'Uptime', value: (formatUptime(os.uptime(),true)).toString() }
                         	])
             	.setFooter({ text: `Node Version: ${process.version}` });
          message.reply({embeds: [embed, vpsEmbed]});
@@ -56,7 +56,7 @@ function formatUptime(uptime, force=false) {
 	days = days > 0 ? days+' days, ' : false;
 	hours = hours > 0 ? hours+' hours, ' : false;
 	minutes = minutes > 0 ? minutes+' minutes, ' : false;
-	seconds = minutes ? `and ${seconds} seconds` : seconds || 00 +' seconds';
+	seconds = minutes ? `and ${seconds} seconds` : seconds+' seconds';
 
 	return `${days||''}${hours||''}${minutes||''}${seconds||''}`;
 };
