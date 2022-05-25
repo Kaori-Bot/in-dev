@@ -56,7 +56,7 @@ function formatUptime(uptime, force=false) {
 	days = days > 0 ? days+' days, ' : false;
 	hours = hours > 0 ? hours+' hours, ' : false;
 	minutes = minutes > 0 ? minutes+' minutes, ' : false;
-	seconds = minutes ? `and ${seconds} seconds` : seconds+' seconds';
+	seconds = minutes ? `and ${seconds} seconds` : seconds || 00 +' seconds';
 
-	return days+' days, '+hours+' hours, '+minutes+' minutes, '+seconds +' seconds'
+	return `${days||''}${hours||''}${minutes||''}${seconds||''}`;
 };

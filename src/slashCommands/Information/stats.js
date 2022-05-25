@@ -23,9 +23,9 @@ client.guilds.cache.forEach((guild) => {
             .setThumbnail(interaction.client.user.displayAvatarURL())
             .setTitle(`${client.user.username} Bot Statistics`)
             .addFields([
-                { name: 'Guilds', value: client.guilds.cache.size.toLocaleString(), inline: true },
-                { name: 'Channels', value: client.channels.cache.size.toLocaleString(), inline: true },
-                { name: 'Users', value: usersCount.toLocaleString(), inline: true },
+                { name: 'Guilds', value: client.guilds.cache.size.toLocaleString().replaceAll(',','.'), inline: true },
+                { name: 'Channels', value: client.channels.cache.size.toLocaleString().replaceAll(',','.'), inline: true },
+                { name: 'Users', value: usersCount.toLocaleString().replaceAll(',','.'), inline: true },
                 { name: 'Library', value: `discord.js v${version}` },
                 { name: 'Uptime', value: duration.toString() }
             ]);
@@ -39,7 +39,7 @@ client.guilds.cache.forEach((guild) => {
             		{ name: 'Memory Usage', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` },
             		{ name: 'CPU Load', value: `${(os.loadavg()[0]).toFixed(2)}%` },
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
-            		{ name: 'Uptime', value: (formatUptime(os.uptime(), true)).toString() }
+            		{ name: 'Uptime', value: (formatUptime(os.uptime())).toString() }
             	])
             	.setFooter({ text: `Node Version: ${process.version}` });
         interaction.followUp({embeds: [embed, vpsEmbed]});
@@ -58,5 +58,5 @@ function formatUptime(uptime, force=false) {
 	minutes = minutes > 0 ? minutes+' minutes, ' : false;
 	seconds = minutes ? `and ${seconds} seconds` : seconds+' seconds';
 
-	return days+' days, '+hours+' hours, '+minutes+' minutes, '+seconds +' seconds'
+	return `${days||''}${hours||''}${minutes||''}${seconds||''}`;
 };
