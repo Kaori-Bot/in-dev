@@ -15,15 +15,14 @@ module.exports = {
           ephemeral: false
         });
         const embeds = [];
-        const embed = new MessageEmbed()
-            .setAuthor({ name: 'Lavalink Stats', iconURL: client.user.displayAvatarURL() })
-            .setColor(client.colors.default);
+        const embed = new MessageEmbed().setColor(client.colors.default);
 
-        client.manager.nodes.forEach(node => {
-            embed.setDescription(`Node \`${(node.options.identifier)}\` Connected`)
+        client.manager.nodes.forEach((node, size=0) => {
+            embed.setAuthor({ name: `Nodes #${size++}`, iconURL: client.user.displayAvatarURL({dynamic:true}) })
+            embed.setDescription(`Identifier: \`${(node.options.identifier)}\``)
             embed.addFields([
                 { name: 'Players', value: `${node.stats.playingPlayers} / ${node.stats.players}` },
-                { name: 'Memory Usage', value: `${Math.round(node.stats.memory.used / 1024 / 1024)} MB / ${Math.round(node.stats.memory.reservable / 1024 / 1024)} MB` },
+                { name: 'Memory Usage', value: `${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB` },
                 { name: 'CPU', value: `• Cores: ${node.stats.cpu.cores}\n• System Load: ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%\n• Lavalink Load: ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%` },
                 { name: 'Uptime', value: (formatUptime(node.stats.uptime)) }
             ]);
