@@ -1,5 +1,6 @@
 const { MessageEmbed, version } = require("discord.js");
 const os = require('os');
+const package = require('../../../package.json');
 
 module.exports = {
     name: "stats",
@@ -22,6 +23,7 @@ module.exports = {
             .setColor(client.colors.default)
             .setThumbnail(message.client.user.displayAvatarURL())
             .setTitle(`${client.user.username} Bot Statistics`)
+            .setDescription(`Version: \`${package.version}\``)
             .addFields([
                 { name: 'Guilds', value: client.guilds.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
                 { name: 'Channels', value: client.channels.cache.size.toLocaleString().replaceAll(',', '.'), inline: true },
@@ -32,16 +34,17 @@ module.exports = {
             const vpsEmbed = new MessageEmbed()
                 .setTitle('Virtual Private Server')
                 .setColor(client.colors.default)
-            	.addFields([
-            		{ name: 'Host', value: `${os.type()} ${os.release()} (${os.arch()})` },
-            		{ name: 'CPU', value: `${os.cpus()[0].model}` },
+                .setDescription(`${os.type()} ${os.release()} (${os.arch()})`)
+                .setThumbnail('https://cdn-icons-png.flaticon.com/512/6124/6124995.png')
+                .addFields([
+                    { name: 'CPU', value: `${os.cpus()[0].model}` },
             		{ name: 'RAM', value: `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB` },
             		{ name: 'Memory Usage', value: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB` },
             		{ name: 'CPU Load', value: `${(os.loadavg()[0]).toFixed(2)}%` },
             		{ name: 'CPU Cores', value: `${os.cpus().length}` },
             		{ name: 'Uptime', value: (formatUptime(os.uptime(),true)).toString() }
                         	])
-            	.setFooter({ text: `Node Version: ${process.version}` });
+            	.setFooter({ text: `Node: ${process.version}` });
          message.reply({embeds: [embed, vpsEmbed]});
     }
 };

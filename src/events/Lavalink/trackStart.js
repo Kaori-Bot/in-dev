@@ -21,6 +21,7 @@ async function trackStart(client, player, track, payload){
         new MessageButton().setCustomId("loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
         new MessageButton().setCustomId("skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
+    /*
     const selectMenu = [
         new MessageSelectMenu()
         .setCustomId('select_menu')
@@ -40,10 +41,11 @@ async function trackStart(client, player, track, payload){
             }
         ])
     ];
+    */
     if (player.queueRepeat) buttons[3] = buttons[3].setStyle('SUCCESS');
     const actionRow = [
         new MessageActionRow().addComponents(buttons),
-        new MessageActionRow().addComponents(selectMenu)
+        //new MessageActionRow().addComponents(selectMenu)
     ];
 
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [...actionRow] });
@@ -61,13 +63,11 @@ async function trackStart(client, player, track, payload){
         time: track.duration,
     });
     collector.on("collect", async (interaction) => {
-        const actionLogs = player.get('currentPlaying_action-logs') || [];
         const deleteTimeout = 10000;
         if (!player) return collector.stop();
         collector.resetTimer({ time: (track.duration - (player.position || 0)) });
         collectEmbed.setAuthor({ name: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL({ dynamic:true }), });
         if (interaction.customId === "previous") {
-            actionLogs.push(`${interaction.user} clicked button ${emoji.back}`);
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
             if (!prevSong || prevSong.identifier === currentSong.identifier) {
@@ -83,7 +83,6 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "stop") {
-            actionLogs.push(`${interaction.user} clicked button ${emoji.stop}`);
             await player.stop();
             await player.queue.clear();
             await interaction.reply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)], fetchReply: true });
@@ -93,7 +92,6 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "pause") {
-            actionLogs.push(`${interaction.user} clicked button ${player.paused ? emoji.pause : emoji.resume}`);
             player.pause(!player.paused);
             const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
             if (player.paused) {
@@ -109,7 +107,6 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "skip") {
-            actionLogs.push(`${interaction.user} clicked button ${emoji.skip}`);
             await player.stop();
             if (player.queue.size > 1) {
                 await interaction.reply({ embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)], fetchReply: true });
@@ -123,7 +120,6 @@ async function trackStart(client, player, track, payload){
             await interaction.deleteReply();
         }
         else if (interaction.customId === "loop") {
-            actionLogs.push(`${interaction.user} clicked button ${emoji.loop}`);
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
             if (player.queueRepeat) {
@@ -141,55 +137,19 @@ async function trackStart(client, player, track, payload){
             await delay(deleteTimeout);
             await interaction.deleteReply();
         }
-        player.set('currentPlaying_action-logs', actionLogs);
-        if (interaction.customId === 'select_menu') {
-            const data = player.get('currentPlaying_action-logs') || [];
-            const value = interaction.values[0];
-            switch(value) {
-                case 'add-queue': {
-                    const modal = new Modal()
-                    .setCustomId('add-song-queue')
-                    .setTitle('➕ Add song queue')
-                    .addComponents([
-                        new MessageActionRow()
-                        .addComponents([
-                            new TextInputComponent()
-                            .setCustomId('songQuery')
-                            .setLabel('🔎 Input the song query')
-                            .setStyle('SHORT')
-                            .setPlaceholder('song query? (title or url)')
-                            .setMaxLength(999)
-                            .setRequired(true)
-                        ])
-                    ]);
-                    await interaction.showModal(modal);
-                    break;
-                }
-                case 'action-logs': {
-                    const actionLogEmbed = collectEmbed.setTitle('Action logs data received').setDescription(data[0] ? data.map(d=>`- ${d.replace(interaction.user.toString(), '**You**')}`).join('\n') : 'Not available');
-                    if (interaction.deferred) {
-                        return await interaction.editReply({ embeds: [actionLogEmbed], ephemeral: true });
-                    }
-                    else {
-                        return await interaction.reply({ embeds: [actionLogEmbed], ephemeral:true });
-                    }
-                }
-            }
-        }
     });
     collector.on('end', () => {
-        player.set('currentPlaying_action-logs', []);
         if(startMessage) {
             const newButtons = [];
             buttons.forEach(button => {
                 button.setDisabled(true);
                 newButtons.push(button);
             });
-            selectMenu[0].setDisabled(true);
+            //selectMenu[0].setDisabled(true);
             actionRow[0].setComponents(newButtons);
-            actionRow[1].setComponents(selectMenu);
+            //actionRow[1].setComponents(selectMenu);
             startMessage.edit({
-                embed: [startEmbed],
+                embed: [startEmbed.setColor('LIGHT_GREY')],
                 components: [...actionRow]
             }).catch(_ => void 0);
         }

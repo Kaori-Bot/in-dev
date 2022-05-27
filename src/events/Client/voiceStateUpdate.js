@@ -52,9 +52,9 @@ async function voiceStateUpdate(client, oldState, newState) {
         /*const npm = player.playingMessage;
         const msg2 = await client.channels.cache
           .get(player.textChannel)
-          .send({ embeds: npm.embeds, components: npm.components });
+          .send({ embeds: npm.embeds, components: npm.components });*/
 
-        player.setPlayingMessage(msg2);*/
+        // player.setPlayingMessage(player.playingMessage);
         player.pause(false);
       }
       break;
