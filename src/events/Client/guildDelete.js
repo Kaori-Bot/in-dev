@@ -9,9 +9,9 @@ async function guildDelete(client, guild) {
         .setTitle(`📤 Left a Guild`)
         .addField('Name', `\`${guild.name}\``)
         .addField('ID', `\`${guild.id}\``)
-        .addField('Owner', `\`${owner ? owner.user.tag : "Unknown#0000"}\` ${guild.ownerId || '0'}\``)
+        .addField('Owner', `\`${owner ? owner.user.tag : "Unknown#0000"}\` ${guild.ownerId || '0'}`)
         .addField('Member Count', `\`${guild.memberCount}\` Members`)
-        .addField('Creation Date', `\`<t:${String(guild.createdTimestamp).substr(0,10)}:f>\``)
+        .addField('Creation Date', `<t:${String(guild.createdTimestamp).substr(0,10)}:f>`)
         .addField(`${client.user.username}'s Server Count`, `- \`${client.guilds.cache.size}\` Severs`)
         .setColor(client.colors.red)
         .setTimestamp();

@@ -7,8 +7,7 @@
         "start": "node index.js"
     },
     "engines": {
-        "node": ">=16.9.0",
-        "npm": ">=8.9.0"
+        "node": ">=16.9.0"
     },
     "repository": {
         "type": "git",
@@ -28,7 +27,7 @@
     "homepage": "https://github.com/Kaori-Bot/Kaori#readme",
     "dependencies": {
         "chalk": "^4.1.2",
-        "discord.js": "^13.7.0",
+        "discord.js": "^13.8.0",
         "erela.js": "^2.3.3",
         "erela.js-apple": "^1.2.5",
         "erela.js-deezer": "^1.0.7",
