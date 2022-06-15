@@ -48,7 +48,7 @@ async function trackStart(client, player, track, payload){
             const currentSong = player.queue.current;
             const prevSong = player.queue.previous;
             if (!prevSong || prevSong.identifier === currentSong.identifier) {
-                return interaction.reply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Cannot go back. Previous song not found!`)], ephemeral: true });
+                return interaction.reply({ embeds:[collectEmbed.setDescription(`**${emoji.error} Cannot go back.** Previous song not found!`)], ephemeral: true });
             }
             player.play(prevSong);
             if (currentSong) player.queue.unshift(currentSong);
@@ -56,8 +56,11 @@ async function trackStart(client, player, track, payload){
                 embeds: [collectEmbed.setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)],
                 fetchReply: true
             });
-            await delay(deleteTimeout);
-            await interaction.deleteReply();
+            interaction.fetchReply().then(msg => {
+                if(!msg) return;
+                await delay(deleteTimeout);
+                await interaction.deleteReply();
+            });
         }
         else if (interaction.customId === "track:stop") {
             await player.stop();
@@ -81,8 +84,6 @@ async function trackStart(client, player, track, payload){
             actionRow.setComponents(buttons);
             startMessage.edit({ embed:[startEmbed], components: [actionRow] });
             await interaction.reply({ embeds: [collectEmbed.setDescription(`**${actions}** current song`)], fetchReply: true }).then(i => player.setPauseResumeMessage(i));
-            await delay(deleteTimeout);
-            await interaction.deleteReply();
         }
         else if (interaction.customId === "track:skip") {
             await player.stop();
