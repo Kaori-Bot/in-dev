@@ -211,12 +211,18 @@ module.exports = Structure.extend('Player', Player => {
 			if(!type) throw new Error('type');
 			return this.set(`${type}_message`, message);
 		}
+		setPauseResumeMessage(newMessage) {
+			if(this.pauseResumeMessage) {
+				this.pauseResumeMessage.delete();
+			};
+			this.pauseResumeMessage = newMessage;
+			return this.pauseResumeMessage;
+		}
 		setPlayingMessage(newMessage) {
 			if(this.playingMessage) {
 				this.playingMessage.delete();
 			};
 			this.playingMessage = newMessage;
-			this.setMessage('nowPlaying', this.playingMessage);
 			return this.playingMessage;
 		}
 		subTitle(text, length=67) {
@@ -224,6 +230,10 @@ module.exports = Structure.extend('Player', Player => {
 			if(typeof text !== 'string') throw new TypeError('Target: text is not string!');
 			if(typeof length !== 'number') throw new TypeError('Target: length is not number!');
 			return text.length > length ? text.substr(0, length-3) + '...' : text;
+		}
+		async destroy() {
+		  if(this.collector) this.collector.stop();
+		  super.destroy();
 		}
 	}
 	return KaoriPlayer;
