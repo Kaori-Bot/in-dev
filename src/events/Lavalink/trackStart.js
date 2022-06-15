@@ -70,8 +70,8 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:pause") {
             player.pause(!player.paused);
-            const context = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
-            if (paures) paures.delete();
+            const actions = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
+
             if (player.paused) {
                 buttons[1] = buttons[1].setStyle('PRIMARY').setEmoji(emoji.resume);
             }
@@ -80,7 +80,7 @@ async function trackStart(client, player, track, payload){
             };
             actionRow.setComponents(buttons);
             startMessage.edit({ embed:[startEmbed], components: [actionRow] });
-            await interaction.reply({ embeds: [collectEmbed.setDescription(`**${context}** current song`)], fetchReply: true }).then(i => player.setPauseResumeMessage(i));
+            await interaction.reply({ embeds: [collectEmbed.setDescription(`**${actions}** current song`)], fetchReply: true }).then(i => player.setPauseResumeMessage(i));
             await delay(deleteTimeout);
             await interaction.deleteReply();
         }
