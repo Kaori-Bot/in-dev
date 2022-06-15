@@ -56,10 +56,11 @@ async function trackStart(client, player, track, payload){
                 embeds: [collectEmbed.setDescription(`${emoji.back} Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)],
                 fetchReply: true
             });
-            interaction.fetchReply().then(msg => {
+            interaction.fetchReply()
+            .then(async msg => {
                 if(!msg) return;
                 await delay(deleteTimeout);
-                await interaction.deleteReply();
+                await msg.delete();
             });
         }
         else if (interaction.customId === "track:stop") {

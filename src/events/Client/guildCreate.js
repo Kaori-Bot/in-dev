@@ -3,7 +3,7 @@ const channelId = '816627182930493460';
 
 async function guildCreate(client, guild) {
     const channel = client.channels.cache.get(channelId);
-    const owner = guild.members.cache.get(guild.ownerId);
+    const owner = await client.users.fetch(guild.ownerId);
     const embed = new MessageEmbed()
         .setThumbnail(guild.iconURL({ dynamic: true, size: 1024}))
         .setTitle(`📥 Joined a Guild`)
