@@ -198,25 +198,10 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
-		get collection() {
-			const hasGuild = this.get(this.guild);
-			if(!hasGuild) super.set(this.guild, new (require('discord.js')).Collection());
-			return this.get(this.guild);
-		}
-		getMessage(type) {
-			if(!type) throw new Error('type');
-			return this.get(`${type}_message`);
-		}
-		setMessage(type, message) {
-			if(!type) throw new Error('type');
-			return this.set(`${type}_message`, message);
-		}
-		setPauseResumeMessage(newMessage) {
-			if(this.pauseResumeMessage) {
-				this.pauseResumeMessage.delete();
-			};
-			this.pauseResumeMessage = newMessage;
-			return this.pauseResumeMessage;
+		setMessage(type, message = null) {
+			if(!type || typeof type !== 'string') throw new TypeError('MESSAGE_NAME_TYPE','!!');
+			if(this.message[type]) this.message[type].delete();
+			return this.message[type] == message;
 		}
 		setPlayingMessage(newMessage) {
 			if(this.playingMessage) {
