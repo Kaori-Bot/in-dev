@@ -43,7 +43,7 @@ async function voiceStateUpdate(client, oldState, newState) {
           .setDescription(
             `Music has been resuming, because someone back join to my voice channel.`
           );
-        const pausedMsg = player.message.voiceStatePaused;
+        const pausedMsg = player._message.voiceStatePaused;
         if(pausedMsg) {
             pausedMsg.edit({ embeds: [embed] });
             setTimeout(() => {
