@@ -199,9 +199,10 @@ module.exports = Structure.extend('Player', Player => {
 			return this;
 		}
 		setMessage(type, message = null) {
+		    if (!this._message) this._message = {};
 			if(!type || typeof type !== 'string') throw new TypeError('MESSAGE_NAME_TYPE','!!');
-			if(this.message[type]) this.message[type].delete();
-			return this.message[type] == message;
+			if(this._message[type]) this.message[type].delete();
+			return this._message[type] == message;
 		}
 		setPlayingMessage(newMessage) {
 			if(this.playingMessage) {

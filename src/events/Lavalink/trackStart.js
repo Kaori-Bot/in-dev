@@ -11,7 +11,7 @@ async function trackStart(client, player, track, payload){
 
     const startEmbed = new MessageEmbed()
         .setAuthor({ name: 'Started playing', iconURL: client.config.imageUrl.music })
-        .setDescription(`**[${track.title}](${track.uri})** [${parseDuration(track.duration)}]`)
+        .setDescription(`[${track.title}](${track.uri}) [${parseDuration(track.duration)}]`)
         .setThumbnail(track.displayThumbnail('hqdefault'))
         .setColor(client.colors.default);
 
@@ -19,11 +19,9 @@ async function trackStart(client, player, track, payload){
         new MessageButton().setCustomId("track:previous").setEmoji(emoji.back).setStyle("SECONDARY"),
         new MessageButton().setCustomId("track:pause").setEmoji(emoji.pause).setStyle("SECONDARY"),
         new MessageButton().setCustomId("track:stop").setEmoji(emoji.stop).setStyle("DANGER"),
-        new MessageButton().setCustomId("track:loop").setEmoji(emoji.loop).setStyle("SECONDARY"),
+        new MessageButton().setCustomId("track:resume").setEmoji(emoji.resume).setStyle("SECONDARY"),
         new MessageButton().setCustomId("track:skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
-
-    if (player.queueRepeat) buttons[3] = buttons[3].setStyle('PRIMARY');
     const actionRow = new MessageActionRow().addComponents(buttons);
 
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [actionRow] });
@@ -63,28 +61,24 @@ async function trackStart(client, player, track, payload){
                 });
             }
         }
+        else if (interaction.customId === "track:pause") {
+            player.pause(!player.paused);
+            await interaction.editReply({ 
+                embeds: [collectEmbed.setDescription(`**${emoji.pause} Paused** current song`)]
+            }).then(i => player.setMessage('pause_resume', i));
+            interaction.skipped = true;
+        }
         else if (interaction.customId === "track:stop") {
             await player.stop();
             await player.queue.clear();
             await interaction.editReply({ embeds: [collectEmbed.setDescription(`${emoji.stop} Stopped the music`)] });
             collector.stop('track:stop');
         }
-        else if (interaction.customId === "track:pause") {
+        else if (interaction.customId === "track:resume") {
             player.pause(!player.paused);
-            const actions = player.paused ? `${emoji.pause} Paused` : `${emoji.resume} Resume`;
-
-            if (player.paused) {
-                buttons[1] = buttons[1].setStyle('PRIMARY').setEmoji(emoji.resume);
-            }
-            else {
-                buttons[1] = buttons[1].setStyle('SECONDARY').setEmoji(emoji.pause);
-            };
-            actionRow.setComponents(buttons);
-            startMessage.edit({ embed:[startEmbed], components: [actionRow] });
-            await interaction.ediReply({ 
-                embeds: [collectEmbed.setDescription(`**${actions}** current song`)]
+            await interaction.editReply({ 
+                embeds: [collectEmbed.setDescription(`**${emoji.resume} Resume** current song`)]
             }).then(i => player.setMessage('pause_resume', i));
-            interaction.skipped = true;
         }
         else if (interaction.customId === "track:skip") {
             await player.stop();
@@ -99,21 +93,6 @@ async function trackStart(client, player, track, payload){
                     embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song... (_But song queue is not available_)`)]
                 });
             }
-        }
-        else if (interaction.customId === "track:loop") {
-            player.setQueueRepeat(!player.queueRepeat);
-            const queueRepeat = player.queueRepeat ? "Enabled" : "Disabled";
-            if (player.queueRepeat) {
-                buttons[3] = buttons[3].setStyle('PRIMARY');
-            }
-            else {
-                buttons[3] = buttons[3].setStyle('SECONDARY');
-            }
-            actionRow.setComponents(buttons);
-            startMessage.edit({ embed:[startEmbed], components:[actionRow] });
-            await interaction.editReply({
-                embeds: [collectEmbed.setDescription(`**${emoji.loop} ${queueRepeat}** loop the song queue`)],
-            });
         }
 
         await delay(1000 * 10);
