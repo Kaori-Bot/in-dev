@@ -13,7 +13,6 @@ module.exports = {
     owner: false,
     execute: async (message, args, client, prefix) => {
         const duration = formatUptime(client.uptime);
-        const about = message.client.emoji.about;
         let usersCount = 0; 
         client.guilds.cache.forEach((guild) => {
             usersCount += guild.memberCount;

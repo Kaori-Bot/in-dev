@@ -21,7 +21,7 @@ module.exports = {
 
     if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
 
-    const emojiaddsong = message.client.emoji.addsong;
+    const emojiaddsong = message.client.emoji.song_add;
     const emojiplaylist = message.client.emoji.playlist
 
     const player = client.manager.create({

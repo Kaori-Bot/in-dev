@@ -36,7 +36,7 @@ module.exports = {
         player.queue.remove(0, position - 1);
         player.stop();
 		
-		const emojijump = client.emoji.jump;
+		const emojijump = client.emoji.skip;
 
 		let thing = new MessageEmbed()
 			.setDescription(`${emojijump} Forward **${position}** Songs`)

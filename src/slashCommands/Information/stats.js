@@ -13,7 +13,6 @@ module.exports = {
         });
         
        const duration = formatUptime(client.uptime);
-        const about = interaction.client.emoji.about;
         let usersCount = 0; 
 client.guilds.cache.forEach((guild) => {
     usersCount += guild.memberCount 

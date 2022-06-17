@@ -10,7 +10,8 @@ async function trackStart(client, player, track, payload){
     player.set(`currentSong`, track);
 
     const startEmbed = new MessageEmbed()
-        .setDescription(`Started playing **[${track.title}](${track.uri})** [${track.requester}]`)
+        .Author({ name: 'Started playing', iconURL: client.config.imageUrl.music })
+        .setDescription(`**[${track.title}](${track.uri})** [${parseDuration(track.duration)}]`)
         .setThumbnail(track.displayThumbnail('hqdefault'))
         .setColor(client.colors.default);
 

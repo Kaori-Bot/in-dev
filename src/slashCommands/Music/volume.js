@@ -29,7 +29,7 @@ module.exports = {
       ephemeral: false
     });
 
-    const emojivolume = client.emoji.volumehigh;
+    const emojivolume = client.emoji.volume_high;
 
     const vol = interaction.options.getNumber("number");
 

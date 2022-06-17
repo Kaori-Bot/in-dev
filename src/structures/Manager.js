@@ -1,7 +1,6 @@
 const { Manager } = require("erela.js");
 const AppleMusic = require('erela.js-apple');
 const DeezerMusic = require('erela.js-deezer');
-const Facebook = require('erela.js-facebook');
 const Spotify = require("erela.js-spotify");
 
 class KaoriManager extends Manager {
@@ -11,7 +10,6 @@ class KaoriManager extends Manager {
 			plugins: [
 				new AppleMusic(),
 				new DeezerMusic(),
-				new Facebook(),
 				new Spotify({
 					clientID: process.env.SPOTIFY_CLIENT_ID,
 					clientSecret: process.env.SPOTIFY_CLIENT_SECRET

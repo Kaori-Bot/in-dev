@@ -28,7 +28,7 @@ module.exports = {
     const { channel } = interaction.member.voice;
     if (!interaction.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
 
-    const emojiaddsong = client.emoji.addsong;
+    const emojiaddsong = client.emoji.song_add;
     const emojiplaylist = client.emoji.playlist;
     let search = interaction.options.getString("input");
     let res;
