@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = new CommandBuilder({
     name: "node",
     description: "Check node information",
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         const embeds = [];
         const embed = new MessageEmbed().setColor(client.colors.default);
 

@@ -11,7 +11,7 @@ module.exports = new CommandBuilder({
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
-    execute: async (client, message, args) => { 
+    async execute(client, message, args) { 
 
     const { channel } = message.member.voice;
     if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});

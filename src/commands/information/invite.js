@@ -5,7 +5,7 @@ module.exports = new CommandBuilder({
     name: "invite",
     aliases: ["add"],
     description: "Send my invite link",
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         const actionRow = new MessageActionRow()
             .addComponents([
                 new MessageButton()

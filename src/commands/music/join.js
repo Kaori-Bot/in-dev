@@ -5,7 +5,7 @@ module.exports = new CommandBuilder({
     name: "join",
     description: "Join voice channel",
     inVoiceChannel: true,
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
 
         let player = message.client.manager.get(message.guildId);
         if(player && player.voiceChannel && player.state === "CONNECTED") {

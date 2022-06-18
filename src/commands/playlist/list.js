@@ -13,7 +13,7 @@ module.exports = new CommandBuilder({
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
 
         let data = await db.find({ UserId: message.author.id });
         if (!data.length) {

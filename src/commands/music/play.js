@@ -12,7 +12,7 @@ module.exports = new CommandBuilder({
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
 
         if (!message.guild.me.permissions.has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions to execute this command! please give me permission \`CONNECT\` or \`SPEAK\`.`)] });
 

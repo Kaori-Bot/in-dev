@@ -7,7 +7,7 @@ module.exports = new CommandBuilder({
     name: "stats",
     aliases: [ "status" ],
     description: "Show statistics or status bot",
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         const duration = formatUptime(client.uptime);
         let usersCount = 0; 
         client.guilds.cache.forEach((guild) => {

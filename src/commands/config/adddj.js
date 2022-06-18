@@ -9,7 +9,7 @@ module.exports = new CommandBuilder({
     permissions: {
         user: ['MANAGE_GUILD']
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
 
         let data = await db.findOne({ Guild: message.guild.id });
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);

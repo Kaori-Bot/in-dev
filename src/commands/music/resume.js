@@ -13,7 +13,7 @@ module.exports = new CommandBuilder({
     permissions: {
         onlyDj: true
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
   
 		const player = client.manager.get(message.guild.id);
         const song = player.queue.current;

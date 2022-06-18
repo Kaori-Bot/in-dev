@@ -10,7 +10,7 @@ module.exports = new CommandBuilder({
     options: {
         requiredPlaying: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
   
         const player = message.client.manager.get(message.guild.id);
         const song = player.get('data:currentSong');

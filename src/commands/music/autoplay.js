@@ -9,7 +9,7 @@ module.exports = new CommandBuilder({
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         const player = message.client.manager.get(message.guild.id);
 
         const autoplay = player.get("autoplay");

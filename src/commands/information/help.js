@@ -6,7 +6,7 @@ module.exports = new CommandBuilder({
     name: "help",
     aliases: [ "h" ],
     description: "Return all commands, or one specific command",
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         const buttons = [];
         const embed = new MessageEmbed()
             .setColor(client.colors.default)

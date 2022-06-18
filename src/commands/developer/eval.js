@@ -9,7 +9,7 @@ module.exports = new CommandBuilder({
         onlyDeveloper: true
     },
     private: true,
-    execute: async (client, message, args) => {
+    async execute(client, message, args) {
         const embed = new Discord.MessageEmbed()
             .setColor('BLUE');
 

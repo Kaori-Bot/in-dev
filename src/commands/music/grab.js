@@ -10,7 +10,7 @@ module.exports = new CommandBuilder({
         requiredPlaying: true,
         inVoiceChannel: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
   
         const player = message.client.manager.get(message.guild.id);
 

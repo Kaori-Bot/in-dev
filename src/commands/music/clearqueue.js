@@ -14,7 +14,7 @@ module.exports = new CommandBuilder({
     permissions: {
         onlyDj: true
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
   
 		const player = message.client.manager.get(message.guild.id);
 

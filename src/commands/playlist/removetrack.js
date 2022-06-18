@@ -12,7 +12,7 @@ module.exports = new CommandBuilder({
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
-    execute: async (client, message, args, prefix) => {
+    async execute(client, message, args, prefix) {
         var color = client.colors.default;
 
         const Name = args[0].replace(/_/g, ' ');
