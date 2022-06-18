@@ -61,9 +61,12 @@ async function trackStart(client, player, track, payload){
             }
         }
         else if (interaction.customId === "track:pause") {
+            if (player.paused) {
+                interaction.editReply({
+                    embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is already **\`paused\`**!`)]
+                });
+            }
             player.pause(true);
-            buttons[1] = buttons[1].setDisabled(true);
-            startMessage.edit({ components: [actionRow.setComponents(buttons)] });
             await interaction.editReply({ 
                 embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** [${track.title}](${track.uri})`)]
             });
@@ -78,13 +81,11 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:resume") {
             if(!player.paused) {
-                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** This button [${emoji.resume}] only active if the player has been paused!`)] });
+                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is not **\`paused\`**!`)] });
             }
             else {
                 player.pause(false);
                 player.setMessage('pause');
-                buttons[1] = buttons[1].setDisabled(false);
-                startMessage.edit({ components: [actionRow.setComponents(buttons)]})
                 await interaction.editReply({ 
                     embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** [${track.title}](${track.uri})`)]
                 });
@@ -105,13 +106,12 @@ async function trackStart(client, player, track, payload){
             }
         }
 
+        if (interaction.checkSkip) return null;
         await delay(1000 * 10);
-        if (!interaction.checkSkip) {
-            interaction.fetchReply().then(message => {
-                if (message) message.delete().catch(_ => void 0);
-            });
-        };
-    });
+        interaction.fetchReply().then(message => {
+            if (message) message.delete().catch(_ => void 0);
+        });
+    })
     collector.on('end', () => {
         if(startMessage) {
             const newButtons = [];
