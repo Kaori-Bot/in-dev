@@ -199,12 +199,21 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
+		clearMessage() {
+		    const messages = Object.values(this.message);
+		    if(!messages[0]) return false;
+		    messages.forEach(message => {
+		        if(message) message.delete().catch(_ => void 0)
+		    });
+		    return true;
+		}
 		setMessage(type, message = null) {
 			if(!type || typeof type !== 'string') throw new TypeError('TYPE_NAME','Type is invalid!');
 			if(this.message[type]) this.message[type].delete().catch(_ => void 0);
 			return this.message[type] = message;
 		}
 		setPlayingMessage(newMessage) {
+		    this.clearMessage();
 			if(this.playingMessage) {
 				this.playingMessage.delete().catch(_ => void 0);
 			};
@@ -218,11 +227,8 @@ module.exports = Structure.extend('Player', Player => {
 			return text.length > length ? text.substr(0, length-3) + '...' : text;
 		}
 		async destroy() {
-		  const messages = Object.values(this.message);
 		  if(this.collector) this.collector.stop();
-		  if(messages[0]) messages.forEach(msg => {
-		      if(msg) msg.delete().catch(_ => void 0);
-		  });
+		  this.clearMessage();
 		  super.destroy();
 		}
 	}

@@ -42,7 +42,7 @@ module.exports = new CommandBuilder({
             .setDescription(`**${emojiresume} Resumed** [${song.title}](${song.uri})`)
             .setColor(client.colors.default)
             .setTimestamp()
-        return message.reply({embeds: [embed]});
+        return message.reply({embeds: [embed]}).then(msg => setTimeout(() => msg.delete(), 10000));
 	
     }
 });

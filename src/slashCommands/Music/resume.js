@@ -17,7 +17,8 @@ module.exports = {
 
   run: async (client, interaction) => {
     await interaction.deferReply({
-      ephemeral: false
+      ephemeral: false,
+      fetchReply: true
     });
 
     const player = interaction.client.manager.get(interaction.guildId);
@@ -46,7 +47,7 @@ module.exports = {
       .setDescription(`**${emojiresume} | Resumed** [${song.title}](${song.uri})`)
       .setColor(client.colors.default)
       .setTimestamp()
-    return interaction.editReply({ embeds: [embed] });
+    return interaction.editReply({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete(), 10000));
 
   }
 };
