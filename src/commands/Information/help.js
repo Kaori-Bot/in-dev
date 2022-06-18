@@ -53,7 +53,7 @@ function createInteractionCollector(m) {
     });
     collector.on('collect', async(interaction) => {
         await interaction.deferReply({ ephemeral: true });
-        collector.resetTimer({ time: 60000, idle: 30000 });
+        collector.resetTimer({ time: 120000, idle: 60000 });
         const value = interaction.customId;
 
         if(interaction.isButton()){
