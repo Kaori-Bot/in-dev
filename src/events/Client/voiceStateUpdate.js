@@ -38,16 +38,17 @@ async function voiceStateUpdate(client, oldState, newState) {
     case "JOIN":
       if (stateChange.members.size === 1 && player.paused) {
         const embed = new MessageEmbed()
-          .setTitle(`Resuming...`)
+          .setTitle(`Voice Channel Update`)
           .setColor(client.colors.green)
           .setDescription(
-            `Music has been resuming, because someone back join to my voice channel.`
+            `**${client.emoji.resume} |** Music has been resuming, because someone back join to my voice channel.`
           );
         const pausedMsg = player._message.voiceStatePaused;
         if(pausedMsg) {
             pausedMsg.edit({ embeds: [embed] });
             setTimeout(() => {
                 pausedMsg.delete();
+                clearInterval(pausedMsg.interval);
                 player.setMessage('voiceStatePaused', null);
             }, 10000);
         }
@@ -66,10 +67,17 @@ async function voiceStateUpdate(client, oldState, newState) {
         player.pause(true);
 
         const embed = new MessageEmbed()
-          .setTitle(`Paused!`)
+          .setTitle(`Voice Channel Empty`)
           .setColor(client.colors.red)
-          .setDescription(`Music has been paused, because everybody left my voice channel.`);
-        if (player.playingMessage) player.playingMessage.reply({ embeds: [embed] }).then(message => player.setMessage('voiceStatePaused', message));
+          .setDescription(`**${client.emoji.pause} |** Music has been paused, because everybody left my voice channel.`);
+        if (player.playingMessage) {
+            player.playingMessage.reply({ embeds: [embed] }).then(message => {
+                message.interval = setInterval(() => {
+                    if(player.collector) player.collector.resetTimer({ time: player.queue.current.duration - (player.position || 0) });
+                }, 1000);
+                player.setMessage('voiceStatePaused', message)
+            });
+        }
       }
       break;
   }

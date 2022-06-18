@@ -78,29 +78,29 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:resume") {
             if(!player.paused) {
-                await interaction.editReply({ content: `**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!` });
+                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!`)] });
             }
             else {
                 player.pause(false);
                 buttons[1] = buttons[1].setDisabled(false);
                 startMessage.edit({ components: [actionRow.setComponents(buttons)]})
                 await interaction.editReply({ 
-                    embeds: [collectEmbed.setDescription(`**${emoji.resume} Resume** current song`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** current song`)]
                 });
-                player.setMessage('pause_resume', null);
+                player.setMessage('pause_resume');
             };
         }
         else if (interaction.customId === "track:skip") {
             await player.stop();
             if (player.queue.size !== 0) {
                 await interaction.editReply({
-                    embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song...`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** current song...`)]
                 });
             }
             else {
                 collector.stop();
                 await interaction.editReply({ 
-                    embeds: [collectEmbed.setDescription(`**${emoji.skip} Skipped** current song... (_But song queue is not available_)`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** current song... (_But, queue next song is not available_)`)]
                 });
             }
         }
