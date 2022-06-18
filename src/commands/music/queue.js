@@ -29,8 +29,8 @@ module.exports = new CommandBuilder({
                     return `[\`${++i}.\`] [${player.subText(track.title)}](${track.uri}) [\`${parseDuration(track.duration)}\`] by ${track.requester}`;
                 });
 
-                const mapping = load.chunk(queuedSongs, 10);
-                const pages = mapping.map((s) => s.join("\n"));
+                const mapping = await load.chunk(await queuedSongs, 10);
+                const pages = await mapping.map((s) => s.join("\n"));
                 let page = 0;
 
                 if(player.queue.size < 11) {
