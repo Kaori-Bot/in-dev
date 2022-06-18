@@ -108,7 +108,7 @@ async function trackStart(client, player, track, payload){
         await delay(1000 * 10);
         if (!interaction.checkSkip) {
             interaction.fetchReply().then(message => {
-                if (message) await message.deleteReply();
+                if (message) message.delete().catch(_ => void 0);
             });
         };
     });
