@@ -13,14 +13,14 @@ module.exports = new CommandBuilder({
     execute: async (client, message, args, prefix) => {
   
         const player = message.client.manager.get(message.guild.id);
-        const song = player.queue.current
-
-        let embed = new MessageEmbed()
+        const song = player.get('data:currentSong');
+        const embed = new MessageEmbed()
             .setAuthor({ name: 'Now playing', iconURL: client.config.imageUrl.music })
-            .setDescription(`[${song.title}](${song.uri}) by [${song.requester}]`)
+            .setDescription(`[${song.title}](${song.uri}) by ${song.requester}`)
             .setThumbnail(song.displayThumbnail('hqdefault'))
             .setColor(client.colors.default)
-            .addField("\u200b", `\`${parseDuration(player.position)} ${progressBar(player).default} ${parseDuration(song.duration)}\``);
+            .addField("\u200b", `${parseDuration(player.position)} ${progressBar(player.position, song.duration).default} ${parseDuration(song.duration)}`);
+
         return message.channel.send({embeds: [embed]})
     }
 });

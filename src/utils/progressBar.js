@@ -1,12 +1,16 @@
-function progressBar(player, size=22) {
-	const line = "▬";
-	const slider = "🔲";
-	if (!player || !player.queue.current) return { default: `${slider}${line.repeat(size - 1)}]` };
-	const current = player.queue.current.duration !== 0 ? player.position : player.queue.current.duration;
-	const total = player.queue.current.duration;
-	let bar = current > total ? [line.repeat(size / 2 * 2), (current / total) * 100] : [line.repeat(Math.round(size / 2 * (current / total))).replace(/.$/, slider) + line.repeat(size - Math.round(size * (current / total)) + 1), current / total];
-	if (!String(bar).includes(slider)) return { default: `${slider}${line.repeat(size - 1)}` };
-	return { default: bar[0], time: bar[1] };
+function progressBar(value, maxValue, size=22) {
+    const emoji = ['🔲','▬'];
+    if (!value || !maxValue) return { default: `${emoji[0]}${emoji[1].repeat(size)}`, persentage: '0%' };
+    const percentage = value / maxValue;
+    const progress = Math.round(size * percentage); 
+    const emptyProgress = size - progress;
+
+    const progressText = emoji[1].repeat(progress);
+    const emptyProgressText = emoji[1].repeat(emptyProgress);
+    const progressPercentage = Math.round(percentage * 100) + "%";
+
+    const progressLine = progressText + emoji[0] + emptyProgressText;
+    return { default: progressLine, percentage: progressPercentage };
 };
 
 module.exports = progressBar;
