@@ -43,7 +43,7 @@ module.exports = {
 
     player.stop();
     return await interaction.editReply({
-      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`${emojiskip} **Skipped** \n[${player.queue.current.title}](${player.queue.current.uri})`)]
+      embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`**${emojiskip} | Skipped** [${player.queue.current.title}](${player.queue.current.uri})`)]
     }).catch(() => { });
   }
 }

@@ -6,7 +6,7 @@ module.exports = {
     },
     nodes: [{
         host: process.env.NODE_HOST,
-        identifier: process.env.NODE_ID || "main",
+        identifier: process.env.NODE_ID || "kaori@main",
         port: parseInt(process.env.NODE_PORT || "2333"),
         password: process.env.NODE_PASSWORD,
         secure: Boolean(process.env.NODE_SECURE)

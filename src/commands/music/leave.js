@@ -20,10 +20,9 @@ module.exports = new CommandBuilder({
         const emojiLeave = message.client.emoji.leave;
 
         player.destroy();
-        
         let embed = new MessageEmbed()
             .setColor(client.colors.default)
-            .setDescription(`${emojiLeave} **Leave the voice channel**\nThank you for using ${message.client.user.username}!`)
+            .setDescription(`**${emojiLeave} |** Leaving the voice channel. Thank you for using my service!`);
           return message.reply({embeds: [embed]});
 
     }

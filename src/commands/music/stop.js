@@ -33,7 +33,7 @@ module.exports = new CommandBuilder({
 		    let embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
-            .setDescription(`${emojistop} Stopped the music`)
+            .setDescription(`**${emojistop} |** Stopped the music`)
         message.reply({embeds: [embed]});
 	
   	}

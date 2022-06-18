@@ -43,7 +43,7 @@ module.exports = {
     player.pause(false);
 
     let embed = new MessageEmbed()
-      .setDescription(`${emojiresume} **Resumed**\n[${song.title}](${song.uri})`)
+      .setDescription(`**${emojiresume} | Resumed** [${song.title}](${song.uri})`)
       .setColor(client.colors.default)
       .setTimestamp()
     return interaction.editReply({ embeds: [embed] });

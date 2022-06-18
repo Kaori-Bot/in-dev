@@ -4,7 +4,7 @@ const delay = require('node:timers/promises').setTimeout;
 
 async function trackStart(client, player, track, payload){
     const emoji = client.emoji;
-    track.title = player.subTitle(track.title);
+    track.title = player.subText(track.title);
     track.startAt = Date.now();
     player.set(`data:currentSong`, track);
 
@@ -49,14 +49,14 @@ async function trackStart(client, player, track, payload){
             const prevSong = player.queue.previous;
             if (!prevSong || prevSong.identifier === currentSong.identifier) {
                 await interaction.editReply({
-                    embeds:[collectEmbed.setDescription(`**${emoji.error} |** Cannot go back. Previous song not found!`)], ephemeral: true
+                    embeds:[collectEmbed.setDescription(`**${emoji.error} | Cannot go back!** Previous song queue not found!!`)], ephemeral: true
                 });
             }
             else {
                 player.play(prevSong);
                 if (currentSong) player.queue.unshift(currentSong);
                 await interaction.editReply({
-                    embeds: [collectEmbed.setDescription(`**${emoji.back} |** Played the previous song [${player.subTitle(prevSong.title)}](${prevSong.uri})`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.back} |** Played the previous song queue [${player.subText(prevSong.title)}](${prevSong.uri})`)]
                 });
             }
         }
@@ -65,9 +65,9 @@ async function trackStart(client, player, track, payload){
             buttons[1] = buttons[1].setDisabled(true);
             startMessage.edit({ components: [actionRow.setComponents(buttons)] });
             await interaction.editReply({ 
-                embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** current song`)]
+                embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** [${track.title}](${track.uri})`)]
             });
-            player.setMessage('pause_resume', await interaction.fetchReply());
+            player.setMessage('pause', await interaction.fetchReply());
             interaction.checkSkip = true;
         }
         else if (interaction.customId === "track:stop") {
@@ -78,16 +78,15 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:resume") {
             if(!player.paused) {
-                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!`)] });
+                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** This button [${emoji.resume}] only active if the player has been paused!`)] });
             }
             else {
-                const pr_msg = player._message.pause_resume;
                 player.pause(false);
+                player.setMessage('pause');
                 buttons[1] = buttons[1].setDisabled(false);
-                if (pr_msg) pr_msg.delete();
                 startMessage.edit({ components: [actionRow.setComponents(buttons)]})
                 await interaction.editReply({ 
-                    embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** current song`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** [${track.title}](${track.uri})`)]
                 });
             };
         }
@@ -95,13 +94,13 @@ async function trackStart(client, player, track, payload){
             await player.stop();
             if (player.queue.size !== 0) {
                 await interaction.editReply({
-                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** current song...`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** [${track.title}](${track.uri})`)]
                 });
             }
             else {
                 collector.stop();
                 await interaction.editReply({ 
-                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** current song... (_But, queue next song is not available_)`)]
+                    embeds: [collectEmbed.setDescription(`**${emoji.skip} | Skipped** [${track.title}](${track.uri}) (_But, queue next song is not available. I only have choice to stop music_)`)]
                 });
             }
         }

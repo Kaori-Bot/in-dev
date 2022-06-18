@@ -30,15 +30,16 @@ module.exports = new CommandBuilder({
         if (!player.paused) {
             let embed = new MessageEmbed()
                 .setColor("RED")
-                .setDescription(`${emojiresume} The player is already **resumed**.`)
+                .setDescription(`**${emojiresume} |** The player is already **\`resumed\`**.`)
                 .setTimestamp()
           return message.reply({embeds: [embed]});
         }
 
         player.pause(false);
+        player.setMessage('pause');
 
         let embed = new MessageEmbed()
-            .setDescription(`${emojiresume} **Resumed**\n[${song.title}](${song.uri})`)
+            .setDescription(`**${emojiresume} Resumed** [${song.title}](${song.uri})`)
             .setColor(client.colors.default)
             .setTimestamp()
         return message.reply({embeds: [embed]});

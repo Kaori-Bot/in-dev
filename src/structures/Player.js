@@ -12,6 +12,7 @@ module.exports = Structure.extend('Player', Player => {
 			this.vaporwave = false;
 			this.bassboost = false;
 			this.distortion = false;
+			this.message = {};
 		}
 		set8D(value) {
 			if(typeof value !== "boolean") throw new RangeError(`[ set8D Function Error ]: Please provide a valid value (true/false).`);
@@ -199,26 +200,29 @@ module.exports = Structure.extend('Player', Player => {
 			return this;
 		}
 		setMessage(type, message = null) {
-		    if (!this._message) this._message = {};
-			if(!type || typeof type !== 'string') throw new TypeError('MESSAGE_NAME_TYPE','!!');
-			if(this._message[type]) this._message[type].delete();
-			return this._message[type] = message;
+			if(!type || typeof type !== 'string') throw new TypeError('TYPE_NAME','Type is invalid!');
+			if(this.message[type]) this.message[type].delete().catch(_ => void 0);
+			return this.message[type] = message;
 		}
 		setPlayingMessage(newMessage) {
 			if(this.playingMessage) {
-				this.playingMessage.delete();
+				this.playingMessage.delete().catch(_ => void 0);
 			};
 			this.playingMessage = newMessage;
 			return this.playingMessage;
 		}
-		subTitle(text, length=67) {
-			if(!text) throw new RangeError('Target: invalid!');
-			if(typeof text !== 'string') throw new TypeError('Target: text is not string!');
-			if(typeof length !== 'number') throw new TypeError('Target: length is not number!');
+		subText(text, length=67) {
+			if(!text) throw new RangeError('[TARGET_TEXT]','Text is invalid!');
+			if(typeof text !== 'string') throw new TypeError('[TARGET_TEXT_TYPE]', 'Text is not string!');
+			if(typeof length !== 'number') throw new TypeError('[TARGET_LENGTH_TYPE]','Length is not number!');
 			return text.length > length ? text.substr(0, length-3) + '...' : text;
 		}
 		async destroy() {
+		  const messages = Object.values(this.messages);
 		  if(this.collector) this.collector.stop();
+		  if(messages[0]) messages.forEach(msg => {
+		      if(msg) msg.delete().catch(_ => void 0);
+		  });
 		  super.destroy();
 		}
 	}

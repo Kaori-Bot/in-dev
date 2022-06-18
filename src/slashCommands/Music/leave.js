@@ -28,7 +28,7 @@ module.exports = {
 
     let embed = new MessageEmbed()
       .setColor(client.colors.default)
-      .setDescription(`${emojiLeave} **Leave the voice channel**\nThank you for using ${interaction.client.user.username}!`)
+      .setDescription(`**${emojiLeave} |** Leaving the voice channel. Thank you for using my service!`);
     return interaction.editReply({ embeds: [embed] });
 
   }

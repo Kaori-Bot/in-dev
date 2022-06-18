@@ -21,6 +21,6 @@ module.exports = new CommandBuilder({
             .setColor(client.colors.default)
             .addField("\u200b", `${parseDuration(player.position)} ${progressBar(player.position, song.duration).default} ${parseDuration(song.duration)}`);
 
-        return message.channel.send({embeds: [embed]})
+        return message.channel.send({embeds: [embed]}).then(msg=>player.setMessage('nowPlaying', msg));
     }
 });

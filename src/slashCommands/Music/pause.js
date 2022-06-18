@@ -46,7 +46,7 @@ module.exports = {
     let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
-      .setDescription(`${emojipause} **Paused**\n[${song.title}](${song.uri})`)
+      .setDescription(`**${emojipause} | Paused** [${song.title}](${song.uri})`)
     return interaction.editReply({ embeds: [embed] });
 
   }

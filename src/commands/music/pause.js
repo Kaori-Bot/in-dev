@@ -27,7 +27,7 @@ module.exports = new CommandBuilder({
         if (player.paused) {
             let embed = new MessageEmbed()
                 .setColor("RED")
-                .setDescription(`${emojipause} The player is already paused.`)
+                .setDescription(`**${emojipause} |** The player is already \`paused\`.`)
                 .setTimestamp()
                 return message.reply({embeds: [embed]});
         }
@@ -39,8 +39,8 @@ module.exports = new CommandBuilder({
         let embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
-            .setDescription(`${emojipause} **Paused**\n[${song.title}](${song.uri})`)
-          return message.reply({embeds: [embed]});
+            .setDescription(`**${emojipause} | Paused** [${song.title}](${song.uri})`)
+          return message.reply({embeds: [embed]}).then(msg=>player.setMessage('pause', msg));
 
     }
 });

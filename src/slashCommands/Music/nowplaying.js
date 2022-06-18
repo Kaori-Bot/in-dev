@@ -17,7 +17,8 @@ module.exports = {
 
     run: async (client, interaction) => {
         await interaction.deferReply({
-          ephemeral: false
+          ephemeral: false,
+          fetchReply: true
         });
          const player = interaction.client.manager.get(interaction.guildId);
 
@@ -36,7 +37,7 @@ module.exports = {
             .setColor(client.colors.default)
             .addField("\u200b", `${parseDuration(player.position)} ${progressBar(player.position, song.duration).default} ${parseDuration(song.duration)}`);
 
-         return interaction.editReply({embeds: [embed]})
-            
+         interaction.editReply({embeds: [embed]});
+         return interaction.fetchReply().then(msg=>player.setMessage('nowPlaying', msg));
     }
 };

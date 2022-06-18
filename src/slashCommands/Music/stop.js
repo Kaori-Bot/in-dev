@@ -41,7 +41,7 @@ module.exports = {
     let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
-      .setDescription(`${emojistop} Stopped the music`)
+      .setDescription(`**${emojistop} |** Stopped the music`)
     return interaction.editReply({ embeds: [embed] });
 
   }

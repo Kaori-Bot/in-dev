@@ -43,7 +43,7 @@ async function voiceStateUpdate(client, oldState, newState) {
           .setDescription(
             `**${client.emoji.resume} |** Music has been resuming, because someone back join to my voice channel.`
           );
-        const pausedMsg = player._message.voiceStatePaused;
+        const pausedMsg = player.message.voiceStatePaused;
         if(pausedMsg) {
             pausedMsg.edit({ embeds: [embed] });
             setTimeout(() => {

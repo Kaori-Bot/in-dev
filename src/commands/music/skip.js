@@ -21,16 +21,14 @@ module.exports = new CommandBuilder({
          return message.reply({embeds: [embed]});
         }
         const song = player.queue.current;
-
-           player.stop();
-           
+        player.stop();
 		const emojiskip = message.client.emoji.skip;
 
 		let embed = new MessageEmbed()
-			.setDescription(`${emojiskip} **Skipped**\n[${song.title}](${song.uri})`)
+			.setDescription(`**${emojiskip} | Skipped** [${song.title}](${song.uri})`)
 			.setColor(client.colors.default)
 			.setTimestamp()
-		return message.reply({embeds: [embed]}).then(msg => { setTimeout(() => {msg.delete()}, 3000);
-       })
+		return message.reply({embeds: [embed]}).then(msg =>  setTimeout(() => msg.delete(), 5000)
+       )
     }
 });
