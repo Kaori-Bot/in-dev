@@ -4,7 +4,7 @@ const db = require("../../schema/playlist");
 module.exports = {
     name: "savequeue",
     description: "Save current playing queue in your playlist.",
-    player: true,
+    requiredPlaying: true,
     inVoiceChannel: true,
     sameVoiceChannel: true,
     options: [

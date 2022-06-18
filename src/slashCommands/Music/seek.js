@@ -6,8 +6,8 @@ module.exports = {
     name: "seek",
     description: "Seek the currently playing song",
     permissions: [],
-    player: true,
-    dj: true,
+    requiredPlaying: true,
+    permissions: { onlyDj: true },
     inVoiceChannel: true,
     sameVoiceChannel: true,
     options: [

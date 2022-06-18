@@ -1,20 +1,22 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
-  	name: "remove",
-    category: "Music",
-  	description: "Remove song from the queue",
-	args: true,
+module.exports = new CommandBuilder({
+    name: "remove",
+    description: "Remove song from the queue",
+    args: true,
     usage: "<Number of song in queue>",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-	 execute: async (message, args, client, prefix) => {
-  
-		const player = client.manager.get(message.guild.id);
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
+
+        const player = client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
             let thing = new MessageEmbed()
@@ -44,4 +46,4 @@ module.exports = {
 		  return message.reply({embeds: [thing]});
 	
     }
-};
+});

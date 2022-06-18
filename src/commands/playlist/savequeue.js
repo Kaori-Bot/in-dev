@@ -1,19 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "savequeue",
     aliases: ["plsaveq"],
-    category: "Playlist",
     description: "Save current playing queue in your playlist.",
-    args: false,
     usage: "<playlist name>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         const Name = args[0].replace(/_/g, ' ');
         const player = message.client.manager.get(message.guild.id);
@@ -68,4 +67,4 @@ module.exports = {
         return message.channel.send({ embeds: [embed] })
 
     }
-}
+});

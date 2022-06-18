@@ -5,7 +5,7 @@ module.exports = {
   name: "grab",
   description: "Grabs And Sends You The Song That Is Playing At The Moment",
   permissions: [],
-  player: true,
+  requiredPlaying: true,
   inVoiceChannel: true,
   sameVoiceChannel: true,
   /**

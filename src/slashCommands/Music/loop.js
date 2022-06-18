@@ -4,8 +4,8 @@ module.exports = {
   name: "loop",
   description: "Toggle music loop",
   permissions: [],
-  player: true,
-  dj: true,
+  requiredPlaying: true,
+  permissions: { onlyDj: true },
   inVoiceChannel: true,
   sameVoiceChannel: true,
   options: [

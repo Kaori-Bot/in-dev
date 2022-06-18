@@ -29,7 +29,7 @@ async function interactionCreate(client, interaction) {
                 return await interaction.reply({ content: `You need this \`${SlashCommands.permissions.join(", ")}\` permission to use this command `, ephemeral: true })
             }
             const player = interaction.client.manager.get(interaction.guildId);
-            if (SlashCommands.player && !player) {
+            if (SlashCommands.requiredPlayer && !player) {
                 return await interaction.editReply({
                     content: `There is no player for this guild.`, ephemeral: true
                 }).catch(() => { });
@@ -48,7 +48,7 @@ async function interactionCreate(client, interaction) {
                     }
                 }
             }
-            if (SlashCommands.dj) {
+            if (SlashCommands.permissions ? SlashCommands.permissions.onlyDj : false) {
                 let data = await db2.findOne({ Guild: interaction.guildId })
                 let perm = Permissions.FLAGS.MUTE_MEMBERS;
                 if (data) {

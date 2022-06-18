@@ -1,16 +1,12 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageActionRow, MessageEmbed, MessageButton, MessageSelectMenu } = require("discord.js");
 const categoryEmoji = require('../emoji.json');
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "help",
-    category: "Information",
     aliases: [ "h" ],
     description: "Return all commands, or one specific command",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    execute: async (message, args, client, prefix) => {
+    execute: async (client, message, args, prefix) => {
         const buttons = [];
         const embed = new MessageEmbed()
             .setColor(client.colors.default)
@@ -18,7 +14,7 @@ module.exports = {
             .setDescription('This is my available commands list.')
             .setFooter({ text: `Choose a list from the buttons below` })
             .setFields([]);
-        const categories = client.commands.categories.filter(category => category.toLowerCase() !== 'developer');
+        const categories = client.commands.categories.filter(category => category !== 'developer');
         for (const category of categories) {
             const commands = client.commands.filter(cmd => cmd.category == category);
             const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
@@ -40,7 +36,7 @@ module.exports = {
         const actionRow = new MessageActionRow().addComponents(buttons);
         message.reply({ embeds: [embed], components: [actionRow] }).then(m => createInteractionCollector(m));
     }
-};
+});
 
 function createInteractionCollector(m) {
     const client = m.client;

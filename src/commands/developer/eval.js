@@ -5,8 +5,11 @@ module.exports = new CommandBuilder({
     name: "eval",
     description: "Eval Code",
     usage: "<code>",
+    permissions: {
+        onlyDeveloper: true
+    },
     private: true,
-    execute: async (message, args, client) => {
+    execute: async (client, message, args) => {
         const embed = new Discord.MessageEmbed()
             .setColor('BLUE');
 

@@ -22,8 +22,6 @@ async function messageCreate(client, message) {
         if (!command) return;
         if (!message.guild.me.permissions.has(Permissions.FLAGS.SEND_MESSAGES)) return await message.author.dmChannel.send({ content: `I don't have **\`SEND_MESSAGES\`** permission in <#${message.channelId}> to execute this **\`${command.name}\`** command.` }).catch(() => { });
 
-        if (!message.guild.me.permissions.has(Permissions.FLAGS.VIEW_CHANNEL)) return;
-
         if (!message.guild.me.permissions.has(Permissions.FLAGS.EMBED_LINKS)) return await message.channel.send({ content: `I don't have **\`EMBED_LINKS\`** permission to execute this **\`${command.name}\`** command.` }).catch(() => { });
 
         const embed = new MessageEmbed()
@@ -42,30 +40,31 @@ async function messageCreate(client, message) {
             return message.channel.send({ embeds: [embed] });
         }
 
-        if (command.permission && !message.member.permissions.has(command.permission)) {
+        if (command.permissions.user && !message.member.permissions.has(command.permissions.user)) {
             embed.setDescription("You can't use this command.");
             return message.channel.send({ embeds: [embed] });
-        }
+        };
         if (!channel.permissionsFor(message.guild.me)?.has(Permissions.FLAGS.EMBED_LINKS) && client.user.id !== userId) {
             return channel.send({ content: `Error: I need \`EMBED_LINKS\` permission to work.` });
         }
-        if (command.isDeveloperOnly && message.author.id !== `${client.config.developerId}`) {
+        if (command.permissions.onlyDeveloper && message.author.id !== client.config.developerId) {
             return message.react('❌');
-        }
+        };
+        if (command.private && message.author.id !== client.config.developerId) return;
 
         const player = message.client.manager.get(message.guild.id);
 
-        if (command.player && !player) {
+        if (command.options.requiredPlaying && !player) {
             embed.setDescription("There is no player for this guild.");
             return message.channel.send({ embeds: [embed] });
         }
 
-        if (command.inVoiceChannel && !message.member.voice.channelId) {
+        if (command.options.inVoiceChannel && !message.member.voice.channelId) {
             embed.setDescription("You must be in a voice channel!");
             return message.channel.send({ embeds: [embed] });
         }
 
-        if (command.sameVoiceChannel) {
+        if (command.options.sameVoiceChannel) {
             if (message.guild.me.voice.channel) {
                 if (message.guild.me.voice.channelId !== message.member.voice.channelId) {
                     embed.setDescription(`You must be in the same channel as ${message.client.user}!`);
@@ -73,7 +72,7 @@ async function messageCreate(client, message) {
                 }
             }
         }
-        if (command.dj) {
+        if (command.permissions.onlyDj) {
             let data = await db2.findOne({ Guild: message.guild.id })
             let perm = Permissions.FLAGS.MUTE_MEMBERS;
             if (data) {
@@ -91,7 +90,7 @@ async function messageCreate(client, message) {
         }
 
         try {
-            command.execute(message, args, client, prefix);
+            command.execute(client, message, args, prefix);
         } catch (error) {
             console.log(error);
             embed.setDescription("There was an error executing that command.\nI have contacted the owner of the bot to fix it immediately.");

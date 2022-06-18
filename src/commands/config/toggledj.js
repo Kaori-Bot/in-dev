@@ -1,16 +1,15 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/dj");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "toggledj",
-    category: "Config",
-    description: " Toggle Dj mode",
-    args: false,
-    usage: "",
-    aliases: ["romdj"],
-    permission: ['MANAGE_GUILD'],
-    owner: false,
-    execute: async (message, args, client, prefix) => {
+    description: "Toggle Dj mode",
+    aliases: ["tgdj"],
+    permissions: {
+        user: ['MANAGE_GUILD'],
+    },
+    execute: async (client, message, args, prefix) => {
 
         let data = await db.findOne({ Guild: message.guild.id });
 
@@ -26,4 +25,4 @@ module.exports = {
            return await message.reply({embeds: [new MessageEmbed().setDescription(`Disabled DJ Mode.`).setColor(client.colors.default)]})
         }
     }
-}
+});

@@ -1,21 +1,16 @@
-
+const CommandBuilder = require('../CommandBuilder');
 const { Client, Message, MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const load = require('lodash');
 const parseDuration = require('../../utils/parseDuration.js');
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "queue",
-    category: "Music",
     aliases: ["q"],
     description: "Show the music queue and now playing.",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: false,
-    sameVoiceChannel: false,
-   execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true
+    },
+    execute: async (client, message, args, prefix) => {
   
             const player = client.manager.get(message.guild.id);
        const queue = player.queue;  
@@ -144,4 +139,4 @@ module.exports = {
                 }
             }
        }
-  };
+  });

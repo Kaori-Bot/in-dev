@@ -1,20 +1,17 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
   	name: "shuffle",
-    category: "Music",
     description: "Shuffle queue",
-    args: false,
-    usage: "",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
- execute: async (message, args, client, prefix) => {
-    
-		const player = client.manager.get(message.guild.id);
+    permissions: { onlyDj: true },
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
+        const player = client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
             let thing = new MessageEmbed()
@@ -31,6 +28,5 @@ module.exports = {
             .setColor(client.colors.default)
             .setTimestamp()
         return message.reply({embeds: [thing]}).catch(error => client.logger.log(error, "error"));
-	
     }
-};
+});

@@ -3,7 +3,7 @@ const { MessageEmbed, CommandInteraction, Client } = require("discord.js");
 module.exports = {
   name: "autoplay",
   description: "Toggle music autoplay",
-  player: true,
+  requiredPlaying: true,
   inVoiceChannel: true,
   sameVoiceChannel: true,
 

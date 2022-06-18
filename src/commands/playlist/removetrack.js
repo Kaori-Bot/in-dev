@@ -1,19 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "removetrack",
     aliases: ["plremovet"],
-    category: "Playlist",
     description: "Removetrack from your saved Playlists.",
-    args: false,
     usage: "<playlist name> <track number>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
         var color = client.colors.default;
 
         const Name = args[0].replace(/_/g, ' ');
@@ -47,4 +46,4 @@ module.exports = {
             .setDescription(`Removed **${tracks[Options].title}** from \`${Name}\``);
             return message.channel.send({embeds: [embed]});
     }
-};
+});

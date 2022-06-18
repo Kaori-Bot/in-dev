@@ -1,20 +1,19 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "pause",
-    category: "Music",
     description: "Pause the currently playing music",
-    args: false,
-    usage: "",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
- execute: async (message, args, client, prefix) => {
-    
-		const player = message.client.manager.get(message.guild.id);
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
+     const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
             let thing = new MessageEmbed()
@@ -42,6 +41,6 @@ module.exports = {
             .setTimestamp()
             .setDescription(`${emojipause} **Paused**\n[${song.title}](${song.uri})`)
           return message.reply({embeds: [thing]});
-	
+
     }
-};
+});

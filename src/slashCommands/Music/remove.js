@@ -4,8 +4,8 @@ module.exports = {
   name: "remove",
   description: "Remove song from the queue",
   permissions: [],
-  player: true,
-  dj: true,
+  requiredPlaying: true,
+  permissions: { onlyDj: true },
   inVoiceChannel: true,
   sameVoiceChannel: true,
   options: [

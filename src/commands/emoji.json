@@ -1,7 +1,7 @@
 {
-    "Config": "⚙️",
-    "Developer": "🔐",
-    "Information": "ℹ️",
-    "Music": "🎵",
-    "Playlist": "🎶"
+    "config": "⚙️",
+    "developer": "🔐",
+    "information": "ℹ️",
+    "music": "🎵",
+    "playlist": "🎶"
 }

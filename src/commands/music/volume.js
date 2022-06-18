@@ -1,21 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "volume",
     aliases: ["v", "vol"],
-    category: "Music",
     description: "Change volume of currently playing music",
-    args: false,
-    usage: "",
-    permission: [],
-	dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-execute: async (message, args, client, prefix) => {
-  
-	const player = client.manager.get(message.guild.id);
+    permissions: { onlyDj: true },
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true
+    },
+    execute: async (client, message, args, prefix) => {
+        const player = client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
             let thing = new MessageEmbed()
@@ -68,4 +65,4 @@ execute: async (message, args, client, prefix) => {
 		}
 		
  	}
-};
+});

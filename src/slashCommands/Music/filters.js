@@ -4,8 +4,8 @@ module.exports = {
     name: "filters",
     description: "Set EqualizerBand",
     permissions: [],
-    player: true,
-    dj: true,
+    requiredPlaying: true,
+    permissions: { onlyDj: true },
     inVoiceChannel: true,
     sameVoiceChannel: true,
     options: [

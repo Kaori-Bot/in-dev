@@ -1,17 +1,13 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed, version } = require("discord.js");
 const os = require('os');
 const package = require('../../../package.json');
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "stats",
-    category: "Information",
     aliases: [ "status" ],
     description: "Show statistics or status bot",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    execute: async (message, args, client, prefix) => {
+    execute: async (client, message, args, prefix) => {
         const duration = formatUptime(client.uptime);
         let usersCount = 0; 
         client.guilds.cache.forEach((guild) => {
@@ -46,7 +42,7 @@ module.exports = {
             	.setFooter({ text: `Node: ${process.version}` });
          message.reply({embeds: [embed, vpsEmbed]});
     }
-};
+});
 
 function formatUptime(uptime, force=false) {
 	let millisecond = (uptime / 1000);

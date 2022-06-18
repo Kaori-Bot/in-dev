@@ -1,16 +1,15 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/dj");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "adddj",
-    category: "Config",
     description: "Set Dj Role",
-    args: false,
-    usage: "",
     aliases: ["adj"],
-    permission: ['MANAGE_GUILD'],
-    owner: false,
-    execute: async (message, args, client, prefix) => {
+    permissions: {
+        user: ['MANAGE_GUILD']
+    },
+    execute: async (client, message, args, prefix) => {
 
         let data = await db.findOne({ Guild: message.guild.id });
         let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
@@ -32,4 +31,4 @@ module.exports = {
 
         }
     }
-}
+});

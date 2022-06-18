@@ -6,7 +6,7 @@ module.exports = {
     name: "nowplaying",
     description: "Show now playing song",
     permissions: [],
-    player: true,
+    requiredPlaying: true,
     inVoiceChannel: false,
     sameVoiceChannel: false,
     /**

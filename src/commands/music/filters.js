@@ -1,19 +1,19 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "filters",
-    category: "Music",
     aliases: ["eq", "equalizer"],
     description: "Set EqualizerBand",
-    args: false,
-    usage: "",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlayingtrue,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
 
         const player = message.client.manager.get(message.guild.id);
         if (!player.queue.current) {
@@ -101,4 +101,4 @@ module.exports = {
             }
         });
     }
-};
+});

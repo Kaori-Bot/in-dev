@@ -1,16 +1,12 @@
-module.exports = {
+const CommandBuilder = require('../CommandBuilder');
+
+module.exports = new CommandBuilder({
     name: "ping",
-    category: "Information",
     description: "Check the bot latency",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    execute: async (message, args, client, prefix) => {
-      
-    message.reply({ content: "Pinging..." }).then(async (msg) => {
-        const ping = msg.createdTimestamp - message.createdTimestamp;
-        msg.edit({ content: `Pong! Latency: **${ping}** ms` });
-    });
- }
-}
+    execute: (client, message, args, prefix) => {
+        message.reply({ content: "Pinging..." }).then(async (msg) => {
+            const ping = msg.createdTimestamp - message.createdTimestamp;
+            msg.edit({ content: `Pong! Latency: **${ping}** ms` });
+        });
+    }
+});

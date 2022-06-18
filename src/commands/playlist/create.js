@@ -1,19 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "create",
     aliases: ["plcreate"],
-    category: "Playlist",
     description: "Creates the user's playlist.",
-    args: false,
     usage: "<playlist name>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         var color = client.colors.default;
         const Name = args[0].replace(/_/g, ' ');
@@ -52,4 +51,4 @@ module.exports = {
         return message.channel.send({ embeds: [embed] })
 
     }
-};
+});

@@ -5,7 +5,7 @@ const parseDuration = require('../../utils/parseDuration.js');
 module.exports = {
     name: "queue",
     description: "To see the whole server queue.",
-    player: true,
+    requiredPlaying: true,
     inVoiceChannel: false,
     sameVoiceChannel: false,
     options: [

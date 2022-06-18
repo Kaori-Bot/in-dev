@@ -1,21 +1,20 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const db = require("../../schema/playlist");
 const parseDuration = require("../../utils/parseDuration.js");
 const lodash = require("lodash");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "info",
     aliases: ["plinfo"],
-    category: "Playlist",
     description: "Get information about your saved playlist.",
-    args: false,
     usage: "<playlist name>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         const Name = args[0].replace(/_/g, ' ');
         const data = await db.findOne({ UserId: message.author.id, PlaylistName: Name });
@@ -79,4 +78,4 @@ module.exports = {
         }
 
     }
-};
+});

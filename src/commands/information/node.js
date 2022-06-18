@@ -1,33 +1,23 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "node",
-    category: "Information",
     description: "Check node information",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
- execute: async (message, args, client, prefix) => {
+    execute: async (client, message, args, prefix) => {
         const embeds = [];
         const embed = new MessageEmbed().setColor(client.colors.default);
 
         let index = 0;
         client.manager.nodes.forEach(node => {
             embed.setTitle(`Nodes #${index++}`)
-            embed.setDescription(`Identifier: \`${(node.options.identifier)}\``)
-            embed.addFields([
-                { name: 'Players', value: `${node.stats.playingPlayers.toLocaleString()} / ${node.stats.players.toLocaleString()}` },
-                { name: 'Memory Usage', value: `${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB` },
-                { name: 'CPU', value: `• Cores: ${node.stats.cpu.cores}\n• System Load: ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%\n• Lavalink Load: ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%` },
-                { name: 'Uptime', value: (formatUptime(node.stats.uptime)) }
-            ]);
+            embed.setDescription(`Identifier: ${(node.options.identifier)}\nPlayers: ${node.stats.playingPlayers} / ${node.stats.players}\nMemory Usage: ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB\nCPU\n• Cores: ${node.stats.cpu.cores}\n• System Load: ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%\n• Lavalink Load: ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%\nUptime: ${(formatUptime(node.stats.uptime))}`);
             embeds.push(embed);
         });
 
         message.reply({embeds: [...embeds]})
     }
-}
+});
 
 function formatUptime(uptime, force=false) {
 	let millisecond = (uptime / 1000);

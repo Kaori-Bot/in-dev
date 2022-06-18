@@ -1,19 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "delete",
     aliases: ["pldelete"],
-    category: "Playlist",
     description: "Delete your saved playlist.",
-    args: false,
     usage: "<playlist name>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         const Name = args[0].replace(/_/g, ' ');
         const data = await db.findOne({ UserId: message.author.id, PlaylistName: Name });
@@ -29,4 +28,4 @@ module.exports = {
             .setDescription(`Successfully deleted ${Name} playlist`)
         return message.channel.send({ embeds: [embed] })
     }
-}
+});

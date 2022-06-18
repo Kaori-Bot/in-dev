@@ -1,19 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "load",
     aliases: ["plload"],
-    category: "Playlist",
     description: "Play the saved Playlist.",
-    args: false,
     usage: "<playlist name>",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         var color = client.colors.default;
         const Name = args[0].replace(/_/g, ' ');
@@ -53,5 +52,4 @@ module.exports = {
         if (count <= 0 && m) return await m.edit({ embeds: [new MessageEmbed().setColor(color).setDescription(`Couldn't add any tracks from your playlist **${name}** to the queue.`)] })
         if (m) return await m.edit({ embeds: [new MessageEmbed().setColor(color).setDescription(`Added ${count} track(s) from your playlist **${name}** to the queue.`)] })
     }
-
-};
+});

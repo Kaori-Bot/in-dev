@@ -1,20 +1,19 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const db = require("../../schema/playlist");
 const lodash = require("lodash");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "list",
     aliases: ["pllist"],
-    category: "Playlist",
     description: "To List The Playlist.",
-    args: false,
-    usage: "list",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    usage: "[list]",
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
 
         let data = await db.find({ UserId: message.author.id });
         if (!data.length) {
@@ -36,4 +35,4 @@ module.exports = {
         }
 
     }
-};
+});

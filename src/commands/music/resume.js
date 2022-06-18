@@ -1,19 +1,19 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
-	name: "resume",
-    aliases: ["r"],
-    category: "Music",
+module.exports = new CommandBuilder({
+    name: "resume",
     description: "Resume currently playing music",
-    args: false,
     usage: "<Number of song in queue>",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
- execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
   
 		const player = client.manager.get(message.guild.id);
         const song = player.queue.current;
@@ -44,4 +44,4 @@ module.exports = {
         return message.reply({embeds: [thing]});
 	
     }
-};
+});

@@ -1,19 +1,16 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const parseDuration = require('../../utils/parseDuration.js');
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "grab",
     aliases: ["save"],
-    category: "Music",
     description: "Grabs And Sends You The Song That Is Playing At The Moment",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: false,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
   
         const player = message.client.manager.get(message.guild.id);
 
@@ -49,4 +46,4 @@ module.exports = {
          return message.author.send({embeds: [embed], components: [row2]})
             
     }
-};
+});

@@ -1,20 +1,16 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const parseDuration = require('../../utils/parseDuration.js');
 const progressBar = require('../../utils/progressBar.js')
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "nowplaying",
     aliases: ["np"],
-    category: "Music",
     description: "Show now playing song",
-    args: false,
-    usage: "",
-    permission: [],
-    owner: false,
-    player: true,
-    inVoiceChannel: false,
-    sameVoiceChannel: false,
-execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+    },
+    execute: async (client, message, args, prefix) => {
   
         const player = message.client.manager.get(message.guild.id);
 
@@ -37,4 +33,4 @@ execute: async (message, args, client, prefix) => {
             return message.channel.send({embeds: [embed]})
 
     }
-}
+});

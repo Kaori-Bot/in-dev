@@ -1,19 +1,19 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "loop",
-    aliases: ['l'],
-    category: "Music",
+    aliases: ['repeat'],
     description: "Toggle music loop",
-    args: false,
-    usage: "",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-    execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
 
         const player = message.client.manager.get(message.guild.id);
 

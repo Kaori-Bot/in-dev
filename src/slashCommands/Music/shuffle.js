@@ -4,8 +4,8 @@ module.exports = {
   name: "shuffle",
   description: "Shuffle queue",
   permissions: [],
-  player: true,
-  dj: true,
+  requiredPlaying: true,
+  permissions: { onlyDj: true },
   inVoiceChannel: true,
   sameVoiceChannel: true,
 

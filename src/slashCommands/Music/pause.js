@@ -4,8 +4,8 @@ module.exports = {
   name: "pause",
   description: "Pause the currently playing music",
   permissions: [],
-  dj: true,
-  player: true,
+  permissions: { onlyDj: true },
+  requiredPlaying: true,
   inVoiceChannel: true,
   sameVoiceChannel: true,
 

@@ -3,7 +3,6 @@ const { MessageEmbed, MessageActionRow, MessageButton, CommandInteraction, Clien
 module.exports = {
     name: "help",
     description: "Return all commands, or one specific command",
-    owner: false,
 
     /**
      * @param {Client} client

@@ -1,21 +1,20 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 const parseDuration = require('../../utils/parseDuration.js')
 const ms = require('ms');
 
-module.exports = {
+module.exports = new CommandBuilder({
   	name: "seek",
-  	aliases: [],
-  	category: "Music",
   	description: "Seek the currently playing song",
   	args: true,
     usage: "<10s || 10m || 10h>",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
- execute: async (message, args, client, prefix) => {
+    permissions: { onlyDj: true },
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
   
 		const player = client.manager.get(message.guild.id);
 
@@ -59,4 +58,4 @@ module.exports = {
         }
 	
     }
-};
+});

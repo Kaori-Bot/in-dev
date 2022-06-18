@@ -1,19 +1,17 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed, MessageButton, MessageActionRow, Permissions } = require("discord.js");
 const parseDuration = require("../../utils/parseDuration");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "search",
     description: "search for a song from youtube",
-    category: "Music",
-    aliases: [],
     usage: [`serach Never gonna give you up`],
     args: true,
-    Permissions: [],
-    owner: false,
-    player: false,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-   execute: async (message, args, client) => { 
+    options: {
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args) => { 
 
     const { channel } = message.member.voice;
     if (!message.guild.me.permissionsIn(channel).has([Permissions.FLAGS.CONNECT, Permissions.FLAGS.SPEAK])) return message.channel.send({embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`I don't have enough permissions connect your vc please give me permission \`CONNECT\` or \`SPEAK\`.`)]});
@@ -119,7 +117,4 @@ module.exports = {
         }
         
     }
-}
-
-
-
+});

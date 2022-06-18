@@ -4,8 +4,8 @@ module.exports = {
   name: "247",
   description: "24/7 in voice channel",
   permissions: [],
-  player: true,
-  dj: true,
+  requiredPlaying: true,
+  permissions: { onlyDj: true },
   inVoiceChannel: true,
   sameVoiceChannel: true,
 

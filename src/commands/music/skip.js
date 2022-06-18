@@ -1,21 +1,18 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
-	name: "skip",
-	aliases: ["s"],
-	category: "Music",
-	description: "Skip the currently playing song",
-	args: false,
-  usage: "",
-  permission: [],
-  dj: true,
-  owner: false,
-  player: true,
-  inVoiceChannel: true,
-  sameVoiceChannel: true,
-execute: async (message, args, client, prefix) => {
-  
-		const player = message.client.manager.get(message.guild.id);
+module.exports = new CommandBuilder({
+    name: "skip",
+    aliases: ["s"],
+    description: "Skip the currently playing song",
+    permissions: { onlyDj: true },
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    execute: async (client, message, args, prefix) => {
+        const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
             let thing = new MessageEmbed()
@@ -35,6 +32,5 @@ execute: async (message, args, client, prefix) => {
 			.setTimestamp()
 		return message.reply({embeds: [thing]}).then(msg => { setTimeout(() => {msg.delete()}, 3000);
        })
-	
     }
-};
+});

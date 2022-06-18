@@ -4,8 +4,8 @@ module.exports = {
   name: "resume",
   description: "Resume currently playing music",
   permissions: [],
-  player: true,
-  dj: true,
+  requiredPlaying: true,
+  permissions: { onlyDj: true },
   inVoiceChannel: true,
   sameVoiceChannel: true,
 

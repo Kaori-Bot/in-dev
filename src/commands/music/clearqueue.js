@@ -1,19 +1,20 @@
+const CommandBuilder = require('../CommandBuilder');
 const { MessageEmbed } = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "clearqueue",
     aliases: ["cq"],
-    category: "Music",
-  	description: "Clear Queue",
-	args: false,
+    description: "Clear Queue",
     usage: "<Number of song in queue>",
-    permission: [],
-    dj: true,
-    owner: false,
-    player: true,
-    inVoiceChannel: true,
-    sameVoiceChannel: true,
-	 execute: async (message, args, client, prefix) => {
+    options: {
+        requiredPlaying: true,
+        inVoiceChannel: true,
+        sameVoiceChannel: true,
+    },
+    permissions: {
+        onlyDj: true
+    },
+    execute: async (client, message, args, prefix) => {
   
 		const player = message.client.manager.get(message.guild.id);
 
@@ -34,4 +35,4 @@ module.exports = {
 			.setDescription(`${emojieject} Removed all songs from the queue`)
 			  return message.reply({embeds: [thing]});
     }
-};
+});
