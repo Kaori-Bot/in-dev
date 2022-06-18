@@ -16,7 +16,7 @@ class KaoriBot extends Client {
 		this.commands.categories = [];
 		this.slashCommands.categories = [];
 		this.slashCommands._data = [];
-		readdirSync("./src/commands/").filter(x => !['js','json'].includes(x)).forEach(dir => {
+		readdirSync("./src/commands/").filter(x => !['.js','.json'].includes(x)).forEach(dir => {
 			const commandFiles = readdirSync(`./src/commands/${dir}/`).filter(f => f.endsWith('.js'));
 			for (const file of commandFiles) {
 				const command = require(`./commands/${dir}/${file}`);

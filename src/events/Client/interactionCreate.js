@@ -83,7 +83,7 @@ async function interactionCreate(client, interaction) {
         } else return;
 };
 
-const commandCategoryEmoji = require('../commands/interaction/emoji.json');
+const commandCategoryEmoji = require('../commands/emoji.json');
 async function selectMenuInteraction(client, interaction) {
     await interaction.deferUpdate();
     if (client.commands.categories.includes(interaction.customId)) {
