@@ -90,7 +90,8 @@ async function messageCreate(client, message) {
         }
 
         try {
-            command.execute(client, message, args, prefix);
+            console.log('From: '+message.guild.id, command);
+            // command.execute(client, message, args, prefix);
         } catch (error) {
             console.log(error);
             embed.setDescription("There was an error executing that command.\nI have contacted the owner of the bot to fix it immediately.");
