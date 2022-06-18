@@ -17,9 +17,11 @@ class Command {
         this.private = data.private || false;
         this.constructor.execute = typeof data.execute == 'function' ? data.execute : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')};
     }
-    get category(commandCategory) {
+    get category() {
         const { readdirSync } = require('fs');
         const categories = readdirSync('./commands').filter(x => !x.includes('.'));
+
+        let commandCategory = '';
         categories.forEach(directory => {
             const commands = readdirSync(`./commands/${directory}`);
             if (commands.includes(this.name+'.js')) commandCategory = directory;
