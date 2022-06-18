@@ -22,8 +22,12 @@ module.exports = new CommandBuilder({
                 return require('./nowplaying').execute(client, message, args);
             }
             else {
-                player.queue.forEach(async track => await track.resolve());
-                const queuedSongs = player.queue.map((track, i) => `[\`${++i}.\`] [${player.subText(track.title)}](${track.uri}) [\`${parseDuration(track.duration)}\`] by ${track.requester}`);
+                const queuedSongs = player.queue.map(async(track, i) => {
+                    if (track.resolve) {
+                        track = await track.resolve().then(_ => track);
+                    };
+                    return `[\`${++i}.\`] [${player.subText(track.title)}](${track.uri}) [\`${parseDuration(track.duration)}\`] by ${track.requester}`;
+                });
 
                 const mapping = load.chunk(queuedSongs, 10);
                 const pages = mapping.map((s) => s.join("\n"));
