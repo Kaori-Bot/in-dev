@@ -81,13 +81,14 @@ async function trackStart(client, player, track, payload){
                 await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!`)] });
             }
             else {
+                const pr_msg = player._message.pause_resume;
                 player.pause(false);
                 buttons[1] = buttons[1].setDisabled(false);
+                if (pr_msg) pr_msg.delete();
                 startMessage.edit({ components: [actionRow.setComponents(buttons)]})
                 await interaction.editReply({ 
                     embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** current song`)]
                 });
-                player.setMessage('pause_resume');
             };
         }
         else if (interaction.customId === "track:skip") {
