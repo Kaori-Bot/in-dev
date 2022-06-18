@@ -24,7 +24,7 @@ class Command {
         const colors = require('../../config/colors.json');
         switch (type.toLowerCase()) {
             case 'error':
-                return new MessageEmbed().setcolor(colors.red);
+                return new MessageEmbed().setColor(colors.red);
             case 'music':
                 return new MessageEmbed()
                     .setColor(colors.default)
