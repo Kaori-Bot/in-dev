@@ -22,7 +22,7 @@ module.exports = new CommandBuilder({
                 return require('./nowplaying').execute(client, message, args);
             }
             else {
-                const queuedSongs = player.queue.map((t, i) => `[\`${++i}.\`] [${player.subText(t.title)}](${t.uri}) [\`${parseDuration(t.duration)}\`] by ${t.requester}`);
+                const queuedSongs = player.queue.map((t, i) => `[\`${++i}.\`] ${player.subText(t.title)} [\`${parseDuration(t.duration)}\`] by ${t.requester}`);
 
                 const mapping = load.chunk(queuedSongs, 10);
                 const pages = mapping.map((s) => s.join("\n"));
@@ -31,9 +31,9 @@ module.exports = new CommandBuilder({
                 if(player.queue.size < 11) {
                     const embed = new MessageEmbed()
                     .setColor(client.colors.default)
-                    .setDescription(`**${client.emoji.music} | Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
+                    .setDescription(`**Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
                     .addFields([
-                        { name: 'Queued list', value: pages[page] }
+                        { name: '🗒️ Queue List', value: pages[page] }
                     ])
                     .setThumbnail(player.queue.current.thumbnail)
                     .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true})})
@@ -45,9 +45,9 @@ module.exports = new CommandBuilder({
                 else {
                     const embed2 = new MessageEmbed()
                     .setColor(client.colors.default)
-                    .setDescription(`**${client.emoji.music} | Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
+                    .setDescription(`**Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
                     .addFields([
-                        { name: 'Queued list', value: pages[page] }
+                        { name: '🗒️ Queue List', value: pages[page] }
                     ])
                     .setThumbnail(player.queue.current.thumbnail)
                     .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
@@ -100,9 +100,9 @@ module.exports = new CommandBuilder({
 
                             const embed3 = new MessageEmbed()
                     .setColor(client.colors.default)
-                    .setDescription(`**${client.emoji.music} | Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
+                    .setDescription(`**Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
                     .addFields([
-                        { name: 'Queued list', value: pages[page] }
+                        { name: '🗒️ Queue List', value: pages[page] }
                     ])
                     .setThumbnail(player.queue.current.thumbnail)
                     .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
@@ -117,9 +117,9 @@ module.exports = new CommandBuilder({
 
                             const embed4 = new MessageEmbed()
     .setColor(client.colors.default)
-    .setDescription(`**${client.emoji.music} | Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
+    .setDescription(`**Now playing** [${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}`)
     .addFields([
-        { name: 'Queued list', value: pages[page] }
+        { name: '🗒️ Queue List', value: pages[page] }
                     ])
     .setThumbnail(player.queue.current.thumbnail)
     .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({ dynamic: true }) });
@@ -132,9 +132,9 @@ module.exports = new CommandBuilder({
 
                     collector.on("end", async () => {
                         const actionRow = new MessageActionRow().addComponents([
-                            but1.setDisabled(true),
-                            but2,
-                            but3.setDisabled(true)
+                            but2.setDisabled(true),
+                            but3,
+                            but1.setDisabled(true)
                     ]);
                         await msg.edit({
                             components: [actionRow]
