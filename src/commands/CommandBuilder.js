@@ -17,7 +17,7 @@ class Command {
         };
         if(data.args) this.args = data.args;
         this.private = data.private || false;
-        this.execute = data.execute ? typeof data.execute == 'function' ? data.execute : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
+        this.execute = data.execute ? typeof data.execute == 'function' ? data.execute.bind(this) : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
     }
     get category() {
         const { readdirSync } = require('fs');
