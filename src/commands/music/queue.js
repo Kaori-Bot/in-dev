@@ -55,12 +55,12 @@ module.exports = new CommandBuilder({
                     const but1 = new MessageButton()
                     .setCustomId("queue_cmd_but_1")
                   
-                    .setEmoji(client.emoji.next)
+                    .setEmoji(client.emoji.right)
                     .setStyle("PRIMARY")
 
                     const but2 = new MessageButton()
                     .setCustomId("queue_cmd_but_2")
-                    .setEmoji(client.emoji.back)
+                    .setEmoji(client.emoji.left)
                     .setStyle("PRIMARY")
 
                     const but3 = new MessageButton()
