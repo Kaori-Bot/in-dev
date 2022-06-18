@@ -6,7 +6,7 @@ module.exports = new CommandBuilder({
     aliases: ["eq", "equalizer"],
     description: "Set EqualizerBand",
     options: {
-        requiredPlayingtrue,
+        requiredPlaying:true,
         inVoiceChannel: true,
         sameVoiceChannel: true,
     },
