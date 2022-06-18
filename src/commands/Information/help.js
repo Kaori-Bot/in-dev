@@ -85,12 +85,11 @@ function createInteractionCollector(m) {
         const newActionRow = new MessageActionRow();
         const newButtons = [];
         oldActionRow.components.forEach(oldButton => {
-            oldButton = MessageButton.from(oldButton);
             oldButton.setDisabled(true);
             newButtons.push(oldButton);
         });
         newActionRow.addComponents(newButtons);
-        m.edit({ components: [newActionRow] }).catch(_=>void 0);
+        m.edit({ components: [newActionRow] }).catch(_ => void 0);
     });
     return collector;
 };
