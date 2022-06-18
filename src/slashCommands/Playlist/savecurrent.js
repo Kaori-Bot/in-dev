@@ -31,10 +31,10 @@ module.exports = {
 
         const player = client.manager.players.get(interaction.guildId);
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(i18n.__("player.nomusic"));
-            return interaction.editReply({ embeds: [thing] });
+            return interaction.editReply({ embeds: [embed] });
         }
         if (!data) {
             return interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.toString()).setDescription(`You don't have a playlist with **${Name}** name`)] });

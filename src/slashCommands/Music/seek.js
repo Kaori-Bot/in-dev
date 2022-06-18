@@ -33,10 +33,10 @@ module.exports = {
         const player = interaction.client.manager.get(interaction.guildId);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return await interaction.editReply({ embeds: [thing] });
+            return await interaction.editReply({ embeds: [embed] });
         }
 
         const time = ms(args)
@@ -51,24 +51,24 @@ module.exports = {
         if (time <= duration) {
             if (time > position) {
                 player.seek(time);
-                let thing = new MessageEmbed()
+                let embed = new MessageEmbed()
                     .setDescription(`${emojiforward} **Forward**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
-                return await interaction.editReply({ embeds: [thing] });
+                return await interaction.editReply({ embeds: [embed] });
             } else {
                 player.seek(time);
-                let thing = new MessageEmbed()
+                let embed = new MessageEmbed()
                     .setDescription(`${emojirewind} **Rewind**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
-                return await interaction.editReply({ embeds: [thing] });
+                return await interaction.editReply({ embeds: [embed] });
             }
         } else {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${parseDuration(duration)}\``);
-            return await interaction.editReply({ embeds: [thing] });
+            return await interaction.editReply({ embeds: [embed] });
         }
 
     }

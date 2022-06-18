@@ -22,20 +22,20 @@ module.exports = {
 
     const player = interaction.client.manager.get(interaction.guildId);
     if (!player.queue.current) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription("There is no music playing.");
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({ embeds: [embed] });
     }
     player.queue.shuffle();
 
     const emojishuffle = client.emoji.shuffle;
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setDescription(`${emojishuffle} Shuffled the queue`)
       .setColor(client.colors.default)
       .setTimestamp()
-    return interaction.editReply({ embeds: [thing] });
+    return interaction.editReply({ embeds: [embed] });
 
   }
 };

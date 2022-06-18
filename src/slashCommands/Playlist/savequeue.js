@@ -30,10 +30,10 @@ module.exports = {
 
         const player = client.manager.players.get(interaction.guildId);
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(`Currently No Music Is Playing.`);
-            return interaction.editReply({ embeds: [thing] });
+            return interaction.editReply({ embeds: [embed] });
         }
 
         if (!data) {

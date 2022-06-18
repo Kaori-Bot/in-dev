@@ -37,10 +37,10 @@ module.exports = {
       })
       if (player && player.state !== "CONNECTED") player.connect();
 
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(client.colors.default)
         .setDescription(`${emojiJoin} **Join the voice channel**\nJoined <#${channel.id}> and bound to <#${interaction.channel.id}>`)
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({ embeds: [embed] });
 
     };
 

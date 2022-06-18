@@ -18,29 +18,29 @@ module.exports = new CommandBuilder({
         const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
         }
         const emojiloop = message.client.emoji.loop;
 
         if (args.length && /queue/i.test(args[0])) {
             player.setQueueRepeat(!player.queueRepeat);
             const queueRepeat = player.queueRepeat ? "enabled" : "disabled";
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor(client.colors.default)
                 .setTimestamp()
                 .setDescription(`${emojiloop} Loop queue is now **${queueRepeat}**`)
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
         }
 
         player.setTrackRepeat(!player.trackRepeat);
         const trackRepeat = player.trackRepeat ? "enabled" : "disabled";
-        let thing = new MessageEmbed()
+        let embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
             .setDescription(`${emojiloop} Loop track is now **${trackRepeat}**`)
-        return message.reply({ embeds: [thing] });
+        return message.reply({ embeds: [embed] });
     }
 });

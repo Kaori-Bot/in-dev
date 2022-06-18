@@ -24,20 +24,20 @@ module.exports = new CommandBuilder({
             const search = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
             res = await player.search(search, message.author);
             player.queue.add(res.tracks[1]);
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor(client.colors.default)
                 .setTimestamp()
                 .setDescription(`${emojireplay} Autoplay is now **enabled**`);
-            return message.channel.send({ embeds: [thing] });
+            return message.channel.send({ embeds: [embed] });
         } else {
             player.set("autoplay", false);
             player.queue.clear();
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor(client.colors.default)
                 .setTimestamp()
                 .setDescription(`${emojireplay} Autoplay is now **disabled**`);
 
-            return message.channel.send({ embeds: [thing] });
+            return message.channel.send({ embeds: [embed] });
         }
     },
 });

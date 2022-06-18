@@ -19,20 +19,20 @@ module.exports = new CommandBuilder({
 		const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return message.reply({embeds: [thing]});
+            return message.reply({embeds: [embed]});
         }
 
 		player.queue.clear();
 
 		const emojieject = message.client.emoji.remove;
 
-		let thing = new MessageEmbed()
+		let embed = new MessageEmbed()
 			.setColor(client.colors.default)
 			.setTimestamp()
 			.setDescription(`${emojieject} Removed all songs from the queue`)
-			  return message.reply({embeds: [thing]});
+			  return message.reply({embeds: [embed]});
     }
 });

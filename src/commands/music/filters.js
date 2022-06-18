@@ -17,10 +17,10 @@ module.exports = new CommandBuilder({
 
         const player = message.client.manager.get(message.guild.id);
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
         }
         const emojiequalizer = message.client.emoji.filter;
         const embed = new MessageEmbed()

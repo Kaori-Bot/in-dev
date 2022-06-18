@@ -15,10 +15,10 @@ module.exports = new CommandBuilder({
         const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-         return message.reply({embeds: [thing]});
+         return message.reply({embeds: [embed]});
         }
         const song = player.queue.current;
 
@@ -26,11 +26,11 @@ module.exports = new CommandBuilder({
            
 		const emojiskip = message.client.emoji.skip;
 
-		let thing = new MessageEmbed()
+		let embed = new MessageEmbed()
 			.setDescription(`${emojiskip} **Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(client.colors.default)
 			.setTimestamp()
-		return message.reply({embeds: [thing]}).then(msg => { setTimeout(() => {msg.delete()}, 3000);
+		return message.reply({embeds: [embed]}).then(msg => { setTimeout(() => {msg.delete()}, 3000);
        })
     }
 });

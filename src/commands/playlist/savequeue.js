@@ -17,10 +17,10 @@ module.exports = new CommandBuilder({
         const Name = args[0].replace(/_/g, ' ');
         const player = message.client.manager.get(message.guild.id);
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(`Currently No Music Is Playing..`);
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
         }
         const data = await db.find({ UserId: message.author.id, PlaylistName: Name })
         if (!data) {

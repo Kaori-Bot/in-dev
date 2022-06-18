@@ -89,13 +89,13 @@ module.exports = {
           return await interaction.editReply({ embeds: [searchresult] });
 
         } else {
-          const thing = new MessageEmbed()
+          const embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setTimestamp()
             .setThumbnail(track.displayThumbnail('hqdefault'))
             .setDescription(`${emojiplaylist} **Added song to queue** [${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\``);
 
-          return await interaction.editReply({ embeds: [thing] });
+          return await interaction.editReply({ embeds: [embed] });
 
         }
     }

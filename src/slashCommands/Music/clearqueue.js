@@ -24,11 +24,11 @@ module.exports = {
 
     const emojieject = client.emoji.remove;
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
       .setDescription(`${emojieject} Removed all songs from the queue`)
-    return interaction.editReply({ embeds: [thing] });
+    return interaction.editReply({ embeds: [embed] });
 
   }
 };

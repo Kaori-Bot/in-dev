@@ -27,10 +27,10 @@ module.exports = new CommandBuilder({
             }) 
             if(player && player.state !== "CONNECTED") player.connect();
 
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor(client.colors.default)
                 .setDescription(`${emojiJoin} **Join the voice channel**\nJoined <#${channel.id}> and bound to <#${message.channel.id}>`)
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
 
         };
     }

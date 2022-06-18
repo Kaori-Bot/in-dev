@@ -23,31 +23,31 @@ module.exports = {
     const player = interaction.client.manager.get(interaction.guildId);
 
     if (!player.queue.current) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription("There is no music playing.");
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({ embeds: [embed] });
     }
 
     const emojipause = client.emoji.pause;
 
     if (player.paused) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription(`${emojipause} The player is already paused.`)
         .setTimestamp()
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({ embeds: [embed] });
     }
 
     player.pause(true);
 
     const song = player.queue.current;
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
       .setDescription(`${emojipause} **Paused**\n[${song.title}](${song.uri})`)
-    return interaction.editReply({ embeds: [thing] });
+    return interaction.editReply({ embeds: [embed] });
 
   }
 };

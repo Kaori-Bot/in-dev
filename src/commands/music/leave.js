@@ -21,10 +21,10 @@ module.exports = new CommandBuilder({
 
         player.destroy();
         
-        let thing = new MessageEmbed()
+        let embed = new MessageEmbed()
             .setColor(client.colors.default)
             .setDescription(`${emojiLeave} **Leave the voice channel**\nThank you for using ${message.client.user.username}!`)
-          return message.reply({embeds: [thing]});
+          return message.reply({embeds: [embed]});
 
     }
 });

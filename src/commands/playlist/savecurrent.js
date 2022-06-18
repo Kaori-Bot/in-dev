@@ -18,10 +18,10 @@ module.exports = new CommandBuilder({
         const data = await db.findOne({ UserId: message.author.id, PlaylistName: Name });
         const player = client.manager.players.get(message.guild.id);
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(i18n.__("player.nomusic"));
-            return message.reply({ embeds: [thing] });
+            return message.reply({ embeds: [embed] });
         }
         if (!data) {
             return message.reply({ embeds: [new MessageEmbed().setColor(client.colors.default).setDescription(`You don't have a playlist with **${Name}** name`)] });

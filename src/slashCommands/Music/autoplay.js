@@ -29,20 +29,20 @@ module.exports = {
       const search = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
       res = await player.search(search, interaction.user);
       player.queue.add(res.tracks[1]);
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(client.colors.default)
         .setTimestamp()
         .setDescription(`${emojireplay} Autoplay is now **enabled**`);
-      return await interaction.editReply({ embeds: [thing] });
+      return await interaction.editReply({ embeds: [embed] });
     } else {
       player.set("autoplay", false);
       player.queue.clear();
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor(client.colors.default)
         .setTimestamp()
         .setDescription(`${emojireplay} Autoplay is now **disabled**`);
 
-      return await interaction.editReply({ embeds: [thing] });
+      return await interaction.editReply({ embeds: [embed] });
     }
   },
 };

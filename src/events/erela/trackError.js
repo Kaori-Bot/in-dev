@@ -4,10 +4,10 @@ function trackError(client, player, track, payload){
     console.error(payload.error);
 
     const channel = client.channels.cache.get(player.textChannel);
-    const thing = new MessageEmbed()
+    const embed = new MessageEmbed()
         .setColor(client.colors.red)
         .setDescription("❌ Error when loading song! Track is error");
-    channel.send({embeds: [thing]});
+    channel.send({embeds: [embed]});
     client.logger.log(`Error when loading song! Track is error in [${player.guild}]`, "error");
     if (!player.voiceChannel) player.destroy();
 };

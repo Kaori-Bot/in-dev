@@ -22,10 +22,10 @@ module.exports = {
 
     const player = interaction.client.manager.get(interaction.guildId);
     if (!player.queue.current) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription("There is no music playing.");
-      return interaction.editReply({ embeds: [thing] });
+      return interaction.editReply({ embeds: [embed] });
     }
 
     const autoplay = player.get("autoplay")
@@ -38,11 +38,11 @@ module.exports = {
 
     const emojistop = client.emoji.stop;
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
       .setDescription(`${emojistop} Stopped the music`)
-    return interaction.editReply({ embeds: [thing] });
+    return interaction.editReply({ embeds: [embed] });
 
   }
 };

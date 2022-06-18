@@ -15,10 +15,10 @@ module.exports = new CommandBuilder({
         const player = message.client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
             .setColor("#FFC942")
             .setDescription("> There is no music playing.");
-            return message.channel.send({embeds: [thing]});
+            return message.channel.send({embeds: [embed]});
         }
 
         const song = player.queue.current

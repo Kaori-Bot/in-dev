@@ -19,10 +19,10 @@ module.exports = new CommandBuilder({
 		const player = client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return message.reply({embeds: [thing]});
+            return message.reply({embeds: [embed]});
         }
 
         const time = ms(args[0])
@@ -37,24 +37,24 @@ module.exports = new CommandBuilder({
         if (time <= duration) {
             if (time > position) {
                 player.seek(time);
-                let thing = new MessageEmbed()
+                let embed = new MessageEmbed()
                     .setDescription(`${emojiforward} **Forward**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
-                return message.reply({embeds: [thing]});
+                return message.reply({embeds: [embed]});
             } else {
                 player.seek(time);
-                let thing = new MessageEmbed()
+                let embed = new MessageEmbed()
                     .setDescription(`${emojirewind} **Rewind**\n[${song.title}](${song.uri})\n\`${parseDuration(time)} / ${parseDuration(duration)}\``)
                     .setColor(client.colors.default)
                     .setTimestamp()
-          return message.reply({embeds: [thing]});
+          return message.reply({embeds: [embed]});
             }
         } else {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${parseDuration(duration)}\``);
-            return message.reply({embeds: [thing]});
+            return message.reply({embeds: [embed]});
         }
 	
     }

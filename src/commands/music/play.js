@@ -56,21 +56,21 @@ module.exports = new CommandBuilder({
                 return player.play();
                 }
                 else {
-                    const thing = new MessageEmbed()
+                    const embed = new MessageEmbed()
                     .setColor(client.colors.default)
                     .setTimestamp()
                     .setThumbnail(track.displayThumbnail("hqdefault"))
                     .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\``)
-                    return message.channel.send({ embeds: [thing] });
+                    return message.channel.send({ embeds: [embed] });
                 }
             case 'PLAYLIST_LOADED':
                 player.queue.add(res.tracks);
                 if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
-                const thing = new MessageEmbed()
+                const embed = new MessageEmbed()
                     .setColor(client.colors.default)
                     .setTimestamp()
                     .setDescription(`${emojiplaylist} **Added playlist to queue**\n${res.tracks.length} Songs [${res.playlist.name}](${search}) - \`[${parseDuration(res.playlist.duration)}]\``)
-                return message.channel.send({ embeds: [thing] });
+                return message.channel.send({ embeds: [embed] });
             case 'SEARCH_RESULT':
                 var track = res.tracks[0];
                 player.queue.add(track);
@@ -78,12 +78,12 @@ module.exports = new CommandBuilder({
                     return player.play();
                 }
                 else {
-                    const thing = new MessageEmbed()
+                    const embed = new MessageEmbed()
                         .setColor(client.colors.default)
                         .setTimestamp()
                         .setThumbnail(track.displayThumbnail("hqdefault"))
                         .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\`[<@${track.requester.id}>]`)
-                    return message.channel.send({ embeds: [thing] });
+                    return message.channel.send({ embeds: [embed] });
                 }
         }
     }

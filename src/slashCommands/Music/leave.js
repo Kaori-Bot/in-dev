@@ -26,10 +26,10 @@ module.exports = {
 
     player.destroy();
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setDescription(`${emojiLeave} **Leave the voice channel**\nThank you for using ${interaction.client.user.username}!`)
-    return interaction.editReply({ embeds: [thing] });
+    return interaction.editReply({ embeds: [embed] });
 
   }
 };

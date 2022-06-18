@@ -32,19 +32,19 @@ module.exports = {
     const player = interaction.client.manager.get(interaction.guildId);
 
     if (!player.queue.current) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription("There is no music playing.");
-      return await interaction.editReply({ embeds: [thing] });
+      return await interaction.editReply({ embeds: [embed] });
     }
 
     const position = (Number(args) - 1);
     if (position > player.queue.size) {
       const number = (position + 1);
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
-      return await interaction.editReply({ embeds: [thing] });
+      return await interaction.editReply({ embeds: [embed] });
     }
 
     const song = player.queue[position]
@@ -52,11 +52,11 @@ module.exports = {
 
     const emojieject = client.emoji.remove;
 
-    let thing = new MessageEmbed()
+    let embed = new MessageEmbed()
       .setColor(client.colors.default)
       .setTimestamp()
       .setDescription(`${emojieject} Removed\n[${song.title}](${song.uri})`)
-    return await interaction.editReply({ embeds: [thing] });
+    return await interaction.editReply({ embeds: [embed] });
 
   }
 };

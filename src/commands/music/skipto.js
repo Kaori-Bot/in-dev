@@ -17,19 +17,19 @@ module.exports = new CommandBuilder({
         const player = client.manager.get(message.guild.id);
 
         if (!player.queue.current) {
-            let thing = new MessageEmbed()
+            let embed = new MessageEmbed()
                 .setColor("RED")
                 .setDescription("There is no music playing.");
-            return message.reply({embeds: [thing]});
+            return message.reply({embeds: [embed]});
         }
 
         const position = Number(args[0]);
 		
 		if (!position || position < 0 || position > player.queue.size) { 
-			let thing = new MessageEmbed()
+			let embed = new MessageEmbed()
                 .setColor("RED")
 				.setDescription(`Usage: ${message.client.config.prefix}skipto <Number of song in queue>`)
-            return message.reply({embeds: [thing]});
+            return message.reply({embeds: [embed]});
 		}
 
         player.queue.remove(0, position - 1);
@@ -37,12 +37,12 @@ module.exports = new CommandBuilder({
 		
 		const emojijump = client.emoji.skip;
 
-		let thing = new MessageEmbed()
+		let embed = new MessageEmbed()
 			.setDescription(`${emojijump} Forward **${position}** Songs`)
 			.setColor(client.colors.default)
 			.setTimestamp()
 			
-		return message.reply({embeds: [thing]});
+		return message.reply({embeds: [embed]});
 	
     }
 });

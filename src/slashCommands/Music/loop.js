@@ -39,10 +39,10 @@ module.exports = {
 
     let player = client.manager.get(interaction.guildId);
     if (!player.queue.current) {
-      let thing = new MessageEmbed()
+      let embed = new MessageEmbed()
         .setColor("RED")
         .setDescription("There is no music playing.");
-      return message.channel.send({ embeds: [thing] });
+      return message.channel.send({ embeds: [embed] });
     }
     const emojiloop = client.emoji.loop;
 
