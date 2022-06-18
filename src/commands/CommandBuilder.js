@@ -17,7 +17,25 @@ class Command {
         };
         if(data.args) this.args = data.args;
         this.private = data.private || false;
-        this.execute = data.execute ? typeof data.execute == 'function' ? data.execute.bind(this) : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
+        this.execute = data.execute ? typeof data.execute == 'function' ? new Function(...args => data.execute.bind(this)(...args)) : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
+    }
+    baseEmbed(type='', message) {
+        const { MessageEmbed } = require('discord.js');
+        const colors = require('../../colors.json');
+        switch (type.toLowerCase()) {
+            case 'error':
+                return new MessageEmbed().setcolor(colors.red);
+            case 'music':
+                return new MessageEmbed()
+                    .setColor(colors.default)
+                    .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: 'png' }) });
+            case 'success':
+                return new MessageEmbed().setColor(colors.green);
+            case 'warn':
+                return new MessageEmbed().setColor(colors.yellow)
+            default:
+                return new MessageEmbed().setColor(colors.default);
+        }
     }
     get category() {
         const { readdirSync } = require('fs');
