@@ -1,13 +1,15 @@
-const { MessageEmbed, Client, Permissions } = require("discord.js");
+const { MessageEmbed, Client, CommandInteraction, Permissions } = require("discord.js");
 const db2 = require("../../schema/dj");
 
 /**
  * @param {Client} client 
  * @param {CommandInteraction} interaction 
  */
+ 
 async function interactionCreate(client, interaction) {
         let prefix = client.config.prefix;
 
+        if (interaction.isSelectMenu()) selectMenuInteraction(client, interaction); 
         if (interaction.isModalSubmit()) {
             if (interaction.customId === 'add-song-queue') {
                 await interaction.reply({content: `Received Modal from ${interaction.customId} with text input: \`${interaction.fields.getTextInputValue('songQuery')}\``, ephemeral: true });
@@ -79,6 +81,34 @@ async function interactionCreate(client, interaction) {
                 console.error(error);
             };
         } else return;
+};
+
+const commandCategoryEmoji = require('../commands/interaction/emoji.json');
+async function selectMenuInteraction(client, interaction) {
+    await interaction.deferUpdate();
+    if (client.commands.categories.includes(interaction.customId)) {
+        const command = client.commands.get(interaction.values[0]);
+        if (!command) return interaction.followUp({ content: `Cannot find the commands!`, ephemeral: true });
+        const categoryName = command.category.charAt(0).toUpperCase() + command.category.slice(1);
+        const embed = new MessageEmbed()
+            .setColor(client.colors.default)
+            .setTitle(command.name)
+            .setDescription(command.description)
+            .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/microsoft/310/information_2139-fe0f.png')
+            /*
+            .addFields([
+                { name: '\u200B', value: '\u200B' },
+            ])
+            */
+            .setFooter({ text: `${commandCategoryEmoji[command.category]} ${categoryName} Commands` });
+        if(command.aliases[0]) embed.fields.push({ name: 'Aliases', value: command.aliases.map(a => `\`${a}\``).join(', '), inline: true });
+        if(command.usage) {
+            embed.fields.push({ name: 'Usage', value: `\`${command.usage}\``, inline: true });
+            embed.fields.push({ name: 'Example', value: `\`${client.config.prefix}${command.name} ${command.usage}\``, inline: true });
+        };
+
+        await interaction.followUp({ embeds: [embed], ephemeral: true });
+    };
 };
 
 exports.load = interactionCreate;

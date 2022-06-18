@@ -1,20 +1,18 @@
+const CommandBuilder = require('../../CommandBuilder');
 const Discord = require("discord.js");
 
-module.exports = {
+module.exports = new CommandBuilder({
     name: "eval",
-    category: "Owner",
     description: "Eval Code",
-    args: false,
-    usage: "<string>",
-    permission: [],
-    isDeveloperOnly: true,
- execute: async (message, args, client, prefix) => {
+    usage: "<code>",
+    private: true,
+    execute: async (message, args, client) => {
         const embed = new Discord.MessageEmbed()
-            .setColor(client.colors.green)
+            .setColor('BLUE');
 
         try {
-            const code = args.join(" ");
-            if (!code) return message.channel.send("Please include the code.");
+            let code = args.join(" ");
+            if (!code) code = String("You not input the code?");
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") evaled = await require("util").inspect(evaled, { depth: 0 });
@@ -25,12 +23,12 @@ module.exports = {
             message.channel.send({embeds: [embed]});
 
         } catch (error) {
-            let err = clean(error);
-            embed.setDescription(`\`\`\`js\n${err}\`\`\``)
+            error = clean(error);
+            embed.setDescription(`\`\`\`js\n${error}\`\`\``)
             message.channel.send({embeds: [embed]});
         }
     }
-}
+});
 
 function clean(string) {
     if (typeof text === "string") {
@@ -39,4 +37,4 @@ function clean(string) {
     } else {
         return string;
     }
-}
+};

@@ -1,4 +1,5 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { MessageActionRow, MessageEmbed, MessageButton, MessageSelectMenu } = require("discord.js");
+const categoryEmoji = require('../../emoji.json');
 
 module.exports = {
     name: "help",
@@ -9,73 +10,87 @@ module.exports = {
     usage: "",
     permission: [],
     owner: false,
- execute: async (message, args, client, prefix) => {
+    execute: async (message, args, client, prefix) => {
+        const buttons = [];
+        const embed = new MessageEmbed()
+            .setColor(client.colors.default)
+            .setAuthor({ name: `${client.user.username} Help`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+            .setDescription('This is my available commands list.')
+            .setFooter({ text: `Choose a list from the buttons below` })
+            .setFields([]);
+        const categories = client.commands.categories.filter(category => category.toLowerCase() !== 'developer');
+        for (const category of categories) {
+            const commands = client.commands.filter(cmd => cmd.category == category);
+            const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+            const commandList = commands.map(command => `\`${command.name}\``).join(', ');
+            embed.fields.push({ name: `${categoryEmoji[category]} ${categoryName} Commands`, value: commandList });
+            buttons.push(
+                new MessageButton()
+                    .setCustomId(category)
+                    .setEmoji(categoryEmoji[category])
+                    .setStyle('SECONDARY')
+            );
+        };
+        buttons.push(
+            new MessageButton()
+                .setCustomId('help:delete')
+                .setEmoji(client.emoji.error)
+                .setStyle('DANGER')
+        );
+        const actionRow = new MessageActionRow().addComponents(buttons);
+        message.reply({ embeds: [embed], components: [actionRow] }).then(m => createInteractionCollector(m));
+    }
+};
 
-  const embed = new MessageEmbed()
-    .setTitle(`${client.user.username} Help`)
-    .setDescription(` Hello **<@${message.author.id}>**, I am <@${client.user.id}>.  \n\nA Discord Music Bot With Many Awesome Features, \nSupport Many Sources\n\n\`🎵\`•Music\n\`ℹ️\`•information\n\`💽\`•Playlists\n\`⚙️\`•Config\n\n*Choose an category below button to see commands*\n\n`)
-    .setThumbnail(client.user.displayAvatarURL())
-    .setColor(client.colors.default)
-    .setTimestamp()
-    .setFooter({text: `Requested by ${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true })})
-                
-    let but1 = new MessageButton().setCustomId("home").setLabel("Home").setStyle("SUCCESS")
-  
-    let but2 = new MessageButton().setCustomId("music").setLabel("Music").setStyle("PRIMARY")
-  
-    let but3 = new MessageButton().setCustomId("info").setLabel("Info").setStyle("PRIMARY");
-    
-    let but4 = new MessageButton().setCustomId("playlist").setLabel("Playlist").setStyle("PRIMARY");
-
-    let but5 = new MessageButton().setCustomId("config").setLabel("Config").setStyle("PRIMARY");
-
-     let _commands;
-     let editEmbed = new MessageEmbed();
-     
-    const m = await message.reply({ embeds: [embed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4, but5)] });
-
+function createInteractionCollector(m) {
+    const client = m.client;
+    const category = client.commands.categories;
+    const commands = Array.from(client.commands.keys());
+    const embed = new MessageEmbed().setColor(client.colors.default);
     const collector = m.createMessageComponentCollector({
-      filter: (b) => {
-      if(b.user.id === message.author.id) return true;
-       else {
-     b.reply({ ephemeral: true, content: `Only **${message.author.tag}** can use this button, if you want then you've to run the command again.`}); return false;
-           };
-      },
-      time : 60000,
-      idle: 60000/2
+        filter: (interaction) => category.includes(interaction.customId) || commands.includes(interaction.customId) || interaction.customId === 'help:delete',
+        time: 60000
     });
-    collector.on("end", async () => {
-		 if(!m) return;
-        await m.edit({ components: [new MessageActionRow().addComponents(but1.setDisabled(true), but2.setDisabled(true), but3.setDisabled(true), but4.setDisabled(true),  but5.setDisabled(true))] }).catch(() => {});
+    collector.on('collect', async(interaction) => {
+        await interaction.deferReply({ ephemeral: true });
+        collector.resetTimer({ time: 60000, idle: 30000 });
+        const value = interaction.customId;
+
+        if(interaction.isButton()){
+            const categoryName = value.charAt(0).toUpperCase() + value.slice(1);
+            const commandData = client.commands.filter(cmd => cmd.category === value);
+            if(commandData.size === 0) {
+                if(value == 'help:delete') collector.stop('deleted');
+                interaction.editReply({ content: `${client.emoji.success} | Message has been deleted!` });
+                return null;
+            };
+            const commandList = commandData.map(command => `\`${command.name}\``).join(', ');
+            const menu = new MessageSelectMenu()
+                .setCustomId(value)
+                .setPlaceholder('Select commands for spesific information');
+            const menuOptions = [];
+            commandData.forEach(command => {
+                menuOptions.push({ label:  command.name, description: command.description, value: command.name });
+            });
+            menu.addOptions(menuOptions);
+            const actionRow = new MessageActionRow().addComponents([menu]);
+            embed.setTitle(`${categoryEmoji[value]} ${categoryName} Commands`).setDescription(commandList);
+            interaction.editReply({ embeds:[embed], components: [actionRow] });
+        }
     });
-    collector.on('collect', async (b) => {
-       if(!b.deferred) await b.deferUpdate()
-        if(b.customId === "home") {
-           if(!m) return;
-           return await m.edit({ embeds: [embed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4,  but5)] })
-        }
-        if(b.customId === "music") {
-         _commands = client.commands.filter((x) => x.category && x.category === "Music").map((x) => `\`${x.name}\``);
-             editEmbed.setColor(client.colors.default).setDescription(_commands.join(", ")).setTitle("Music Commands").setFooter({text: `Total ${_commands.length} music commands.`});
-           if(!m) return;
-           return await m.edit({ embeds: [editEmbed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4,  but5)] })
-        }
-         if(b.customId == "info") {
-         _commands = client.commands.filter((x) => x.category && x.category === "Information").map((x) => `\`${x.name}\``);
-             editEmbed.setColor(client.colors.default).setDescription(_commands.join(", ")).setTitle("Information Commands").setFooter({text: `Total ${_commands.length} Information commands.`})
-          return await m.edit({ embeds: [editEmbed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4)] })
-         }
-         if(b.customId == "playlist") {
-          _commands = client.commands.filter((x) => x.category && x.category === "Playlist").map((x) => `\`${x.name}\``);
-              editEmbed.setColor(client.colors.default).setDescription(_commands.join(", ")).setTitle("Playlist Commands").setFooter({text: `Total ${_commands.length} Playlist commands.`})
-           return await m.edit({ embeds: [editEmbed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4)] })
-          }
-         if(b.customId == "config") {
-         _commands = client.commands.filter((x) => x.category && x.category === "Config").map((x) => `\`${x.name}\``);
-             editEmbed.setColor(client.colors.default).setDescription(_commands.join(", ")).setTitle("Config Commands").setFooter({text: `Total ${_commands.length} Config commands.`})
-          return await m.edit({ embeds: [editEmbed], components: [new MessageActionRow().addComponents(but1, but2, but3, but4)] })
-         
-        }
-     });
-   }
- }
+    collector.on('end', (collected, reason) => {
+        if(!m) return;
+        if(reason=='deleted') return m.delete().catch(_=>void 0)
+        const oldActionRow = m.components[0];
+        const newActionRow = new MessageActionRow();
+        const newButtons = [];
+        oldActionRow.components.forEach(oldButton => {
+            oldButton = MessageButton.from(oldButton);
+            oldButton.setDisabled(true);
+            newButtons.push(oldButton);
+        });
+        newActionRow.addComponents(newButtons);
+        m.edit({ components: [newActionRow] }).catch(_=>void 0);
+    });
+    return collector;
+};
