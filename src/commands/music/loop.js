@@ -43,4 +43,4 @@ module.exports = new CommandBuilder({
             .setDescription(`${emojiloop} Loop track is now **${trackRepeat}**`)
         return message.reply({ embeds: [thing] });
     }
-};
+});
