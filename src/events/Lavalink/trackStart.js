@@ -77,14 +77,18 @@ async function trackStart(client, player, track, payload){
             collector.stop('track:stop');
         }
         else if (interaction.customId === "track:resume") {
-            if(!player.paused) return editReply({ content: `**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!` });
-            player.pause(false);
-            buttons[1] = buttons[1].setDisabled(false);
-            startMessage.edit({ components: [actionRow.addComponents(buttons)]})
-            await interaction.editReply({ 
-                embeds: [collectEmbed.setDescription(`**${emoji.resume} Resume** current song`)]
-            });
-            player.setMessage('pause_resume', null);
+            if(!player.paused) {
+                await interaction.editReply({ content: `**${emoji.error} |** This button ${emoji.resume} only active if the music has been paused!` });
+            }
+            else {
+                player.pause(false);
+                buttons[1] = buttons[1].setDisabled(false);
+                startMessage.edit({ components: [actionRow.setComponents(buttons)]})
+                await interaction.editReply({ 
+                    embeds: [collectEmbed.setDescription(`**${emoji.resume} Resume** current song`)]
+                });
+                player.setMessage('pause_resume', null);
+            };
         }
         else if (interaction.customId === "track:skip") {
             await player.stop();
