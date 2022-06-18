@@ -218,7 +218,7 @@ module.exports = Structure.extend('Player', Player => {
 			return text.length > length ? text.substr(0, length-3) + '...' : text;
 		}
 		async destroy() {
-		  const messages = Object.values(this.messages);
+		  const messages = Object.values(this.message);
 		  if(this.collector) this.collector.stop();
 		  if(messages[0]) messages.forEach(msg => {
 		      if(msg) msg.delete().catch(_ => void 0);

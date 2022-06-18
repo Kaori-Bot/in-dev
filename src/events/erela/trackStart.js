@@ -106,8 +106,11 @@ async function trackStart(client, player, track, payload){
         }
 
         await delay(1000 * 10);
-        const checkAvailable = await interaction.fetchReply();
-        if (checkAvailable && !interaction.checkSkip) await interaction.deleteReply();
+        if (!interaction.checkSkip) {
+            interaction.fetchReply().then(message => {
+                if (message) await message.deleteReply();
+            });
+        };
     });
     collector.on('end', () => {
         if(startMessage) {

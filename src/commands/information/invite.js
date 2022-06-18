@@ -19,6 +19,6 @@ module.exports = new CommandBuilder({
             .setThumbnail(client.user.displayAvatarURL({ dynamic: true, format: 'png' }))
             .setColor(client.colors.default)
             .setDescription(`This is the link invite me to your server. [Add to Server](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=36768832&scope=applications.commands%20bot)`);
-        message.reply({embeds: [mainPage], components: [row]})
+        message.reply({embeds: [mainPage], components: [actionRow]});
     }
 });
