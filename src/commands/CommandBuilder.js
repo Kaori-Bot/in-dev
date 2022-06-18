@@ -21,7 +21,7 @@ class Command {
     }
     baseEmbed(type='', message) {
         const { MessageEmbed } = require('discord.js');
-        const colors = require('../../colors.json');
+        const colors = require('../../config/colors.json');
         switch (type.toLowerCase()) {
             case 'error':
                 return new MessageEmbed().setcolor(colors.red);
