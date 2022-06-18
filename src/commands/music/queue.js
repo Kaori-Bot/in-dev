@@ -22,15 +22,17 @@ module.exports = new CommandBuilder({
                 return require('./nowplaying').execute(client, message, args);
             }
             else {
-                const queuedSongs = player.queue.map(async(track, i) => {
-                    if (track.resolve) {
-                        track = await track.resolve().then(_ => track);
-                    };
-                    return `[\`${++i}.\`] [${player.subText(track.title)}](${track.uri}) [\`${parseDuration(track.duration)}\`] by ${track.requester}`;
-                });
+                const queuedSongs = Promise.all(
+                    player.queue.map(async(track, i) => {
+                        if (track.resolve) {
+                            track = await track.resolve().then(_ => track);
+                        };
+                        return `[\`${++i}.\`] [${player.subText(track.title)}](${track.uri}) [\`${parseDuration(track.duration)}\`] by ${track.requester}`;
+                    })
+                );
 
-                const mapping = await load.chunk(await queuedSongs, 10);
-                const pages = await mapping.map((s) => s.join("\n"));
+                const mapping = load.chunk(await queuedSongs, 10);
+                const pages = mapping.map((s) => s.join("\n"));
                 let page = 0;
 
                 if(player.queue.size < 11) {
