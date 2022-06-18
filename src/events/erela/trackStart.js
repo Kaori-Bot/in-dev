@@ -62,16 +62,18 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:pause") {
             if (player.paused) {
-                interaction.editReply({
+                await interaction.editReply({
                     embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is already **\`paused\`**!`)]
                 });
             }
-            player.pause(true);
-            await interaction.editReply({ 
-                embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** [${track.title}](${track.uri})`)]
-            });
-            player.setMessage('pause', await interaction.fetchReply());
-            interaction.checkSkip = true;
+            else {
+                player.pause(true);
+                await interaction.editReply({ 
+                    embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** [${track.title}](${track.uri})`)]
+                });
+                player.setMessage('pause', await interaction.fetchReply());
+                interaction.checkSkip = true;
+            };
         }
         else if (interaction.customId === "track:stop") {
             await player.stop();
@@ -106,7 +108,7 @@ async function trackStart(client, player, track, payload){
             }
         }
 
-        if (interaction.checkSkip) return null;
+        if (interaction.checkSkip) return;
         await delay(1000 * 10);
         interaction.fetchReply().then(message => {
             if (message) message.delete().catch(_ => void 0);
