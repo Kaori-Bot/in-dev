@@ -17,7 +17,7 @@ class Command {
         };
         if(data.args) this.args = data.args;
         this.private = data.private || false;
-        this.execute = data.execute ? typeof data.execute == 'function' ? new Function(...args => data.execute.bind(this)(...args)) : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
+        this.execute = data.execute ? typeof data.execute == 'function' ? ((client, message, args, prefix) => data.execute.bind(this)(client, message, args, prefix)) : () => {throw new TypeError(`${this.constructor.name}.execute`, 'Type is not function!')} : () => {};
     }
     baseEmbed(type='', message) {
         const { MessageEmbed } = require('discord.js');
