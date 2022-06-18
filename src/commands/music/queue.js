@@ -2,7 +2,7 @@ const CommandBuilder = require('../CommandBuilder');
 const { Client, Message, MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
 const load = require('lodash');
 const parseDuration = require('../../utils/parseDuration');
-const progressBar = require('../../utils/progresssBar');
+const progressBar = require('../../utils/progressBar');
 
 module.exports = new CommandBuilder({
     name: "queue",
