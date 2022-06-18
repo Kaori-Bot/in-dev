@@ -1,4 +1,4 @@
-const CommandBuilder = require('../../CommandBuilder');
+const CommandBuilder = require('../CommandBuilder');
 const Discord = require("discord.js");
 
 module.exports = new CommandBuilder({
