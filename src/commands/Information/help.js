@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageEmbed, MessageButton, MessageSelectMenu } = require("discord.js");
-const categoryEmoji = require('../../emoji.json');
+const categoryEmoji = require('../emoji.json');
 
 module.exports = {
     name: "help",
