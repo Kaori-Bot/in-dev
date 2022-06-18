@@ -24,7 +24,7 @@ class KaoriBot extends Client {
 			}
 			this.commands.categories.push(dir);
 		});
-		this.logger.log('Commands: Loaded...', 'info');
+		this.logger.log('[Commands] Loaded...', 'info');
 
 		readdirSync("./src/slashCommands/").forEach(dir => {
 			const slashCommandFile = readdirSync(`./src/slashCommands/${dir}/`).filter((files) => files.endsWith(".js"));
@@ -41,16 +41,16 @@ class KaoriBot extends Client {
 				this.slashCommands.categories.push(dir);
 			}
 		});
-		this.logger.log('SlashCommands: Loaded...', 'info');
+		this.logger.log('[SlashCommands] Loaded...', 'info');
 	}
 	async loadEvents() {
 		const { readdirSync } = require('fs');
-		readdirSync("./src/events/Client/").forEach(file => {
+		readdirSync("./src/events/client/").forEach(file => {
 			const event = require(`./events/Client/${file}`);
 			event.name = file.split('.')[0];
 			this.on(event.name, (...args) => event.load(this, ...args));
 		});
-		this.logger.log('Events Client: Loaded...', 'info');
+		this.logger.log('[Events:Discord] Loaded...', 'info');
 	}
 	async loadMongo() {
 		const mongoose = require('mongoose');
@@ -64,13 +64,13 @@ class KaoriBot extends Client {
 		mongoose.connect(process.env.MONGO_URI, dbOptions)
 			mongoose.Promise = global.Promise;
 			mongoose.connection.on('connected', () => {
-				this.logger.log('Mongoose: Database connected.', 'ready');
+				this.logger.log('[Mongoose] Database connected.', 'ready');
 			});
 			mongoose.connection.on('err', (err) => {
-				console.error(`Mongoose Connection:`, err.stack);
+				console.error(`[Mongoose:Connection]`, err.stack);
 			});
 			mongoose.connection.on('disconnected', () => {
-				this.logger.log('Mongoose: Database disconnected...', 'info');
+				this.logger.log('[Mongoose] Database disconnected...', 'info');
 			});
 	}
 	async login(botToken) {
@@ -91,7 +91,7 @@ class KaoriBot extends Client {
 	async registerApplicationCommand(guildId, force=false) {
 		if(!this.isReady) throw new Error('Cannot register Application Commands before client is ready!');
 		const _data = this.slashCommands._data;
-		if(!_data) throw new Error('SlashCommands: Data not available!');
+		if(!_data) throw new Error('[SlashCommands] Data not available!');
 		try {
 			if(force) {
 				_data.forEach(async data => {
@@ -107,7 +107,7 @@ class KaoriBot extends Client {
 			}else{
 				await this.application.commands.set(_data);
 			}
-			this.logger.log('SlashCommands: Registered.', 'ready');
+			this.logger.log('[SlashCommands] Registered.', 'ready');
 		}
 		catch(error) {
 			console.error(error);
