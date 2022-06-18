@@ -45,8 +45,8 @@ class KaoriBot extends Client {
 	}
 	async loadEvents() {
 		const { readdirSync } = require('fs');
-		readdirSync("./src/events/client/").forEach(file => {
-			const event = require(`./events/Client/${file}`);
+		readdirSync("./src/events/discord/").forEach(file => {
+			const event = require(`./events/discord/${file}`);
 			event.name = file.split('.')[0];
 			this.on(event.name, (...args) => event.load(this, ...args));
 		});
