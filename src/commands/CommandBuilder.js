@@ -19,7 +19,7 @@ class Command {
     }
     get category(commandCategory) {
         const { readdirSync } = require('fs');
-        const categories = readdirSync('./commands').filter(x=>!['.js','.json'].includes(x));
+        const categories = readdirSync('./commands').filter(x => !x.includes('.'));
         categories.forEach(directory => {
             const commands = readdirSync(`./commands/${directory}`);
             if (commands.includes(this.name+'.js')) commandCategory = directory;
