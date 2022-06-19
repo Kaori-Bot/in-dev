@@ -4,10 +4,4 @@
     "port": 2000,
     "password": "lavalink",
     "secure": false
-}, {
-    "host": "lv.vellerius.tk",
-    "identifier": "kaori@dev",
-    "port": 2333,
-    "password": "derpilava",
-    "secure": false
 }]
