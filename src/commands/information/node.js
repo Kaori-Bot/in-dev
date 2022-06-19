@@ -5,17 +5,26 @@ module.exports = new CommandBuilder({
     name: "node",
     description: "Check node information",
     async execute(client, message, args, prefix) {
-        const embeds = [];
-        const embed = new MessageEmbed().setColor(client.colors.default);
+        const embed = new MessageEmbed().setColor(client.colors.default)
+        .setTitle('Lavalink Node')
+        .setDescription('List of lavalink node');
 
         let index = 0;
         client.manager.nodes.forEach(node => {
-            embed.setTitle(`Nodes #${index++}`)
-            embed.setDescription(`Identifier: ${(node.options.identifier)}\nPlayers: ${node.stats.playingPlayers} / ${node.stats.players}\nMemory Usage: ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB\nCPU\n• Cores: ${node.stats.cpu.cores}\n• System Load: ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%\n• Lavalink Load: ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%\nUptime: ${(formatUptime(node.stats.uptime))}`);
-            embeds.push(embed);
+            embed.fields.push({
+                name: `Nodes #${++index}`,
+                value:
+                    `• **Identifier:** ${(node.options.identifier)}`
+                    +`\n• **Players:** ${node.stats.playingPlayers} / ${node.stats.players}`
+                    +`\n• **Memory Usage:** ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB`
+                    +`\n• **CPU Cores:** ${node.stats.cpu.cores}`
+                    +`\n• **System Load:** ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%`
+                    +`\n• **Lavalink Load:** ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%`
+                    +`\n• **Uptime:** ${(formatUptime(node.stats.uptime))}`
+            });
         });
 
-        message.reply({embeds: [...embeds]})
+        message.reply({embeds: [embed]})
     }
 });
 

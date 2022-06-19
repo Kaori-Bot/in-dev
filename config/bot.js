@@ -1,14 +1,6 @@
 module.exports = {
     prefix: process.env.PREFIX || "k?",
     developerId: process.env.DEVELOPER_ID || "561170896480501790",
-    imageUrl: {
-        music: 'https://cdn.discordapp.com/emojis/987180130684256267.gif'
-    },
-    nodes: [{
-        host: process.env.NODE_HOST,
-        identifier: process.env.NODE_ID || "kaori@stable",
-        port: parseInt(process.env.NODE_PORT || "2333"),
-        password: process.env.NODE_PASSWORD,
-        secure: Boolean(process.env.NODE_SECURE)
-    }]
+    imageUrl: require('./image.json'),
+    nodes: require('./lavalink.json')
 };

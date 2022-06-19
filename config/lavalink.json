@@ -1,0 +1,14 @@
+[{
+    "host": "lava.kaoribot.cf",
+    "identifier": "kaori@dev",
+    "port": 9018,
+    "password": "Kaori#0740",
+    "secure": false
+},
+{
+    "host": "lavalink.kaoribot.cf",
+    "identifier": "kaori@stable",
+    "port": 2000,
+    "password": "lavalink",
+    "secure": false
+}]
