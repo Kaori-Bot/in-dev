@@ -33,11 +33,12 @@ module.exports = new CommandBuilder({
 
         if (player.state != "CONNECTED") await player.connect();
         const search = args.join(' ');
+        player.searchingMessage = await message.reply(`🔎 Searching \`${search.replaceAll(/`/g, "'")}\``);
         let res;
 
         try {
             res = await player.search(search, message.author);
-        if (!player) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription("Nothing is playing right now...")] });
+            if (!player) return message.channel.send({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription("Nothing is playing right now...")] });
             if (res.loadType === 'LOAD_FAILED') {
                 if (!player.queue.current) player.destroy();
                 throw res.exception;

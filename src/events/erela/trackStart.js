@@ -23,6 +23,7 @@ async function trackStart(client, player, track, payload){
     ];
     const actionRow = new MessageActionRow().addComponents(buttons);
 
+    if(player.searchingMessage) player.searchingMessage.delete();
     const startMessage = await client.channels.cache.get(player.textChannel).send({ embeds: [startEmbed], components: [actionRow] });
     player.setPlayingMessage(startMessage);
 
