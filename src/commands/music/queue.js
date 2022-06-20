@@ -104,6 +104,7 @@ module.exports = new CommandBuilder({
                                 });
                                 return void 0;
                             }
+                            return true;
                             }
                             else {
                                 b.reply({
