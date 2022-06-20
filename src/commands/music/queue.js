@@ -71,16 +71,19 @@ module.exports = new CommandBuilder({
 
                     const but3 = new MessageButton()
                     .setCustomId("queue_button_page")
-                    .setLabel(`Page ${page + 1} of ${pages.length}`)
+                    .setLabel(`${page + 1}/${pages.length}`)
                     .setStyle("SECONDARY")
                     .setDisabled(true);
 
                     const but4 = new MessageButton()
                     .setCustomId('queue_button_fast-skip')
+                    .setEmoji(client.emoji.forward)
                     .setStyle('SUCCESS');
 
                     const  but5 = new MessageButton()
-                    .setCustomId('queue_button_message-delete');
+                    .setCustomId('queue_button_message-delete')
+                    .setEmoji(client.emoji.error)
+                    .setStyle('DANGER');
 
                     const row1 = new MessageActionRow().addComponents([
                         but2, but3, but1, , but4, but5
@@ -149,7 +152,7 @@ module.exports = new CommandBuilder({
 
                             await msg.edit({
                                 embeds: [embed3],
-                                components: [new MessageActionRow().addComponents(but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1, but4, but5)]
+                                components: [new MessageActionRow().addComponents(but2, but3.setLabel(`${page + 1}/${pages.length}`), but1, but4, but5)]
                             })
                         } else if(button.customId === "queue_button_left") {
                             page = page > 0 ? --page : pages.length - 1;
@@ -157,7 +160,7 @@ module.exports = new CommandBuilder({
                             const embed4 = embedUpdate(page);
                             await msg.edit({
                                 embeds: [embed4],
-                                components: [new MessageActionRow().addComponents(but4, but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1, but5)]
+                                components: [new MessageActionRow().addComponents(but4, but2, but3.setLabel(`${page + 1}/${pages.length}`), but1, but5)]
                  }).catch(() => {});
                         };
                         function embedUpdate(newPage) {
