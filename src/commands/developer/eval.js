@@ -15,7 +15,7 @@ module.exports = new CommandBuilder({
 
         try {
             let code = args.join(" ");
-            if (!code) code = String("You not input the code?");
+            if (!args[0]) code = String("You not input the code?");
             let evaled = await eval(code);
 
             if (typeof evaled !== "string") evaled = await require("util").inspect(evaled, { depth: 0 });

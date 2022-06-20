@@ -69,8 +69,8 @@ module.exports = new CommandBuilder({
                         embedL.fields.push({
                             name: `Nodes #${index++}`,
                             value:
-                                +`\n• **Players:** ${node.stats.playingPlayers} / ${node.stats.players}`
-                                +`\n• **Memory Usage:** ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MiB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MiB`
+                                `• **Players:** ${node.stats.playingPlayers} / ${node.stats.players}`
+                                +`\n• **Memory Usage:** ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString().replaceAll(',','.')} MiB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString().replaceAll(',','.')} MiB`
                                 +`\n• **System Load:** ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%`
                                 +`\n• **Lavalink Load:** ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%`
                                 +`\n• **Uptime:** ${(formatUptime(node.stats.uptime))}`
