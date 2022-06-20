@@ -127,7 +127,7 @@ module.exports = new CommandBuilder({
 
                         if(button.customId === 'queue_button_fast-skip') {
                             let actionRow = [];
-                            let newButton = button.components[0].filter(b => ['kaori_forward','kaori_rewind'].includes(b.emoji.name));
+                            let newButton = button.components[0].filter(b => b.emoji.name == 'kaori_forward');
 
                             if(newButton[0].emoji.name === 'kaori_forward'){
                                 page = pages.length;
@@ -158,13 +158,13 @@ module.exports = new CommandBuilder({
                                 components: [new MessageActionRow().addComponents(but4, but2, but3.setLabel(`${page + 1}/${pages.length}`), but1, but5)]
                  }).catch(() => {});
                         };
-                        function embedUpdate(newPage) {
+                        function embedUpdate() {
                             return new MessageEmbed()
                             .setColor(client.colors.default)
                             .addFields([
                                 { name: `${client.emoji.music} Now playing`, value: `[${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}` }
                             ])
-                            .setDescription(pages[newPage])
+                            .setDescription(pages[page])
                         .setThumbnail(client.config.imageUrl.music)
                         .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
                         };
