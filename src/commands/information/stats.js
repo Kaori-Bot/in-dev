@@ -45,7 +45,6 @@ module.exports = new CommandBuilder({
                     .setLabel('Back')
                     .setStyle('SECONDARY')
             ];
-            actionRow.components.forEach(b => buttons.push(b));
 
             const newRow = new MessageActionRow().addComponents(buttons);
 
@@ -63,7 +62,7 @@ module.exports = new CommandBuilder({
                         .setColor(client.colors.default)
                         .setTitle('Lavalink Node')
                         .setThumbnail(client.config.imageUrl.lavalink)
-                        .setDescription('List of lavalink node');
+                        .setDescription('Available lavalink node statistics');
 
                     let index = 0;
                     client.manager.nodes.forEach(node=> {
@@ -84,6 +83,13 @@ module.exports = new CommandBuilder({
                 else if(interaction.customId==='command:stats_home') {
                     msg.edit({embeds: [embed], components: [actionRow]});
                 }
+            });
+
+            collector.on('end', () => {
+                if(!msg) return;
+                const button = msg.components[0].components.map(b=>b.setDisabled(true));
+                const newRow = new MessageActionRow().addComponents(button);
+                msg.edit({ components: [mewRow] }).catch(_ => void 0);
             });
         });
     }
