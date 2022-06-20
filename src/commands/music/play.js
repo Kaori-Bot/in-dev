@@ -46,6 +46,7 @@ module.exports = new CommandBuilder({
         } catch (err) {
             return message.reply(`There was an error while searching: ${err.message}`);
         }
+        player.searchingMessage.delete().catch(_ => void 0);
         switch (res.loadType) {
             case 'NO_MATCHES':
                 if (!player.queue.current) player.destroy();
@@ -61,7 +62,7 @@ module.exports = new CommandBuilder({
                     .setColor(client.colors.default)
                     .setTimestamp()
                     .setThumbnail(track.displayThumbnail("hqdefault"))
-                    .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\``)
+                    .setDescription(`Queued [${track.title}](${track.uri}) [${parseDuration(track.duration)}] by ${message.author}`)
                     return message.channel.send({ embeds: [embed] });
                 }
             case 'PLAYLIST_LOADED':
@@ -70,7 +71,7 @@ module.exports = new CommandBuilder({
                 const embed = new MessageEmbed()
                     .setColor(client.colors.default)
                     .setTimestamp()
-                    .setDescription(`${emojiplaylist} **Added playlist to queue**\n${res.tracks.length} Songs [${res.playlist.name}](${search}) - \`[${parseDuration(res.playlist.duration)}]\``)
+                    .setDescription(`Playlist Queued (${res.tracks.length} Songs) [${res.playlist.name}](${search}) [${parseDuration(res.playlist.duration)}] by ${message.author}`)
                 return message.channel.send({ embeds: [embed] });
             case 'SEARCH_RESULT':
                 var track = res.tracks[0];
@@ -83,7 +84,7 @@ module.exports = new CommandBuilder({
                         .setColor(client.colors.default)
                         .setTimestamp()
                         .setThumbnail(track.displayThumbnail("hqdefault"))
-                        .setDescription(`${emojiaddsong} **Added song to queue**\n[${track.title}](${track.uri}) - \`[${parseDuration(track.duration)}]\`[<@${track.requester.id}>]`)
+                        .setDescription(`Queued [${track.title}](${track.uri}) [${parseDuration(track.duration)}] by <@${track.requester.id}>`)
                     return message.channel.send({ embeds: [embed] });
                 }
         }
