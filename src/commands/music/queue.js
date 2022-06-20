@@ -117,12 +117,16 @@ module.exports = new CommandBuilder({
                         collector.resetTimer({ time: 60000*5, idle: 30e3 });
 
                         if(page=pages.length){
-                            but2.setDisabled(true);
+                            but1.setDisabled(true);
                             but4.setEmoji(client.emoji.rewind);
                         }
-                        else{
-                            but1.setDisabled(true);
+                        else if(page=0){
+                            but2.setDisabled(true);
                             but4.setEmoji(client.emoji.forward);
+                        }
+                        else{
+                            but1.setDisabled(false);
+                            but2.setDisabled(false);
                         }
 
                         if(button.customId === 'queue_button_fast-skip') {
