@@ -60,24 +60,30 @@ module.exports = new CommandBuilder({
                     .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
 
                     const but1 = new MessageButton()
-                    .setCustomId("queue_cmd_but_1")
-                  
+                    .setCustomId("queue_button_right")
                     .setEmoji(client.emoji.right)
-                    .setStyle("PRIMARY")
+                    .setStyle("PRIMARY");
 
                     const but2 = new MessageButton()
-                    .setCustomId("queue_cmd_but_2")
+                    .setCustomId("queue_button_left")
                     .setEmoji(client.emoji.left)
-                    .setStyle("PRIMARY")
+                    .setStyle("PRIMARY");
 
                     const but3 = new MessageButton()
-                    .setCustomId("queue_cmd_but_3")
+                    .setCustomId("queue_button_page")
                     .setLabel(`Page ${page + 1} of ${pages.length}`)
                     .setStyle("SECONDARY")
-                    .setDisabled(true)
+                    .setDisabled(true);
+
+                    const but4 = new MessageButton()
+                    .setCustomId('queue_button_fast-skip')
+                    .setStyle('SUCCESS');
+
+                    const  but5 = new MessageButton()
+                    .setcustomId('queue_button_message-delete');
 
                     const row1 = new MessageActionRow().addComponents([
-                        but2, but3, but1
+                        but2, but3, but1, , but4, but5
                     ]);
 
                     const msg = await message.channel.send({
@@ -91,7 +97,7 @@ module.exports = new CommandBuilder({
                             else {
                                 b.reply({
                                     ephemeral: true,
-                                    content: `Only **${message.author.tag}** can use this button, if you want then you've to run the command again.`
+                                    content: `This buttons only for **${message.author.tag}**, run the command yourself if you want.`
                                 });
                                 return false;
                             };
@@ -101,40 +107,61 @@ module.exports = new CommandBuilder({
                     });
 
                     collector.on("collect", async (button) => {
-                        if(button.customId === "queue_cmd_but_1") {
-                            await button.deferUpdate().catch(() => {});
+                        await button.deferUpdate().catch(_ => void 0);
+                        collector.resetTimer({ time: 60000*5, idle: 30e3 });
+
+                        if(page=pages.length){
+                            but2.setDisabled(true);
+                            but4.setEmoji(client.emoji.rewind);
+                        }
+                        else{
+                            but1.setDisabled(true);
+                            but4.setEmoji(client.emoji.forward);
+                        }
+
+                        if(button.customId === 'queue_button_fast-skip') {
+                            let actionRow = [];
+                            let newButton = button.components[0].filter(b => ['kaori_forward','kaori_rewind'].includes(b.emoji.name));
+
+                            if(newButton[0].emoji.name === 'kaori_forward'){
+                                page = pages.length;
+                                actionRow = new MessageActionRow().addcomponents([but2, but3, but1, but4, but5]);
+                            }
+                            else{
+                                page = 0;
+                                actionRow = new MessageActionRow().addcomponents([but4, but2, but3, but1, but5]);
+                            }
+                            const embed = embedUpdate(page);
+                            msg.edit({ embeds: [embed], components: [actionRow] })
+                        }
+                        if(button.customId === "queue_button_right") {
                             page = page + 1 < pages.length ? ++page : 0;
 
-                            const embed3 = new MessageEmbed()
-                    .setColor(client.colors.default)
-                    .addFields([
-                            { name: `${client.emoji.music} Now playing`, value: `[${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}` }
-                                        ])
-                        .setDescription(pages[page])
-                    .setThumbnail(client.config.imageUrl.music)
-                    .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
+                            const embed3 = embedUpdate(page);
 
                             await msg.edit({
                                 embeds: [embed3],
-                                components: [new MessageActionRow().addComponents(but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1)]
+                                components: [new MessageActionRow().addComponents(but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1, but4, but5)]
                             })
-                        } else if(button.customId === "queue_cmd_but_2") {
-                            await button.deferUpdate().catch(() => {});
+                        } else if(button.customId === "queue_button_left") {
                             page = page > 0 ? --page : pages.length - 1;
 
-                            const embed4 = new MessageEmbed()
-    .setColor(client.colors.default)
-    .addFields([
-                            { name: `${client.emoji.music} Now playing`, value: `[${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}` }
-                                        ])
-                        .setDescription(pages[page])
-    .setThumbnail(client.config.imageUrl.music)
-    .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({ dynamic: true }) });
+                            const embed4 = embedUpdate(page);
                             await msg.edit({
                                 embeds: [embed4],
-                                components: [new MessageActionRow().addComponents(but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1)]
+                                components: [new MessageActionRow().addComponents(but4, but2, but3.setLabel(`Page ${page + 1} of ${pages.length}`), but1, but5)]
                  }).catch(() => {});
-                        } else return;
+                        };
+                        function embedUpdate(newPage) {
+                            return new MessageEmbed()
+                            .setColor(client.colors.default)
+                            .addFields([
+                                { name: `${client.emoji.music} Now playing`, value: `[${player.queue.current.title}](${player.queue.current.uri}) by ${player.queue.current.requester}\n\n${parseDuration(player.position)} ${progressBar(player.position, player.queue.current.duration).default} ${parseDuration(player.queue.current.duration)}` }
+                            ])
+                            .setDescription(pages[newPage])
+                        .setThumbnail(client.config.imageUrl.music)
+                        .setAuthor({ name: `${message.guild.name} Queue`, iconURL: message.guild.iconURL({dynamic:true}) });
+                        };
                     });
 
                     collector.on("end", async () => {
