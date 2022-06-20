@@ -80,7 +80,7 @@ module.exports = new CommandBuilder({
                     .setStyle('SUCCESS');
 
                     const  but5 = new MessageButton()
-                    .setcustomId('queue_button_message-delete');
+                    .setCustomId('queue_button_message-delete');
 
                     const row1 = new MessageActionRow().addComponents([
                         but2, but3, but1, , but4, but5
@@ -93,11 +93,19 @@ module.exports = new CommandBuilder({
 
                     const collector = message.channel.createMessageComponentCollector({
                         filter: (b) => {
-                            if(b.user.id === message.author.id) return true;
+                            if(b.user.id === message.author.id){
+                                if(b.customId==='queue_button_message-delete'){
+                                b.reply({
+                                    ephemeral: true,
+                                    content: `**${client.emoji.success} |** Message has been deleted!`
+                                });
+                                return void 0;
+                            }
+                            }
                             else {
                                 b.reply({
                                     ephemeral: true,
-                                    content: `This buttons only for **${message.author.tag}**, run the command yourself if you want.`
+                                    content: `**${client.emoji.error} |** This buttons only for **${message.author.tag}**, run the command itself if you want.`
                                 });
                                 return false;
                             };

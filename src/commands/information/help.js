@@ -34,17 +34,22 @@ module.exports = new CommandBuilder({
                 .setStyle('DANGER')
         );
         const actionRow = new MessageActionRow().addComponents(buttons);
-        message.reply({ embeds: [embed], components: [actionRow] }).then(m => createInteractionCollector(m));
+        message.reply({ embeds: [embed], components: [actionRow] }).then(m => createInteractionCollector(m, message));
     }
 });
 
-function createInteractionCollector(m) {
+function createInteractionCollector(m, msg) {
     const client = m.client;
     const category = client.commands.categories;
     const commands = Array.from(client.commands.keys());
     const embed = new MessageEmbed().setColor(client.colors.default);
     const collector = m.createMessageComponentCollector({
-        filter: (interaction) => category.includes(interaction.customId) || commands.includes(interaction.customId) || interaction.customId === 'help:delete',
+        filter: (interaction) => {
+            if(category.includes(interaction.customId)) return true;
+            if(commands.includes(interaction.customId)) return true;
+            if(interaction.customId === 'help:delete' && interaction.user.id === msg.author.id) return true;
+            else return void 0;
+        },
         time: 60000
     });
     collector.on('collect', async(interaction) => {
@@ -57,7 +62,7 @@ function createInteractionCollector(m) {
             const commandData = client.commands.filter(cmd => cmd.category === value);
             if(commandData.size === 0) {
                 if(value == 'help:delete') collector.stop('deleted');
-                interaction.editReply({ content: `${client.emoji.success} | Message has been deleted!` });
+                interaction.editReply({ content: `**${client.emoji.success} |** Message has been deleted!` });
                 return null;
             };
             const commandList = commandData.map(command => `\`${command.name}\``).join(', ');
