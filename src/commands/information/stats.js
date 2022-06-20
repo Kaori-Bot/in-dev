@@ -60,28 +60,26 @@ module.exports = new CommandBuilder({
                 if(interaction.customId==='command:stats_lavalink') {
                     const embedL = new MessageEmbed()
                         .setColor(client.colors.default)
-                        .setTitle('Lavalink Node')
+                        .setTitle('Lavalink Node Statistics')
                         .setThumbnail(client.config.imageUrl.lavalink)
-                        .setDescription('Available lavalink node statistics');
+                        .setDescription('This shows the current status of the online Lavalink Nodes. Every node contains a dynamic amount of players. This is for balancing music processes outside of the main bot nodes.');
 
                     let index = 0;
                     client.manager.nodes.forEach(node=> {
                         embedL.fields.push({
                             name: `Nodes #${index++}`,
                             value:
-                            `• **Identifier :** ${(node.options.identifier)}`
-                            +`\n• **Players:** ${node.stats.playingPlayers} / ${node.stats.players}`
-                            +`\n• **Memory Usage:** ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MB`
-                            +`\n• **CPU Cores:** ${node.stats.cpu.cores}`
-                            +`\n• **System Load:** ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%`
-                            +`\n• **Lavalink Load:** ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%`
-                            +`\n• **Uptime:** ${(formatUptime(node.stats.uptime))}`
+                                +`\n• **Players:** ${node.stats.playingPlayers} / ${node.stats.players}`
+                                +`\n• **Memory Usage:** ${(Math.round(node.stats.memory.used / 1024 / 1024)).toLocaleString()} MiB / ${(Math.round(node.stats.memory.reservable / 1024 / 1024)).toLocaleString()} MiB`
+                                +`\n• **System Load:** ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%`
+                                +`\n• **Lavalink Load:** ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%`
+                                +`\n• **Uptime:** ${(formatUptime(node.stats.uptime))}`
                         });
                     });
-                    msg.edit({embeds: [embedL], components: [newRow]});
+                    msg.edit({ embeds: [embedL], components: [newRow] }).catch(_ => void 0);
                 }
                 else if(interaction.customId==='command:stats_home') {
-                    msg.edit({embeds: [embed], components: [actionRow]});
+                    msg.edit({ embeds: [embed], components: [actionRow] }).catch(_ => void 0);
                 }
             });
 
@@ -89,7 +87,7 @@ module.exports = new CommandBuilder({
                 if(!msg) return;
                 const button = msg.components[0].components.map(b=>b.setDisabled(true));
                 const newRow = new MessageActionRow().addComponents(button);
-                msg.edit({ components: [mewRow] }).catch(_ => void 0);
+                msg.edit({ components: [newRow] }).catch(_ => void 0);
             });
         });
     }
