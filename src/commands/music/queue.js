@@ -98,24 +98,18 @@ module.exports = new CommandBuilder({
                         filter: (b) => {
                             if(b.user.id === message.author.id){
                                 if(b.customId==='queue_button_message-delete'){
-                                b.reply({
-                                    ephemeral: true,
-                                    content: `**${client.emoji.success} |** Message has been deleted!`
-                                });
-                                return void 0;
-                            }
-                            return true;
+                                    if(!msg) return;
+                                    b.reply({ ephemeral: true, content: `**${client.emoji.success} |** Message has been deleted!` });
+                                    return msg.delete().catch(_ => void 0);
+                                }
+                                return true;
                             }
                             else {
-                                b.reply({
-                                    ephemeral: true,
-                                    content: `**${client.emoji.error} |** This buttons only for **${message.author.tag}**, run the command itself if you want.`
-                                });
+                                b.reply({ ephemeral: true, content: `**${client.emoji.error} |** This buttons only for **${message.author.tag}**, run the command itself if you want.` });
                                 return false;
                             };
                         },
-                        time: 60000*5,
-                        idle: 30e3
+                        time: 60000*5
                     });
 
                     collector.on("collect", async (button) => {
@@ -177,11 +171,8 @@ module.exports = new CommandBuilder({
                     });
 
                     collector.on("end", async () => {
-                        const actionRow = new MessageActionRow().addComponents([
-                            but2.setDisabled(true),
-                            but3,
-                            but1.setDisabled(true)
-                    ]);
+                        const newButton = msg.components[0].components.map(button => button.setDisabled(true));
+                        const actionRow = new MessageActionRow().addComponents(newButton);
                         await msg.edit({
                             components: [actionRow]
                         })

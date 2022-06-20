@@ -47,8 +47,14 @@ function createInteractionCollector(m, msg) {
         filter: (interaction) => {
             if(category.includes(interaction.customId)) return true;
             if(commands.includes(interaction.customId)) return true;
-            if(interaction.customId === 'help:delete' && interaction.user.id === msg.author.id) return true;
-            else return void 0;
+            if(interaction.user.id === msg.author.id) {
+                if(interaction.customId==='help:delete') {
+                    if(!m) return;
+                    interaction.reply({ content: `**${client.emoji.success} |** Message has been deleted!`, ephemeral: true });
+                    return m.delete().catch(_ => void 0);
+                };
+                return true;
+            };
         },
         time: 60000
     });
@@ -60,11 +66,6 @@ function createInteractionCollector(m, msg) {
         if(interaction.isButton()){
             const categoryName = value.charAt(0).toUpperCase() + value.slice(1);
             const commandData = client.commands.filter(cmd => cmd.category === value);
-            if(commandData.size === 0) {
-                if(value == 'help:delete') collector.stop('deleted');
-                interaction.editReply({ content: `**${client.emoji.success} |** Message has been deleted!` });
-                return null;
-            };
             const commandList = commandData.map(command => `\`${command.name}\``).join(', ');
             const menu = new MessageSelectMenu()
                 .setCustomId(value)
@@ -79,9 +80,8 @@ function createInteractionCollector(m, msg) {
             interaction.editReply({ embeds:[embed], components: [actionRow] });
         }
     });
-    collector.on('end', (collected, reason) => {
+    collector.on('end', (collected) => {
         if(!m) return;
-        if(reason=='deleted') return m.delete().catch(_=>void 0)
         const oldActionRow = m.components[0];
         const newActionRow = new MessageActionRow();
         const newButtons = [];
