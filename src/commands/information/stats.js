@@ -14,7 +14,7 @@ module.exports = new CommandBuilder({
             usersCount += guild.memberCount;
         });
 
-        const actionRow = new MessageActionDow()
+        const actionRow = new MessageActionRow()
             .addComponents([
                 new MessageButton()
                     .setCustomId('command:stats_lavalink')
@@ -43,6 +43,7 @@ module.exports = new CommandBuilder({
                     .setCustomId('command:stats_home')
                     .setEmoji(client.emoji.left)
                     .setLabel('Back')
+                    .setStyle('SECONDARY')
             ];
             actionRow.components.forEach(b => buttons.push(b));
 
@@ -55,6 +56,7 @@ module.exports = new CommandBuilder({
                     return false;
                 }, time: 1000*60 });
             collector.on('collect', interaction => {
+                collector.resetTimer({ time: 1000*60, idle: 1000*30 });
                 interaction.deferUpdate().catch(_ => void 0);
                 if(interaction.customId==='command:stats_lavalink') {
                     const embedL = new MessageEmbed()
