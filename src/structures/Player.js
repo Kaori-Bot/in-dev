@@ -199,6 +199,9 @@ module.exports = Structure.extend('Player', Player => {
 			});
 			return this;
 		}
+		get messageInterval() {
+			return [];
+		}
 		clearMessage() {
 			const messages = Object.values(this.message);
 			if(!messages[0]) return false;
@@ -208,9 +211,20 @@ module.exports = Structure.extend('Player', Player => {
 			return true;
 		}
 		setMessage(type, message = null, timeout) {
-			if(!type || typeof type !== 'string') throw new TypeError('TYPE_NAME','Type is invalid!');
-			if(this.message[type]) this.message[type].delete().catch(_ => void 0);
-			if(timeout && !isNaN(timeout)) { setTimeout(() => this.message[type] = message.delete().catch(_ => void 0), timeout) };
+			if(!type || typeof type !== 'string') throw new TypeError('OPTIONS_TYPE','Type is invalid!');
+
+			if(this.messageInterval[0]) {
+				clearInterval(this.messageInterval[0]);
+				clearArray(this.messageInterval);
+			};
+			if(this.message[type]) {
+				this.message[type].delete().catch(_ => void 0);
+				this.message[type] = null;
+			};
+			if(timeout && !isNaN(timeout)){
+				const interval = setTimeout(() => message.delete().catch(_ => void 0), timeout);
+				this.messageInterval.push(interval);
+			};
 			return this.message[type] = message;
 		}
 		setPlayingMessage(newMessage) {
@@ -235,3 +249,8 @@ module.exports = Structure.extend('Player', Player => {
 	}
 	return KaoriPlayer;
 });
+
+function clearArray(array) {
+	array.forEach((d, i=0) => array.splice(i++));
+	return array;
+};

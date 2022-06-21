@@ -33,25 +33,25 @@ console.error = function() {
 };
 
 module.exports = class KaoriLogger {
-	static log(content, type) {
+	static log(type, ...args) {
 		switch (type) {
 			case "info": {
-				return console.info(chalk.bgGreen(type.toUpperCase()), content);
+				return console.info(chalk.bgGreen(type.toUpperCase()), ...args);
 			}
 			case "warn": {
-				return console.warn(chalk.bgYellow(type.toUpperCase()), content);
+				return console.warn(chalk.bgYellow(type.toUpperCase()), ...args);
 			}
 			case "error": {
-				return console.error(chalk.bgRed(type.toUpperCase()), content);
+				return console.error(chalk.bgRed(type.toUpperCase()), ...args);
 			}
 			case "debug": {
-				return console.debug(chalk.bgGray(type.toUpperCase()), content);
+				return console.debug(chalk.bgGray(type.toUpperCase()), ...args);
 			}
 			case "ready": {
-				return console.log(chalk.bgGreenBright(type.toUpperCase()), content);
+				return console.log(chalk.bgGreenBright(type.toUpperCase()), ...args);
 			} 
 			default:
-				return console.info(chalk.bgBlue(type ? type.toUpperCase() : 'LOG'), content);
+				return console.info(chalk.bgBlue(type ? type.toUpperCase() : 'LOG'), ...args);
 		}
 	}
 };
