@@ -51,7 +51,7 @@ module.exports = new CommandBuilder({
             const collector = msg.createMessageComponentCollector({
                 filter: (i) => {
                     if(i.user.id === message.author.id) return true; 
-                    i.reply({ content: `**${client.emoji.error} |** You cannot use this buttons!`, ephemeral: true });
+                    i.reply({ content: `**${client.emoji.error} |** This button is not for you!`, ephemeral: true });
                     return false;
                 }, time: 1000*60 });
             collector.on('collect', interaction => {
