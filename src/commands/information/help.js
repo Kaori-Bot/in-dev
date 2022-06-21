@@ -47,16 +47,16 @@ function createInteractionCollector(m, msg) {
         filter: (interaction) => {
             if(category.includes(interaction.customId)) return true;
             if(commands.includes(interaction.customId)) return true;
-            if(interaction.user.id === msg.author.id) return true;
             if(interaction.customId==='help:delete'&&interaction.user.id===msg.author.id) {
                 if(!m) return;
                 interaction.reply({ content: `**${client.emoji.success} |** Message has been deleted!`, ephemeral: true });
                 return m.delete().catch(_ => void 0);
             }
             else{
-                interaction.reply({ comtrnt: `**${client.emoji.error} |** This button is not for you!`, ephemeral: true });
+                interaction.reply({ content: `**${client.emoji.error} |** This button is not for you!`, ephemeral: true });
                 return false;
             }
+            if(interaction.user.id === msg.author.id) return true;
         },
         time: 60000
     });
