@@ -15,11 +15,11 @@ async function trackStart(client, player, track, payload){
         .setColor(client.colors.default);
 
     let buttons = [
-        new MessageButton().setCustomId("track:previous").setEmoji(emoji.back).setStyle("SECONDARY"),
-        new MessageButton().setCustomId("track:pause").setEmoji(emoji.pause).setStyle("SECONDARY"),
+        new MessageButton().setCustomId("track:previous").setEmoji(emoji.back).setStyle("PRIMARY"),
+        new MessageButton().setCustomId("track:pause").setEmoji(emoji.pause).setStyle("SUCCESS"),
         new MessageButton().setCustomId("track:stop").setEmoji(emoji.stop).setStyle("DANGER"),
-        new MessageButton().setCustomId("track:resume").setEmoji(emoji.resume).setStyle("SECONDARY"),
-        new MessageButton().setCustomId("track:skip").setEmoji(emoji.skip).setStyle("SECONDARY")
+        new MessageButton().setCustomId("track:resume").setEmoji(emoji.resume).setStyle("SUCCESS"),
+        new MessageButton().setCustomId("track:skip").setEmoji(emoji.skip).setStyle("PRIMARY")
     ];
     const actionRow = new MessageActionRow().addComponents(buttons);
 
@@ -31,7 +31,7 @@ async function trackStart(client, player, track, payload){
         filter: (interaction) => {
             if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channelId === interaction.member.voice.channelId) return true;
             else {
-                interaction.reply({ content: `${emoji.error} You cannot use this buttons! Join voice channel **${interaction.guild.me.voice.channel.name}** to use.`, ephemeral: true });
+                interaction.reply({ content: `**${emoji.error} |** This button is not for you! Join voice channel **${interaction.guild.me.voice.channel.name}** to use this buttons.`, ephemeral: true });
                 return false;
             };
         },
@@ -49,7 +49,7 @@ async function trackStart(client, player, track, payload){
             const prevSong = player.queue.previous;
             if (!prevSong || prevSong.identifier === currentSong.identifier) {
                 await interaction.editReply({
-                    embeds:[collectEmbed.setDescription(`**${emoji.error} | Cannot go back!** Previous song queue not found!!`)], ephemeral: true
+                    embeds:[collectEmbed.setDescription(`**${emoji.error} | Cannot go back!** Previous song queue not found!`)], ephemeral: true
                 });
             }
             else {
