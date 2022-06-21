@@ -29,7 +29,7 @@ class KaoriManager extends Manager {
 			event.name = file.split(".")[0];
 			this.on(event.name, (...args) => event.load(this.client, ...args));
 		});
-		this.client.logger.log('[Events:Erela] Loaded...', 'info');
+		this.client.logger.log('info','[Events:Erela] Loaded...');
 	}
 };
 

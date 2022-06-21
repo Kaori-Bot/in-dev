@@ -24,7 +24,7 @@ class KaoriBot extends Client {
 			}
 			this.commands.categories.push(dir);
 		});
-		this.logger.log('[Commands] Loaded...', 'info');
+		this.logger.log('info','[Commands] Loaded...');
 
 		readdirSync("./src/slashCommands/").forEach(dir => {
 			const slashCommandFile = readdirSync(`./src/slashCommands/${dir}/`).filter((files) => files.endsWith(".js"));
@@ -41,7 +41,7 @@ class KaoriBot extends Client {
 				this.slashCommands.categories.push(dir);
 			}
 		});
-		this.logger.log('[SlashCommands] Loaded...', 'info');
+		this.logger.log('info','[SlashCommands] Loaded...');
 	}
 	async loadEvents() {
 		const { readdirSync } = require('fs');
@@ -50,7 +50,7 @@ class KaoriBot extends Client {
 			event.name = file.split('.')[0];
 			this.on(event.name, (...args) => event.load(this, ...args));
 		});
-		this.logger.log('[Events:Discord] Loaded...', 'info');
+		this.logger.log('info','[Events:Discord] Loaded...');
 	}
 	async loadMongo() {
 		const mongoose = require('mongoose');
@@ -64,13 +64,13 @@ class KaoriBot extends Client {
 		mongoose.connect(process.env.MONGO_URI, dbOptions)
 			mongoose.Promise = global.Promise;
 			mongoose.connection.on('connected', () => {
-				this.logger.log('[Mongoose] Database connected.', 'ready');
+				this.logger.log('ready','[Mongoose] Database connected.');
 			});
 			mongoose.connection.on('err', (err) => {
 				console.error(`[Mongoose:Connection]`, err.stack);
 			});
 			mongoose.connection.on('disconnected', () => {
-				this.logger.log('[Mongoose] Database disconnected...', 'info');
+				this.logger.log('info','[Mongoose] Database disconnected...');
 			});
 	}
 	async login(botToken) {
@@ -107,11 +107,19 @@ class KaoriBot extends Client {
 			}else{
 				await this.application.commands.set(_data);
 			}
-			this.logger.log('[SlashCommands] Registered.', 'ready');
+			this.logger.log('ready','[SlashCommands] Registered.');
 		}
 		catch(error) {
 			console.error(error);
 		}
+	}
+	postStats() {
+		const { AutoPoster } = require('topgg-autoposter');
+		this.dblPoster = AutoPoster(process.env.TOPGG_TOKEN, this);
+		this.dblPoster.on('posted', (stats) => {
+			client.logger.log('ready', `Posting stats on https://top.gg/bot/${this.user.id} | ${stats.serverCount} servers`);
+		});
+		return 'Stats posted on https://top.gg/bot/'+this.user.id;
 	}
 };
 module.exports = KaoriBot;

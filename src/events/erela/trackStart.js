@@ -15,11 +15,11 @@ async function trackStart(client, player, track, payload){
         .setColor(client.colors.default);
 
     let buttons = [
-        new MessageButton().setCustomId("track:previous").setEmoji(emoji.back).setStyle("PRIMARY"),
+        new MessageButton().setCustomId("track:previous").setEmoji(emoji.back).setStyle("SECONDARY"),
         new MessageButton().setCustomId("track:pause").setEmoji(emoji.pause).setStyle("SUCCESS"),
         new MessageButton().setCustomId("track:stop").setEmoji(emoji.stop).setStyle("DANGER"),
         new MessageButton().setCustomId("track:resume").setEmoji(emoji.resume).setStyle("SUCCESS"),
-        new MessageButton().setCustomId("track:skip").setEmoji(emoji.skip).setStyle("PRIMARY")
+        new MessageButton().setCustomId("track:skip").setEmoji(emoji.skip).setStyle("SECONDARY")
     ];
     const actionRow = new MessageActionRow().addComponents(buttons);
 
@@ -62,17 +62,15 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:pause") {
             if (player.paused) {
-                await interaction.editReply({
+                return interaction.editReply({
                     embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is already **\`paused\`**!`)]
-                });
+                }).then(message => player.setMessage('isPaused', message, 10000));
             }
             else {
                 player.pause(true);
-                await interaction.editReply({ 
+                return interaction.editReply({
                     embeds: [collectEmbed.setDescription(`**${emoji.pause} | Paused** [${track.title}](${track.uri})`)]
-                });
-                player.setMessage('pause', await interaction.fetchReply());
-                interaction.checkSkip = true;
+                }).then(message => player.setMessage('pause', message));
             };
         }
         else if (interaction.customId === "track:stop") {
@@ -83,12 +81,14 @@ async function trackStart(client, player, track, payload){
         }
         else if (interaction.customId === "track:resume") {
             if(!player.paused) {
-                await interaction.editReply({ embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is not **\`paused\`**!`)] });
+                return interaction.editReply({
+                    embeds: [collectEmbed.setDescription(`**${emoji.error} |** The music is not **\`paused\`**!`)]
+                }).then(message => player.setMessage('isNotPaused', message, 10000));
             }
             else {
                 player.pause(false);
                 player.setMessage('pause');
-                await interaction.editReply({ 
+                await interaction.editReply({
                     embeds: [collectEmbed.setDescription(`**${emoji.resume} | Resume** [${track.title}](${track.uri})`)]
                 });
             };
@@ -108,7 +108,6 @@ async function trackStart(client, player, track, payload){
             }
         }
 
-        if (interaction.checkSkip) return;
         await delay(1000 * 10);
         interaction.fetchReply().then(message => {
             if (message) message.delete().catch(_ => void 0);

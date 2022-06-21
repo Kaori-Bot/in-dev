@@ -27,6 +27,6 @@ module.exports = new CommandBuilder({
             .setDescription(`${emojishuffle} Shuffled the queue`)
             .setColor(client.colors.default)
             .setTimestamp()
-        return message.reply({embeds: [embed]}).catch(error => client.logger.log(error, "error"));
+        return message.reply({ embeds: [embed] }).catch(_ => void 0);
     }
 });

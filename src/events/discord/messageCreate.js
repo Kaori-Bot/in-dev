@@ -47,9 +47,7 @@ async function messageCreate(client, message) {
         if (!channel.permissionsFor(message.guild.me)?.has(Permissions.FLAGS.EMBED_LINKS) && client.user.id !== userId) {
             return channel.send({ content: `Error: I need \`EMBED_LINKS\` permission to work.` });
         }
-        if (command.permissions.onlyDeveloper && message.author.id !== client.config.developerId) {
-            return message.react('❌');
-        };
+        if (command.permissions.onlyDeveloper && message.author.id !== client.config.developerId) return message.react(client.emoji.error);
         if (command.private && message.author.id !== client.config.developerId) return;
 
         const player = message.client.manager.get(message.guild.id);

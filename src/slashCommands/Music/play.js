@@ -47,15 +47,15 @@ module.exports = {
       res = await player.search(search);
       if (res.loadType === "LOAD_FAILED") {
         if (!player.queue.current) player.destroy();
-        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription(`:x: | **There was an error while searching**`)] });
+        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription(`**${client.emoji.error} |** There was an error while searching!`)] });
       }
     } catch (err) {
-      console.log(err)
+      console.error(err);
     }
     switch (res.loadType) {
       case "NO_MATCHES":
         if (!player.queue.current) player.destroy();
-        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription("❌ | **No results were found.**")] });
+        return await interaction.editReply({ embeds: [new MessageEmbed().setColor(client.colors.default).setTimestamp().setDescription(`**${client.emoji.error} |** No results were found.`)] });
       case "TRACK_LOADED":
         player.queue.add(res.tracks[0], interaction.user);
         if (!player.playing && !player.paused && !player.queue.length)

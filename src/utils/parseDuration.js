@@ -10,7 +10,8 @@ function parse(millisecond) {
 
 	if (millisecond < 3600000) {
 		return minutes + ":" + seconds;
-	} else {
+	}
+	else {
 		return hours + ":" + minutes + ":" + seconds;
 	}
 };

@@ -1,5 +1,5 @@
 function nodeCreate(client, node){
-    client.logger.log(`Lavalink: Node '${node.options.identifier}' created.`, "log");
+    client.logger.log('info',`[Lavalink] Node '${node.options.identifier}' created.`);
 };
 
 exports.load = nodeCreate;

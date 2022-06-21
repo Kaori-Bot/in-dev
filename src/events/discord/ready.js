@@ -1,4 +1,5 @@
 function ready(client) {
+    // client.postStats();
     client.registerApplicationCommand('794187901000744991');
     client.manager.init(client.user.id);
 
@@ -9,7 +10,7 @@ function ready(client) {
         }],
         status: 'dnd'
     });
-    client.logger.log(`Client: Login as ${client.user.tag}.`, 'ready');
+    client.logger.log('ready',`[Client] Login as ${client.user.tag}.`);
 };
 
 exports.load = ready;
