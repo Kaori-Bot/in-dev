@@ -1,5 +1,14 @@
 const chalk = require("chalk");
 
+const emoji = {
+	debug: '📝',
+	error: '❌',
+	info: 'ℹ️',
+	log: '✔️',
+	ready: '✅',
+	warn: '⚠️'
+};
+
 const { error, log, warn } = console;
 const thisLocalTime = () =>
 	new Date()
@@ -36,22 +45,22 @@ module.exports = class KaoriLogger {
 	static log(type, ...args) {
 		switch (type) {
 			case "info": {
-				return console.info(chalk.bgGreen(type.toUpperCase()), ...args);
+				return console.info(chalk.bgGreen(emoji['info']), ...args);
 			}
 			case "warn": {
-				return console.warn(chalk.bgYellow(type.toUpperCase()), ...args);
+				return console.warn(chalk.bgYellow(emoji['warn']), ...args);
 			}
 			case "error": {
-				return console.error(chalk.bgRed(type.toUpperCase()), ...args);
+				return console.error(chalk.bgRed(emoji['error']), ...args);
 			}
 			case "debug": {
-				return console.debug(chalk.bgGray(type.toUpperCase()), ...args);
+				return console.debug(chalk.bgGray(emoji['debug']), ...args);
 			}
 			case "ready": {
-				return console.log(chalk.bgGreenBright(type.toUpperCase()), ...args);
+				return console.log(chalk.bgGreenBright(emoji['ready']), ...args);
 			} 
 			default:
-				return console.info(chalk.bgBlue(type ? type.toUpperCase() : 'LOG'), ...args);
+				return console.info(chalk.bgBlue(type || emoji['log']), ...args);
 		}
 	}
 };
