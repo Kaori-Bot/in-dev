@@ -73,7 +73,7 @@ async function voiceStateUpdate(client, oldState, newState) {
         if (player.playingMessage) {
             player.playingMessage.reply({ embeds: [embed] }).then(message => {
                 message.interval = setInterval(() => {
-                    if(player.collector) player.collector.resetTimer({ time: player.queue.current.duration - (player.position || 0) });
+                    if(player.collector && player.queue.current) player.collector.resetTimer({ time: player.queue.current.duration - (player.position || 0) });
                 }, 1000);
                 player.setMessage('voiceStatePaused', message)
             });
